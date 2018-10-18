@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import LandingPage from './layouts/LandingPage'
 
 import Header from './components/Header';
 // import LandingPage from './layouts/LandingPage';
@@ -10,9 +11,9 @@ class App extends Component {
       return (
           <Router>
               <div>
-                  <Header/>
+                  {/* <Header/> */}
                   <Switch>
-                      {/* <Route exact path="/" component={LandingPage} /> */}
+                      <Route exact path="/" component={LandingPage} />
                       {/* <Route component={NotFound} /> */}
                   </Switch>
               </div>

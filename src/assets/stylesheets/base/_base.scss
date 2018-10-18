@@ -10,7 +10,7 @@ html {
 
 body {
    box-sizing: border-box; // change box model
-   background-image: linear-gradient(to right bottom, #232526, #414345);
+   background-color: $color-primary-dark;
    background-size: cover;
    background-repeat: no-repeat;
    min-height: 100vh;
