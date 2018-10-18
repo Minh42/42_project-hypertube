@@ -1,0 +1,17 @@
+* {
+    margin: 0; 
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+   box-sizing: border-box; // change box model
+   background-image: linear-gradient(to right bottom, #232526, #414345);
+   background-size: cover;
+   background-repeat: no-repeat;
+   min-height: 100vh;
+}
