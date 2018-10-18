@@ -8,12 +8,15 @@
 @import "base/utilities";
 
 @import "components/header";
+@import "components/button";
+@import "components/movies-list";
+
 
 .container {
     background-image: linear-gradient(
         to right bottom, 
-        rgba($color-primary-light, 0.8), 
-        rgba($color-primary-dark, 0.8)), 
+        rgba($color-black, 0.8), 
+        rgba($color-black, 0.8)), 
     url(../img/poster.jpg);
     background-size: cover;
     background-position: top;
@@ -32,7 +35,7 @@
     width: 40rem;
 
     &__side {
-        background-color: $color-white-transparent;
+        background-color: $color-white;
         margin-top: 30rem;
         width: 100%;
         box-shadow: 0 1rem 5rem rgba(250, 248, 248, 0.3);

@@ -1,0 +1,35 @@
+.movies-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+
+    @include respond(phone) {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    &__container {
+        flex: 0 1 20%;
+        padding-left: .25rem;
+        padding-right: .25rem;
+        padding-bottom: .05rem;
+      
+        // @include respond(phone) {
+        //     flex: 0 1 100%;
+        //     padding-left: 0rem;
+        //     padding-right: 0rem;
+        //     padding-bottom: 1rem;
+        // }
+    }
+
+    &__item {
+        width: 100%;
+        height: auto;
+
+        // @include respond(phone) {
+            // flex-direction: column;
+            // flex: 1;
+        // }
+    }
+}

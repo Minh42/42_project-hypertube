@@ -1,0 +1,20 @@
+// .btn:link,
+// .btn:visited {
+//     text-transform: uppercase;
+//     text-decoration: none;
+//     background-color: rosybrown;
+// }
+
+.btn-primary {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background-color: inherit;
+    border: none;
+    display: flex;
+    align-items: center;
+
+    &__icon {
+        margin-right: .5rem;
+    }
+}

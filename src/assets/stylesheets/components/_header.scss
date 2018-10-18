@@ -1,11 +1,16 @@
 .header {
     font-size: 1.4rem;
-    // height: 7rem;
-    // background-color: #fff;
-    // border-bottom: var(--line);
+    height: 8rem;
+    background-color: #232526;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @include respond(phone) {
+        flex-wrap: wrap;
+        align-content: space-around;
+        height: 12rem;
+    }
 }
 
 .logo {
@@ -19,6 +24,13 @@
     align-items: center;
     justify-content: center;
 
+    @include respond(phone) {
+        order: 1;
+        flex: 0 0 100%;
+        margin-top: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
     &__input {
         font-family: inherit;
         font-size: inherit;
@@ -29,7 +41,7 @@
         border-radius: 10rem;
         width: 90%;
         transition: all .2s;
-        margin-right: -3.25rem;
+        margin-right: -3.5rem;
 
         &:focus {
             outline: none;
@@ -59,50 +71,38 @@
             transform: translateY(2px);
         }
     }
-
-    &__icon{
-        height: 2rem;
-        width: 2rem;
-        fill: #000;
-    }
-}
-
-.custom-dropdown {
-    &--white {
-
-    }
-
-    &__select {
-
-
-        &--white {
-
-        }
-    }
 }
 
 .user-nav {
+    align-self: stretch;
     display: flex;
     align-items: center;
 
     & > * {
-        padding: 0 2rem;
-        cursor: pointer;
+        padding: 0 1.5rem;
+        height: 100%;
+        display: flex;
+        align-items: center;
     }
 
-    &__user {
-
-        &-photo {
-           height: 5.75rem;
-           border-radius: 50%;
-        }
-
-        &-name {
-            
-        }
+    & > *:hover {
+        background: linear-gradient(to right bottom, #232526, #414345);
     }
 
-    &__signout {
+    &__user-photo {
+        height: 5.75rem;
+        border-radius: 100%;
+    }
 
+    &__user-name {
+        margin-left: 1rem;    
+    }
+
+    &__langage-en {
+        margin-right: .5rem;
+    }
+
+    &__langage-fr {
+        margin-left: .5rem;
     }
 }
