@@ -1,0 +1,109 @@
+.curtain {
+    font-size: 1.4rem;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+  
+#toggle-2 {
+    position: absolute;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    opacity: 0;
+}
+  
+.left-panel,
+.right-panel {
+    width: 50%;
+    height: 100vh;
+    float: left;
+    z-index: 2;
+    position: relative;
+    background: $color-white;
+    transition: all 1s ease-in;
+    background-color: $color-black;
+
+    @include respond(phone) {
+        width: 100%;
+    }
+
+}
+
+.right-panel {
+    // background-color: blue;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    &__movie-poster {
+        height: 100%;
+        width: 100%;
+        opacity: 0.6;
+    }
+}
+
+.left-panel {
+    // background-color: green;
+
+    &__movie-poster {
+        height: 100%;
+        width: 100%;
+        display: none;
+
+        @include respond(phone) {
+            display: initial; 
+            opacity: 0.6;
+        }
+    }
+
+    &__movie-information {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -100%);
+        padding-left: 1rem;
+        padding-right: 1rem;
+
+        @include respond(phone) {
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -100%);
+            width: 100%;
+        }
+    }
+
+    &__movie-title {
+        align-self: flex-start;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+}
+  
+.prize {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: 333;
+    z-index: 1;
+    text-align: center;
+}
+  
+input[type=checkbox]:checked {
+    ~ .left-panel {
+        transform: translateX(-100%);
+    }
+    
+    ~ .right-panel {
+      transform: translateX(100%);
+    }
+}

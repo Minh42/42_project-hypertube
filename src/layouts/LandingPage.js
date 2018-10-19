@@ -3,10 +3,6 @@ import { ReactComponent as Cycle} from '../assets/img/svg/cycle.svg';
 import { ReactComponent as Chevron} from '../assets/img/svg/chevron-thin-down.svg';
 
 class LandingPage extends Component {   
-    constructor(props) {
-		super(props);
-    }
-
     render() {
         return (
             <div className="container">

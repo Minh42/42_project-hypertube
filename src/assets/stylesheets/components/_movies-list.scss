@@ -5,7 +5,7 @@
 
     @include respond(phone) {
         flex-direction: column;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: center;
     }
 
@@ -15,21 +15,15 @@
         padding-right: .25rem;
         padding-bottom: .05rem;
       
-        // @include respond(phone) {
-        //     flex: 0 1 100%;
-        //     padding-left: 0rem;
-        //     padding-right: 0rem;
-        //     padding-bottom: 1rem;
-        // }
+        @include respond(phone) {
+            padding-left: 0rem;
+            padding-right: 0rem;
+            padding-bottom: .5rem;
+        }
     }
 
     &__item {
         width: 100%;
         height: auto;
-
-        // @include respond(phone) {
-            // flex-direction: column;
-            // flex: 1;
-        // }
     }
 }

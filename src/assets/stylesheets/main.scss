@@ -9,5 +9,89 @@
 
 @import "components/header";
 @import "components/button";
+@import "components/signup";
 @import "components/movies-list";
 @import "components/signIn";
+@import "components/curtain-player";
+@import "components/test";
+
+
+// .container {
+//     background-image: linear-gradient(
+//         to right bottom, 
+//         rgba($color-black, 0.8), 
+//         rgba($color-black, 0.8)), 
+//     url(../img/poster.jpg);
+//     background-size: cover;
+//     background-position: top;
+//     height: 100vh;
+//     width: auto;
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: center;
+// }
+
+// .boarding {
+//     perspective: 150rem;
+//     -moz-perspective: 150rem;
+//     position: relative;
+//     height: 500px;
+//     width: 40rem;
+
+//     &__side {
+//         background-color: $color-white;
+//         margin-top: 30rem;
+//         width: 100%;
+//         box-shadow: 0 1rem 5rem rgba(250, 248, 248, 0.3);
+//         height: 500px;
+//         transition: all .9s ease;
+//         color: black;
+//         position: absolute;
+//         top: 0;
+//         left: 0;
+//         backface-visibility: hidden;
+
+//         &--front {
+//             background-color: $color-white;
+//             z-index:100;
+//         }
+
+//         &--back {
+//             background-color: $color-white;
+//             transform: rotateY(0deg);
+//             z-index:0;
+
+//             &-1 {
+//                 background-color: $color-white;
+//             }
+//         }
+//     }
+
+    // &:active &__side--front {
+    //     transform: rotateY(180deg);
+    //     z-index:0;
+    // }
+
+    // &:active &__side--back {
+    //     transform: rotateY(0deg);
+    //     z-index:100;
+    // }
+// }
+
+// #demo:checked + .boarding__side--front{
+//     transform: rotateY(180deg);
+//     z-index:100;
+// }
+
+// #cycle {
+//     margin-top: 27.6rem;
+//     margin-left: -19.4rem;
+//     z-index: 0;
+//     position: absolute;
+// }
+
+// #demo {
+//     margin-top: 28rem;
+//     opacity: 0;
+//     z-index: 100;
+// }
