@@ -24,7 +24,7 @@ class Header extends Component {
                         <span className="user-nav__langage-fr">FR</span>
                     </div>
                     <div className="user-nav__user">
-                        <img src={user} alt="User photo" className="user-nav__user-photo"/>
+                        <img src={user} alt="user" className="user-nav__user-photo"/>
                         <span className="user-nav__user-name">Minh</span>
                     </div>
                     <div className="user-nav__signout">

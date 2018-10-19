@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import { ReactComponent as Cycle} from '../assets/img/svg/cycle.svg';
 
 class LandingPage extends Component {   
-    constructor(props) {
-		super(props);
-    }
-
     render() {
         return (
             <div class="container">

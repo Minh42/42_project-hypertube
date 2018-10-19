@@ -1,0 +1,54 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.landing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    perspective: 150rem;
+    -moz-perspective: 150rem;
+    position: relative;
+    height: 52rem;
+    width: 30rem;
+    
+    &__side {
+        height: 52rem;
+        transition: all 8s ease;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        border-radius: 3px;
+        overflow: hidden;
+        box-shadow: 0 1.5rem 4rem rgba($color-black, .15);
+        background-color: orangered;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &--front {
+            // background-color: $color-white;
+            background-color: green;
+        }
+
+        &--back {
+            transform: rotateY(180deg);
+        }
+    }
+  
+    &:hover &__side--front {
+        transform: rotateY(-180deg);
+    }
+
+    &:hover &__side--back {
+        transform: rotateY(0);
+    }
+}

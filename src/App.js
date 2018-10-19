@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import LandingPage from './layouts/LandingPage'
 
-import Header from './components/Header';
+// import Header from './components/Header';
 import HomePage from './layouts/HomePage';
-// import LandingPage from './layouts/LandingPage';
+import LandingPage from './layouts/LandingPage';
+import Test from './layouts/Test';
 // import NotFound from './layouts/NotFound';
 
 class App extends Component { 
@@ -16,6 +16,7 @@ class App extends Component {
                   <Switch>
                       <Route exact path="/" component={LandingPage} />
                       <Route path="/homepage" component={HomePage} />
+                      <Route path="/test" component={Test} />
                       {/* <Route component={NotFound} /> */}
                   </Switch>
               </div>
