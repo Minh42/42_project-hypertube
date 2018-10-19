@@ -1,0 +1,191 @@
+.container {
+    background-image: linear-gradient(
+        to right bottom, 
+        rgba($color-grey-dark-1, 0.7), 
+        rgba($color-grey-dark-1, 0.7)), 
+    url(../img/poster.jpg);
+    background-size: cover;
+    background-position: top;
+    height: 100vh;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    // background-blend-mode: color;
+}
+
+.language {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.title_website {
+    display: flex;
+    font-weight: 100;
+    justify-content: center;
+    font-size: 7rem;
+    text-transform: uppercase;
+}
+
+.landing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; // center verticaly
+}
+
+input[type=checkbox] {
+    z-index: 2;
+    height: 2rem;
+    width: 2rem;
+    opacity: 0;
+ }
+
+.icon {
+    margin-bottom: -2rem;
+}
+
+.card {
+    order: -1;
+    perspective: 150rem;
+    -moz-perspective: 150rem;
+    position: relative;
+    height: 50rem;
+    width: 30rem;
+
+    &__side {
+        height: 50rem;
+        width: 100%;
+        background-color: $color-white-tranparent;
+        box-shadow: 0 1rem 5rem rgba(250, 248, 248, 0.3);
+        transition: all 2s ease;
+        position: absolute;
+        top: 0;
+        left: 0;
+        backface-visibility: hidden;
+        border-radius: 3px;
+        -webkit-backface-visibility: hidden;
+        
+
+        &--front {
+            background-color: $color-white-tranparent;
+            // clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+
+        &--back {
+            background-color: $color-white-tranparent;
+            transform: rotateY(180deg);
+
+            &-1 {
+                background-color: $color-white-tranparent;
+            }
+        }
+    }
+
+    &__text {
+        font-family: 'Lato', sans-serif;
+        font-size: 1.6rem;
+        text-transform: uppercase;
+        height: 12rem;
+        padding: 2rem;
+        color: $color-white;
+        background-color: $color-primary-transparent;
+        width: 100%;
+    }
+
+    &__text-span {
+        padding-left: 16rem;
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+        font-weight: 100;
+
+        &--2 {
+            background-image: linear-gradient(
+            to right bottom, 
+            rgba($color-primary-light, 0.5), 
+            rgba($color-primary-dark, 0.5));
+        }
+    }
+
+    &__form {
+        margin-top: 4rem;
+        margin-left: 2rem;
+        margin-right: 2rem;
+
+        &--input {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+
+            &-label {
+                font-size: 1.3rem;
+                color: $color-grey-dark-2;
+            }
+
+            &-input {
+                border-top: none;
+                border-left: none;
+                border-right: none;
+                border-bottom: solid 0.1rem $color-primary-transparent;
+                opacity: 0.7;
+            } 
+
+            & input {
+                line-height: 2.4rem;
+            }
+
+        }
+    }
+
+    &__newClient {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 8rem;
+        font-size: 1.6rem;
+        color: $color-grey-dark-2;
+    }
+}
+
+.btn {
+    display: flex;
+    justify-content: center;
+    text-transform: uppercase;
+    background-color: $color-primary;
+    margin: 4rem 8rem;
+    border-radius: 10rem;
+    padding: 1rem;
+    font-size: 1.3rem;
+    border: none;
+
+    &:hover {
+        transform: translateY(-3px);
+        color: $color-white;
+        box-shadow: 0 1em 2rem rgba($color-black, .2);
+
+        &::after {
+            transform: scaleX(1.4) scaleY(1.6);
+            opacity: 0;
+        }
+    }
+
+    &:active {
+        transform: translateY(-1px);
+        box-shadow: 0 .5rem 1rem rgba($color-black, .2);
+    }
+
+    &--white {
+        background-color: $color-primary-transparent;
+        color: $color-white;
+    }
+}
+
+input[type=checkbox]:checked ~ div {    
+    .card__side--front {
+        transform: rotateY(180deg);
+    }
+
+    .card__side--back {
+        transform: rotateY(0);
+    }
+}
