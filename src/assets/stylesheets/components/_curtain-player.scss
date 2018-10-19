@@ -32,7 +32,7 @@
 }
 
 .right-panel {
-    background-color: blue;
+    // background-color: blue;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -45,7 +45,7 @@
 }
 
 .left-panel {
-    background-color: green;
+    // background-color: green;
 
     &__movie-poster {
         height: 100%;
@@ -65,7 +65,9 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -75%);
+        transform: translate(-50%, -100%);
+        padding-left: 1rem;
+        padding-right: 1rem;
 
         @include respond(phone) {
             font-family: inherit;
@@ -74,9 +76,15 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -75%);
+            transform: translate(-50%, -100%);
             width: 100%;
         }
+    }
+
+    &__movie-title {
+        align-self: flex-start;
+        font-size: 2rem;
+        font-weight: 700;
     }
 }
   

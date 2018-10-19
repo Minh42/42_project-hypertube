@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import movie from '../assets/img/movie-poster.jpg';
+import { ReactComponent as Play} from '../assets/img/svg/controller-play.svg';
 
 class Curtain extends Component {    
     render() {
@@ -11,22 +12,16 @@ class Curtain extends Component {
                     <img src={movie} alt="Logo" className="left-panel__movie-poster"/> 
                     <div className="left-panel__movie-information">
                         <div className="left-panel__movie-title">
-                            Venom
+                            Venom (2018)
                         </div>
                         <div className="left-panel__movie-description">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut suscipit gravida metus sed porta. Mauris luctus ornare venenatis. Curabitur facilisis efficitur lacus. Donec tristique sapien sagittis lorem sodales maximus. Etiam eget dapibus magna. Donec semper ex odio, ac egestas diam dignissim et. Vivamus pulvinar, quam vitae scelerisque pharetra, odio enim porta ligula, at facilisis massa metus sed lectus. Sed auctor leo at metus gravida rutrum. Nullam sapien felis, elementum rhoncus facilisis vel, sagittis at ipsum. Nulla quis scelerisque nunc, eu auctor augue. Proin vehicula nunc quis metus condimentum, ut lacinia metus egestas. Integer quis est et erat sollicitudin venenatis a eget turpis. Proin blandit turpis dui, sit amet tempor dolor mollis sit amet.
+                            Des symbiotes débarquent sur la Terre, parmi eux, Venom, qui va s'allier avec Eddie Brock. De son côté, un puissant scientifique tente de faire évoluer l'humanité avec mes symbiotes, le duo d'anti-héros va devoir tout faire pour l'arrêter !
                         </div>
-                        <button className="btn btn-primary">
-                            <span className="btn btn-primary__icon">
-
+                        <button className="btn btn-secondary">
+                            <span className="btn btn-secondary__icon">
+                                <Play fill="#fff" />
                             </span>
                                 Play
-                        </button>
-                        <button className="btn btn-primary">
-                            <span className="btn btn-primary__icon">
-
-                            </span>
-                                More info
                         </button>
                     </div>
                 </div>
