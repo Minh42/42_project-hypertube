@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import logo from '../assets/img/logo-white.png';
+import { ReactComponent as Cycle } from '../assets/img/svg/cycle.svg';
 
 class Test extends Component {   
     render() {
@@ -14,6 +15,11 @@ class Test extends Component {
                         <span className="user-nav__langage-fr">FR</span>
                     </div> */}
 
+                    <label for="toggle-1">Swap</label>
+                    
+                    <Cycle className="icon" fill='#fff'/>
+                    <input type="checkbox" id="toggle-1"/>
+             
                     <div className="card">
                         <div className="card__side card__side--front">
                             <form>
@@ -32,6 +38,8 @@ class Test extends Component {
                             </form>
                         </div>
                     </div>
+
+
                 </div>
             </div>
         );

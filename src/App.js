@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-// import Header from './components/Header';
+import Header from './components/Header';
 import HomePage from './layouts/HomePage';
 import LandingPage from './layouts/LandingPage';
 import Test from './layouts/Test';
@@ -12,7 +12,7 @@ class App extends Component {
       return (
           <Router>
               <div>
-                  {/* <Header/> */}
+                  <Header/>
                   <Switch>
                       <Route exact path="/" component={LandingPage} />
                       <Route path="/homepage" component={HomePage} />
