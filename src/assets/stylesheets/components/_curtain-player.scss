@@ -1,0 +1,51 @@
+.curtain {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.label {
+    background-color: blue;
+}
+  
+input[type=checkbox] {
+    position: absolute;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: blue;
+    opacity: 1;
+}
+  
+.left-panel,
+.right-panel {
+    width: 50%;
+    height: 100vh;
+    float: left;
+    z-index: 2;
+    position: relative;
+    background: turquoise;
+    transition: all 1s ease-in;
+}
+  
+.prize {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: 333;
+    z-index: 1;
+    text-align: center;
+}
+  
+input[type=checkbox]:checked {
+    ~ .left-panel {
+        transform: translateX(-100%);
+    }
+    
+    ~ .right-panel {
+      transform: translateX(100%);
+    }
+}

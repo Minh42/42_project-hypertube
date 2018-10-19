@@ -5,6 +5,7 @@ import Header from './components/Header';
 import HomePage from './layouts/HomePage';
 import LandingPage from './layouts/LandingPage';
 import Test from './layouts/Test';
+import CurtainPlayer from './components/CurtainPlayer';
 // import NotFound from './layouts/NotFound';
 
 class App extends Component { 
@@ -17,6 +18,7 @@ class App extends Component {
                       <Route exact path="/" component={LandingPage} />
                       <Route path="/homepage" component={HomePage} />
                       <Route path="/test" component={Test} />
+                      <Route path="/movie" component={CurtainPlayer} />
                       {/* <Route component={NotFound} /> */}
                   </Switch>
               </div>
