@@ -3,19 +3,25 @@
     height: 8rem;
     background-color: #232526;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
 
     @include respond(phone) {
         flex-wrap: wrap;
         align-content: space-around;
-        height: 12rem;
+        justify-content: space-evenly;
+        height: 14rem;
     }
 }
 
 .logo {
     height: 3.25rem;
     margin-left: 3rem;
+
+    @include respond(phone) {
+        height: 2.5rem;
+    }
 }
 
 .search {
@@ -29,6 +35,7 @@
         flex: 0 0 100%;
         margin-top: 1rem;
         margin-bottom: 1.5rem;
+        margin-right: 1.2rem;
     }
 
     &__input {
@@ -83,6 +90,7 @@
         height: 100%;
         display: flex;
         align-items: center;
+     
     }
 
     & > *:hover {
@@ -104,5 +112,9 @@
 
     &__langage-fr {
         margin-left: .5rem;
+    }
+
+    @include respond(phone) {
+        padding: 0;
     }
 }
