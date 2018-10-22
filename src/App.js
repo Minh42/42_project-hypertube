@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from './components/Header';
 import HomePage from './layouts/HomePage';
 import LandingPage from './layouts/LandingPage';
-import Test from './layouts/Test';
 import Curtain from './components/Curtain';
 // import NotFound from './layouts/NotFound';
 
@@ -13,11 +12,10 @@ class App extends Component {
       return (
           <Router>
               <div>
-                  <Header/>
+                  {/* <Header/> */}
                   <Switch>
                       <Route exact path="/" component={LandingPage} />
                       <Route path="/homepage" component={HomePage} />
-                      <Route path="/test" component={Test} />
                       <Route path="/movie" component={Curtain} />
                       {/* <Route component={NotFound} /> */}
                   </Switch>
