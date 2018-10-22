@@ -15,7 +15,7 @@ class LandingPage extends Component {
                 <div className="landing__heading">
                     <a>Hypertube</a>
                 </div>
-                <div className="auth">
+                <div className="form">
                     <label className="toggle" htmlFor="toggle-1">Swap</label>
                     <Cycle className="icon" fill='#fff'/>
                     <input type="checkbox" id="toggle-1"/>
