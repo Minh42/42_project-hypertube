@@ -26,8 +26,6 @@ class LandingPage extends Component {
                         <SignUp />
                     </div>
                 </div>
-                <div></div>
-                <div></div>
             </div>
         );
     }
