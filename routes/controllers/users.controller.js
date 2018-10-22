@@ -3,15 +3,23 @@ const router = express.Router()
 const User = require('../models/users.model')
 
 router.get('/api/users', (req, res) => {
-
+    User.get(function (err, users) {
+        if (err)
+            res.sendStatus(500);
+        else {
+            res.status(200).json({
+                message: 'Users retrieved successfully',
+                data: users
+            });   
+        }
+    });
 })
 
 router.post('/api/users', (req, res) => {
-    User.findOne({ username: req.body.username}), function(err, username) {
+    User.findOne({ username: req.body.username}), (err, username) => {
         if (err) 
-            res.json(err);
+            res.sendStatus(500);
         if (!username) {
-            
             User.addUser(req.body);             
         } else {
             res.sendStatus(409);
@@ -19,84 +27,34 @@ router.post('/api/users', (req, res) => {
     }
 })
 
-
 router.get('/api/users/id', (req, res) => {
     
 })
 
 
-router.put('/api/users/id', (req, res) => {
-    User.findById(req.params.user_id, (err, users) => {
-        user.firstname = req.body.username;
+router.put('/api/users/:id', (req, res) => {
+    User.findById({_id :req.params.id}, (err, user) => {
+        if (err)
+            res.sendStatus(500);     
+        if (!user) {
+            res.sendStatus(404);  
+        } else {
+            console.log(user);
+            User.editUser(user);
+        }
     })
 })
 
 router.delete('/api/users/id', (req, res) => {
-    
+    User.remove({_id: req.params.id}, (err) => {
+        if (err)
+            res.sendStatus(500);
+        else {
+            res.status(200).json({
+                message: 'User deleted successfully'
+            });
+        } 
+    });
 })
-
-
-
-
-
-
-
-
-// router.get('/:id?', (req, res, next) => {
-// 	if (req.params.id)
-// 		User.findOne(req.params.id, (err, rows) =>
-// 		{
-// 			(err)
-// 			? res.json(err)
-// 			: res.json(rows)
-// 		})
-// 	else
-// 		User.findAll(null, null, (err, rows) =>
-// 		{
-// 			(err)
-// 			? res.json(err)
-// 			: res.json(rows)
-// 		})
-// })
-
-// router.post('/', (req, res, next) =>
-// {
-// 	User.addUser(req.body, (err, count) =>
-// 	{
-// 		(err)
-// 		? res.json(err)
-// 		: res.json(count)
-// 	})
-// })
-
-// router.post('/:id', (req, res, next) =>
-// {
-// 	User.deleteAll(req.body, (err, count) =>
-// 	{
-// 		(err)
-// 		? res.json(err)
-// 		: res.json(count)
-// 	})
-// })
-
-// router.delete('/:id', (req, res, next) =>
-// {
-// 	User.deleteUser(req.params.id, (err, count) =>
-// 	{
-// 		(err)
-// 		? res.json(err)
-// 		: res.json(count)
-// 	})
-// })
-
-// router.put('/:id', (req, res, next) =>
-// {
-// 	User.updateUser(req.params.id, req.body, (err, rows) =>
-// 	{
-// 		(err)
-// 		? res.json(err)
-// 		: res.json(rows)
-// 	})
-// })
 
 export default router;

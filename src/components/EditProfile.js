@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import EditForm from './EditProfile/EditForm';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import validator from 'validator';
 
 class EditProfile extends Component {   
     constructor(props) {
@@ -48,83 +50,33 @@ class EditProfile extends Component {
     render() {
         return (
             <div className="edit-profile">
-                <div className="form">
-                    <div className="card">
-                        <div className="card__side card__side--front">
-
-                            <div className="card__text">
-                                <h4>
-                                    Need to change your information?
-                                </h4>
-                                <h2 className="card__text-span">
-                                    <span className="card__text-span--1">
-                                        edit profile
-                                    </span>
-                                </h2>  
-                            </div>
-
-                            <div className="card__form">
-                                <form className="card__form--input" onSubmit={this.handleSubmit}>
-                                    <Field
-                                        className1="card__form--input-label"
-                                        className2="card__form--input-input"
-                                        label="Firstname"
-                                        name="firstName"
-                                        type="text"
-                                        component= {this.renderField}
-                                        placeholder=""
-                                    />
-                                    <Field
-                                        className1="card__form--input-label"
-                                        className2="card__form--input-input"
-                                        label="Lastname"
-                                        name="lastName"
-                                        type="text"
-                                        component= {this.renderField}
-                                        placeholder=""
-                                    />
-                                    <Field
-                                        className1="card__form--input-label"
-                                        className2="card__form--input-input"
-                                        label="Username"
-                                        name="login"
-                                        type="text"
-                                        component= {this.renderField}
-                                        placeholder=""
-                                    />
-                                    <Field
-                                        className1="card__form--input-label"
-                                        className2="card__form--input-input"
-                                        label="Email"
-                                        name="email"
-                                        type="email"
-                                        component= {this.renderField}
-                                        placeholder=""
-                                    />
-                                    <Field
-                                        className1="card__form--input-label"
-                                        className2="card__form--input-input"
-                                        label="New Password"
-                                        name="password"
-                                        type="password"
-                                        placeholder=""
-                                        component={this.renderField}
-                                    />
-                                    <button className="btn btn-primary btn-primary--pink" type="submit">Submit</button>
-                                    {/* {this.errorMessage()} */}
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <EditForm 
+                
+                />
             </div>
         );
     }
 }
 
+function validate(values) {
+    console.log(values);
+}
+
+function mapStateToProps(state) {
+    return {
+	  currentUser: state.auth.currentUser
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+	return bindActionCreators({
+		editProfile: editProfile
+	}, dispatch);
+}
+
 const reduxFormEditProfile = reduxForm({
-    // validate,
+    validate,
     form: 'editProfile'
 })(EditProfile);
 
-export default connect(null, null)(reduxFormEditProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(reduxFormEditProfile);

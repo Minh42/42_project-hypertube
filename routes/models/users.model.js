@@ -3,9 +3,9 @@ import validator from 'validator';
 
 const UserSchema = new Schema({
     firstname: { type: String, required: true, trim: true },
-    lastname: { type: String, required: true },
-    username: { type: String, required: true },
-    email: { type: String, required: true },
+    lastname: { type: String, required: true, trim: true },
+    username: { type: String, required: true, trim: true },
+    email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     activation_code: { type: String, required: true },
     status: { type: String, required: true },
@@ -22,7 +22,6 @@ UserSchema.pre('save', function(next) {
     next();
   });
 
-
 UserSchema.methods = {
     hashPassword(password) {
         return hashSync(password);
@@ -36,14 +35,26 @@ UserSchema.methods = {
           });
         newUser.save(function(err) {
             if (err) 
-                throw err;
+                res.sendStatus(500);
             else {
-                res.json({
+                res.status(200).json({
                     message: 'New user created',
                     data: newUser
                 });
             }
         });  
+    },
+    editUser(userData) {
+        user.save(function(err) {
+            if (err) 
+                res.sendStatus(500);
+            else {
+                res.status(200).json({
+                    message: 'User info updated',
+                    data: user
+                });
+            }
+        })
     }
 
 }
