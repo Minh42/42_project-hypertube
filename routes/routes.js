@@ -1,4 +1,4 @@
-import * as Controllers from './controllers';
+import * as Controllers from './controllers/index';
 
 const express = require('express');
 const router = express.Router();
