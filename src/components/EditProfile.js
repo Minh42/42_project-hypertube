@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import EditForm from './EditProfile/EditForm';
-import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import validator from 'validator';
 

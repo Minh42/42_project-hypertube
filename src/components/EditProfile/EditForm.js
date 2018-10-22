@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Field, reduxForm } from 'redux-form';
 
 class EditForm extends Component {   
     render() {
@@ -66,7 +67,6 @@ class EditForm extends Component {
                     </div>
                 </div>
             </div>
-
         );
     }
 }
