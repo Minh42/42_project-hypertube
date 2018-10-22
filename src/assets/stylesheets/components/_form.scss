@@ -1,40 +1,4 @@
-.landing {
-    background-image: linear-gradient(
-        to right bottom, 
-        rgba($color-grey-dark-1, 0.7), 
-        rgba($color-grey-dark-1, 0.7)), 
-    url(../img/poster.jpg);
-    background-size: cover;
-    background-position: top;
-    height: 100vh;
-    width: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    &__langage {
-        display: flex;
-        justify-content: flex-end;
-
-        &--fr {
-            margin-left: .5rem;
-        }
-
-        &--en {
-            margin-right: .5rem;
-        }
-    }
-
-    &__heading {
-        display: flex;
-        font-weight: 100;
-        justify-content: center;
-        font-size: 7rem;
-        text-transform: uppercase;
-    }
-}
-
-.auth {
+.form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -135,7 +99,35 @@ input[type=checkbox] {
             & input {
                 line-height: 2.4rem;
             }
+        }
+    }
 
+    &__forgot {
+        display: flex;
+        justify-content: center; 
+        margin-top: -4rem;
+        font-size: 1.2rem;
+        color: $color-grey-dark-2;
+    }
+
+    &__OAuth{
+        margin-top: 1rem;
+        display: flex;
+        justify-content: center; 
+
+        &--icon {
+           margin-left: .5rem;
+           margin-right: .5rem;
+           width: 1.5rem;
+        }
+
+        &--icon42 {
+            margin-top: .3rem;
+            margin-left: .5rem;
+            margin-right: .5rem;
+            width: 1.7rem;
+            height: 1.7rem;
+            filter: opacity(.5);
         }
     }
 
@@ -143,7 +135,7 @@ input[type=checkbox] {
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-top: 8rem;
+        margin-top: 6rem;
         font-size: 1.6rem;
         color: $color-grey-dark-2;
     }
