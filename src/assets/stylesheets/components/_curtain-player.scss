@@ -32,7 +32,6 @@
 }
 
 .right-panel {
-    // background-color: blue;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -45,8 +44,6 @@
 }
 
 .left-panel {
-    // background-color: green;
-
     &__movie-poster {
         height: 100%;
         width: 100%;

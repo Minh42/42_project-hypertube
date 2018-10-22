@@ -28,8 +28,8 @@ class Header extends Component {
                         <span className="user-nav__user-name">Minh</span>
                     </div>
                     <div className="user-nav__signout">
-                        <button className="btn btn-primary">
-                            <span className="btn btn-primary__icon">
+                        <button className="btn btn-secondary">
+                            <span className="btn btn-secondary__icon">
                                 <Login fill='#eb2f64'/>
                             </span>
                                 Signout

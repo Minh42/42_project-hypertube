@@ -17,7 +17,7 @@ class Curtain extends Component {
                         <div className="left-panel__movie-description">
                             Des symbiotes débarquent sur la Terre, parmi eux, Venom, qui va s'allier avec Eddie Brock. De son côté, un puissant scientifique tente de faire évoluer l'humanité avec mes symbiotes, le duo d'anti-héros va devoir tout faire pour l'arrêter !
                         </div>
-                        <button className="btn btn-secondary">
+                        <button className="btn btn-secondary btn-secondary--red">
                             <span className="btn btn-secondary__icon">
                                 <Play fill="#fff" />
                             </span>
