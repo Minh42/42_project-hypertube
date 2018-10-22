@@ -1,5 +1,3 @@
-
-
 .form {
     display: flex;
     flex-direction: column;
@@ -80,10 +78,17 @@ input[type=checkbox] {
         margin-left: 2rem;
         margin-right: 2rem;
 
+        &--field {
+            display: flex;
+            flex-direction: column;
+        }
+
+
         &--input {
             position: relative;
             display: flex;
             flex-direction: column;
+
 
             &-label {
                 font-size: 1.3rem;

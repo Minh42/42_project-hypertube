@@ -37,7 +37,7 @@ class LandingPage extends Component {
                                     <input className="card__form--input-input" type="email" placeholder=""></input>
                                     
                                     <label className="card__form--input-label">Password</label>
-                                    <input className="card__form--input-input" type="password" placeholder="******"></input>
+                                    <input className="card__form--input-input" type="password" placeholder=""></input>
 
                                     <button className="btn btn-primary btn-primary--pink" type="submit">Sign In</button>
                                 </form>
@@ -81,8 +81,6 @@ class LandingPage extends Component {
                         </div>
                     </div>
                 </div>
-                <div></div>
-                <div></div>
             </div>
         );
     }

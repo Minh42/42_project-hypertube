@@ -10,11 +10,14 @@
     width: auto;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 
     &__langage {
-        display: flex;
-        justify-content: flex-end;
+        position: absolute;
+        top: 0;
+        right: 0;
 
         &--fr {
             margin-left: .5rem;
