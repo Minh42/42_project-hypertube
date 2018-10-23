@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-
 import validator from 'validator';
 import tools from '../utils/tools.js'
 
@@ -14,33 +13,28 @@ import { ReactComponent as Github} from '../assets/img/svg/github.svg';
 import { ReactComponent as School} from '../assets/img/svg/42_logo.svg';
 
 class SignIn extends Component {   
-
     constructor(props) {
         super(props);
-
         const initData = {
             "username": null,
             "password": null
         };
-        
         this.props.initialize(initData);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     renderField(field) {
 		const { meta: { touched, error } } = field;
-		const className= `input ${touched && error ? 'is-danger' : ''}`;
 
 		return (
 			<div className="card__form--field">
-				<label className={field.className1}>{field.label}</label>
+				<label className="card__form--input-label">{field.label}</label>
 				<input
-					className={field.className2}
+					className="card__form--input-input"
 					type={field.type}
 					placeholder={field.placeholder}
 					{ ...field.input}
 				/>
-				<div className= "help is-danger">
+				<div className= "card__form--input-error">
 					{touched ? error : ''}
 				</div>
 			</div>
@@ -48,12 +42,13 @@ class SignIn extends Component {
     }
 
     
-    handleSubmit() {
+    onSubmit() {
 
 
     }
 
     render() {
+        const { handleSubmit } = this.props;
         return (
             <div className="card__side card__side--front">
                 <div className="card__text">
@@ -67,7 +62,7 @@ class SignIn extends Component {
                     </h2>  
                     </div>
                     <div className="card__form">
-                        <form className="card__form--input" onSubmit={this.handleSubmit}>
+                        <form className="card__form--input" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                             <Field
                                 className1="card__form--input-label"
                                 className2="card__form--input-input"
@@ -115,8 +110,8 @@ function validate(values) {
         errors.username = "Please enter your username"
     } else if (!validator.isByteLength(values.username, { min : 1, max : 15 })) {
         errors.username = "Your username is too short or too long"
-    } else if (!validator.isAlpha(values.username)) {
-        errors.username = "Your username must contain just letter"
+    } else if (!validator.isAlphanumeric(values.username)) {
+        errors.username = "Your username must contain only alphanumeric characters"
     }
 
     if (!values.password) {
@@ -129,7 +124,7 @@ function validate(values) {
 
 const reduxFormSignIn = reduxForm({
     validate,
-    form: 'signIn'
+    form: 'signin'
 })(SignIn);
 
 export default connect(null, null)(reduxFormSignIn);

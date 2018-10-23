@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const validator = require('validator');
-
-console.log('yo');
+const bcrypt = require('bcrypt');
+const SALT_WORK_FACTOR = 10;
 
 const userSchema = new Schema({
     firstname: { type: String, required: true, trim: true },
@@ -10,12 +10,12 @@ const userSchema = new Schema({
     username: { type: String, required: true, trim: true, unique: true},
     email: { type: String, required: true, trim: true, unique: true },
     password: { type: String, required: true },
-    activation_code: { type: Boolean },
-    status: { type: Boolean, required: true },
-    profile_picture: { type: String },
-    token: { type: Boolean },
-    date_created: { type: Date },
-    date_updated: { type: Date }
+    // activation_code: { type: Boolean },
+    // status: { type: Boolean, required: true },
+    // profile_picture: { type: String },
+    // token: { type: Boolean },
+    // date_created: { type: Date },
+    // date_updated: { type: Date }
 })
 
 // userSchema.path('fistname').validate(function (v) {
@@ -37,28 +37,25 @@ const userSchema = new Schema({
 //     next();
 // });
 
+userSchema.pre('save', function(next){
+    var user = this;
+    if (!user.isModified('password')) 
+        return next();
+ 
+    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+        if(err) return next(err);
+ 
+        bcrypt.hash(user.password, salt, function(err, hash) {
+            if(err) return next(err);
+ 
+            user.password = hash;
+            next();
+        });
+    });
+});
+ 
+
 userSchema.methods = {
-    hashPassword(password) {
-        return hashSync(password);
-    },
-    addUser(userData) {
-        var newUser = User({
-            firstname: userData.firstname,
-            username: 'starlord55',
-            password: 'password',
-            admin: true
-          });
-        newUser.save(function(err) {
-            if (err) 
-                res.sendStatus(500);
-            else {
-                res.status(200).json({
-                    message: 'New user created',
-                    data: newUser
-                });
-            }
-        });  
-    },
     editUser(userData) {
         user.save(function(err) {
             if (err) 

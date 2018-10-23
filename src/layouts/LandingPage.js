@@ -15,7 +15,7 @@ class LandingPage extends Component {
                 </div>
     
                 <div className="landing__heading">
-                    <a>Hypertube</a>
+                    <a href="#">Hypertube</a>
                 </div>
                 <div className="form">
                     <label className="toggle" htmlFor="toggle-1">Swap</label>

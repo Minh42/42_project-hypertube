@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import authReducer from './reducer_auth';
+// import authReducer from './reducer_auth';
 // import socketReducer from './reducer_socket';
 import { UNAUTHENTICATED } from './reducer_auth';
 

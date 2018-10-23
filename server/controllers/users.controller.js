@@ -13,16 +13,23 @@ exports.getAllUsers = (req, res) => {
     });
 }
 
-exports.createUser = function(req, res) {
-    console.log(req.body);
-    console.log(req.body.username)
+exports.createUser = (req, res) => {
     Users.findOne({ "username": req.body.username}, (err, username) => {
-        console.log('im here')
         if (err) 
             res.sendStatus(500);
         if (!username) {
-            console.log(username)
-            // Users.addUser(req.body);             
+            var newUser = new Users(req.body);
+            newUser.save(function(err) { 
+                if (err) {
+                    res.sendStatus(500);
+                }
+                else {
+                    res.status(200).json({
+                        message: 'New user created',
+                        data: newUser
+                    });
+                }        
+            })
         } else {
             res.sendStatus(409);
         }
