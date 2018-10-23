@@ -42,10 +42,11 @@ class SignUp extends Component {
 		);
     }
 
-    async onSubmit(values) {
+    onSubmit(values) {
         console.log(values)
-        const res = await axios.post('http://localhost:8080/api/users', {userData: values});
-        console.log(res.data)
+        axios.post('http://localhost:8080/api/users', {userData: values}).then((res) => {
+            console.log(res.data)
+        })
     }
 
     render() {

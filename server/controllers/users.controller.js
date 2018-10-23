@@ -1,4 +1,4 @@
-const User = require('../models/users.model')
+const Users = require('../models/users.model')
 
 exports.getAllUsers = (req, res) => {
     User.get(function (err, users) {
@@ -13,11 +13,11 @@ exports.getAllUsers = (req, res) => {
     });
 }
 
-exports.createUser = function (req, res) {
+exports.createUser = function(req, res) {
     // console.log('im here')
     console.log(req.body);
     console.log('im here')
-    User.findOne({ username: req.body.username}), (err, username) => {
+    Users.findOne({ username: req.body.username}), (err, username) => {
         if (err) 
             res.sendStatus(500);
         if (!username) {
@@ -29,7 +29,7 @@ exports.createUser = function (req, res) {
 }
 
 exports.getUser = (req, res) => {
-    
+    console.log('im here')
 }
 
 

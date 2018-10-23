@@ -7,8 +7,6 @@ router.get('/', (req, res) => {
   res.render('index');
 })
 
-console.log(Users)
-
 // get all users
 router.get('/api/users', Users.getAllUsers);
 // create a new user
