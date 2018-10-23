@@ -163,5 +163,4 @@ const reduxFormSignUp = reduxForm({
     form: 'signUp'
 })(SignUp);
 
-
 export default connect(null, null)(reduxFormSignUp);
