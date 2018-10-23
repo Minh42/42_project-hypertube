@@ -1,7 +1,8 @@
-import mongoose, { Schema } from 'mongoose';
-import validator from 'validator';
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const validator = require('validator');
 
-const UserSchema = new Schema({
+const userSchema = new Schema({
     firstname: { type: String, required: true, trim: true },
     lastname: { type: String, required: true, trim: true },
     username: { type: String, required: true, trim: true, unique: true},
@@ -15,26 +16,26 @@ const UserSchema = new Schema({
     date_updated: { type: Date }
 })
 
-UserSchema.path('fistname').validate(function (v) {
-    return v.length > 15;
-  }, 'Your fistname is too long'); 
+// userSchema.path('fistname').validate(function (v) {
+//     return v.length > 15;
+// }, 'Your fistname is too long'); 
 
-UserSchema.path('lastname').validate(function (v) {
-    return v.length > 15;
-  }, 'Your lastname is too long');
+// userSchema.path('lastname').validate(function (v) {
+//     return v.length > 15;
+// }, 'Your lastname is too long');
 
-UserSchema.path('username').validate(function (v) {
-    return v.length > 15;
-  }, 'Your username is too long'); 
+// userSchema.path('username').validate(function (v) {
+//     return v.length > 15;
+// }, 'Your username is too long'); 
 
-UserSchema.pre('save', function(next) {
+userSchema.pre('save', function(next) {
     if (this.isModified('password')) {
         this.password = this._hashPassword(this.password);
     }
     next();
   });
 
-UserSchema.methods = {
+userSchema.methods = {
     hashPassword(password) {
         return hashSync(password);
     },
@@ -71,4 +72,4 @@ UserSchema.methods = {
 
 }
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('Users', userSchema);

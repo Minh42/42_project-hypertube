@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 import validator from 'validator';
 import tools from '../utils/tools.js'
@@ -19,7 +20,6 @@ class SignUp extends Component {
         };
         
         this.props.initialize(initData);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     renderField(field) {
@@ -42,12 +42,14 @@ class SignUp extends Component {
 		);
     }
 
-    handleSubmit() {
-
-
+    async onSubmit(values) {
+        console.log(values)
+        const res = await axios.post('http://localhost:8080/api/users', {userData: values});
+        console.log(res.data)
     }
 
     render() {
+        const { handleSubmit } = this.props;
         return (
             <div className="card__side card__side--back">
                 <div className="card__text">
@@ -61,7 +63,7 @@ class SignUp extends Component {
                     </h2>  
                     </div>
                     <div className="card__form">
-                        <form className="card__form--input">
+                        <form className="card__form--input" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                             <Field
                                 className1="card__form--input-label"
                                 className2="card__form--input-input"
@@ -107,7 +109,7 @@ class SignUp extends Component {
                                 placeholder=""
                                 component={this.renderField}
                             />
-                            <button className="btn btn-primary btn-primary--pink" type="submit">Sign Up</button>
+                            <button type="submit" className="btn btn-primary btn-primary--pink">Sign Up</button>
                         </form>
                     </div>
                 </div>
@@ -116,7 +118,6 @@ class SignUp extends Component {
 }
 
 function validate(values) {
-    console.log(values)
     const errors = {};
     if (!values.firstname) {
         errors.firstname = "Please enter your firstname"
@@ -157,10 +158,9 @@ function validate(values) {
     return errors;
 }
 
-
 const reduxFormSignUp = reduxForm({
     validate,
-    form: 'signUp'
+    form: 'signup'
 })(SignUp);
 
 export default connect(null, null)(reduxFormSignUp);

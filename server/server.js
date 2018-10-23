@@ -2,18 +2,19 @@ const path = require('path')
 const http = require('http')
 const express = require('express')
 const bodyParser = require('body-parser')
-const mongoose = require('mongoose')
-const routes = require('../routes/routes.js')
-const socketIO = require('socket.io');
-const socketInit = require('./socket');
-const db = require('../db/connection');
+const routes = require('./routes/routes.js')
+// const socketIO = require('socket.io');
+// const socketInit = require('./socket');
+const cors = require('cors')
+const db = require('./db/connection');
 const PORT = process.env.PORT || 8080;
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server);
+// const io = socketIO(server);
 
 const middlewares = [
+  cors(),
   bodyParser.urlencoded({ extended: true }),
   bodyParser.json(),
 ]
@@ -21,6 +22,12 @@ const middlewares = [
 app.use(middlewares)
 app.use('/', routes)
 app.use('/static', express.static(path.join(__dirname, 'assets')))
+
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
 app.use((req, res, next) => {
   res.status(404).send("Sorry can't find that!")
