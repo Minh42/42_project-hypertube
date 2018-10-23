@@ -1,7 +1,7 @@
-const Users = require('../models/users.model')
+const Users = require('../models/users.model');
 
 exports.getAllUsers = (req, res) => {
-    User.get(function (err, users) {
+    Users.get(function (err, users) {
         if (err)
             res.sendStatus(500);
         else {
@@ -14,18 +14,19 @@ exports.getAllUsers = (req, res) => {
 }
 
 exports.createUser = function(req, res) {
-    // console.log('im here')
     console.log(req.body);
-    console.log('im here')
-    Users.findOne({ username: req.body.username}), (err, username) => {
+    console.log(req.body.username)
+    Users.findOne({ "username": req.body.username}, (err, username) => {
+        console.log('im here')
         if (err) 
             res.sendStatus(500);
         if (!username) {
-            // User.addUser(req.body);             
+            console.log(username)
+            // Users.addUser(req.body);             
         } else {
             res.sendStatus(409);
         }
-    }
+    })
 }
 
 exports.getUser = (req, res) => {
@@ -34,20 +35,20 @@ exports.getUser = (req, res) => {
 
 
 exports.updateUser = (req, res) => {
-    User.findById({_id :req.params.id}, (err, user) => {
+    Users.findById({_id :req.params.id}, (err, user) => {
         if (err)
             res.sendStatus(500);     
         if (!user) {
             res.sendStatus(404);  
         } else {
             console.log(user);
-            User.editUser(user);
+            Users.editUser(user);
         }
     })
 }
 
 exports.deleteUser = (req, res) => {
-    User.remove({_id: req.params.id}, (err) => {
+    Users.remove({_id: req.params.id}, (err) => {
         if (err)
             res.sendStatus(500);
         else {

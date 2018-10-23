@@ -43,8 +43,7 @@ class SignUp extends Component {
     }
 
     onSubmit(values) {
-        console.log(values)
-        axios.post('http://localhost:8080/api/users', {userData: values}).then((res) => {
+        axios.post('http://localhost:8080/api/users', values).then((res) => {
             console.log(res.data)
         })
     }
@@ -163,6 +162,5 @@ const reduxFormSignUp = reduxForm({
     validate,
     form: 'signup'
 })(SignUp);
-
 
 export default connect(null, null)(reduxFormSignUp);

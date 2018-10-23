@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const validator = require('validator');
 
+console.log('yo');
+
 const userSchema = new Schema({
     firstname: { type: String, required: true, trim: true },
     lastname: { type: String, required: true, trim: true },
@@ -28,12 +30,12 @@ const userSchema = new Schema({
 //     return v.length > 15;
 // }, 'Your username is too long'); 
 
-userSchema.pre('save', function(next) {
-    if (this.isModified('password')) {
-        this.password = this._hashPassword(this.password);
-    }
-    next();
-  });
+// userSchema.pre('save', function(next) {
+//     if (this.isModified('password')) {
+//         this.password = this._hashPassword(this.password);
+//     }
+//     next();
+// });
 
 userSchema.methods = {
     hashPassword(password) {
