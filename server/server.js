@@ -2,16 +2,15 @@ const path = require('path')
 const http = require('http')
 const express = require('express')
 const bodyParser = require('body-parser')
-const mongoose = require('mongoose')
-const routes = require('../routes/routes.js')
-const socketIO = require('socket.io');
-const socketInit = require('./socket');
-const db = require('../db/connection');
+const routes = require('./routes/routes.js')
+// const socketIO = require('socket.io');
+// const socketInit = require('./socket');
+const db = require('./db/connection');
 const PORT = process.env.PORT || 8080;
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server);
+// const io = socketIO(server);
 
 const middlewares = [
   bodyParser.urlencoded({ extended: true }),
