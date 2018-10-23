@@ -8,8 +8,6 @@ var error = chalk.bold.yellow;
 var disconnected = chalk.bold.red;
 var termination = chalk.bold.magenta;
 
-
-// mongoose.Promise = global.Promise;
 mongoose.connect(mongoURI, {useCreateIndex: true, useNewUrlParser: true});
 
 mongoose.connection.on('connected', function () {

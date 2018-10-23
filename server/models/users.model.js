@@ -5,17 +5,28 @@ const validator = require('validator');
 const userSchema = new Schema({
     firstname: { type: String, required: true, trim: true },
     lastname: { type: String, required: true, trim: true },
-    username: { type: String, required: true, trim: true },
-    email: { type: String, required: true, unique: true },
+    username: { type: String, required: true, trim: true, unique: true},
+    email: { type: String, required: true, trim: true, unique: true },
     password: { type: String, required: true },
-    activation_code: { type: String, required: true },
-    status: { type: String, required: true },
-    profile_picture: { type: String, required: true },
-    token: { type: String, required: true },
-    googleID: { type: String },
-    date_created: { type: String, required: true },
-    date_updated: { type: String, required: true }
+    activation_code: { type: Boolean },
+    status: { type: Boolean, required: true },
+    profile_picture: { type: String },
+    token: { type: Boolean },
+    date_created: { type: Date },
+    date_updated: { type: Date }
 })
+
+// userSchema.path('fistname').validate(function (v) {
+//     return v.length > 15;
+// }, 'Your fistname is too long'); 
+
+// userSchema.path('lastname').validate(function (v) {
+//     return v.length > 15;
+// }, 'Your lastname is too long');
+
+// userSchema.path('username').validate(function (v) {
+//     return v.length > 15;
+// }, 'Your username is too long'); 
 
 userSchema.pre('save', function(next) {
     if (this.isModified('password')) {
@@ -61,4 +72,4 @@ userSchema.methods = {
 
 }
 
-module.exports = mongoose.model('users', userSchema);
+module.exports = mongoose.model('Users', userSchema);

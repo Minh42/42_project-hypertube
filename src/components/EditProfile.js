@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { reduxForm } from 'redux-form';
 import EditForm from './EditProfile/EditForm';
 import { connect } from 'react-redux';
 import validator from 'validator';
@@ -61,21 +62,21 @@ function validate(values) {
     console.log(values);
 }
 
-function mapStateToProps(state) {
-    return {
-	  currentUser: state.auth.currentUser
-    };
-}
+// function mapStateToProps(state) {
+//     return {
+// 	  currentUser: state.auth.currentUser
+//     };
+// }
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({
-		editProfile: editProfile
-	}, dispatch);
-}
+// function mapDispatchToProps(dispatch) {
+// 	return bindActionCreators({
+// 		editProfile: editProfile
+// 	}, dispatch);
+// }
 
 const reduxFormEditProfile = reduxForm({
     validate,
     form: 'editProfile'
 })(EditProfile);
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxFormEditProfile);
+export default connect(null, null)(reduxFormEditProfile);

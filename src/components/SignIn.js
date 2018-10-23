@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
+import validator from 'validator';
+import tools from '../utils/tools.js'
+
 import { ReactComponent as Chevron} from '../assets/img/svg/chevron-thin-down.svg';
 import { ReactComponent as Facebook} from '../assets/img/svg/facebook.svg';
 import { ReactComponent as Twitter} from '../assets/img/svg/twitter.svg';
@@ -44,6 +47,7 @@ class SignIn extends Component {
 		);
     }
 
+    
     handleSubmit() {
 
 
@@ -109,9 +113,16 @@ function validate(values) {
     const errors = {};
     if (!values.username) {
         errors.username = "Please enter your username"
+    } else if (!validator.isByteLength(values.username, { min : 1, max : 15 })) {
+        errors.username = "Your username is too short or too long"
+    } else if (!validator.isAlpha(values.username)) {
+        errors.username = "Your username must contain just letter"
     }
+
     if (!values.password) {
         errors.password = "Please enter your password"
+    } else if (!tools.isPassword(values.password)) {
+        errors.password = "Your password must contain at least 6 character, a capital letterand a number"
     }
     return errors;
 }
