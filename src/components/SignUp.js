@@ -16,6 +16,12 @@ class SignUp extends Component {
             "email": null,
             "password": null
         };
+
+        this.state = {
+			messageSuccess : "",
+			messageError: ""
+        }
+
         this.props.initialize(initData);
     }
 
@@ -38,10 +44,39 @@ class SignUp extends Component {
 		);
     }
 
+    renderMessages() {
+		if (this.state.messageSuccess) {
+			return (
+				<p className="card__form--input-success">{this.state.messageSuccess}</p>
+			)
+		}
+		if (this.state.messageError) {
+			return (
+				<p className="card__form--input-error">{this.state.messageError}</p>	
+			)
+		}
+	}
+
+
     onSubmit(values) {
         axios.post('http://localhost:8080/api/users', values).then((res) => {
-            console.log(res.data)
+            console.log(res)
         })
+        
+        
+        // .then((err, res) => {
+        //     console.log(err)
+        //     if (res.data.errors != undefined) {
+        //         this.setState ({
+        //             messageError: res.data.errors.email.message
+        //         })
+        //     } else {
+        //         this.setState ({
+        //             messageSuccess: res.data.message,
+        //             messageError: ""
+        //         })
+        //     }
+        // })
     }
 
     render() {
@@ -89,13 +124,14 @@ class SignUp extends Component {
                                 placeholder=""
                             />
                             <Field
-                                label="New Password"
+                                label="Password"
                                 name="password"
                                 type="password"
                                 placeholder=""
                                 component={this.renderField}
                             />
                             <button type="submit" className="btn btn-primary btn-primary--pink">Sign Up</button>
+                            { this.renderMessages() }
                         </form>
                     </div>
                 </div>
@@ -105,17 +141,19 @@ class SignUp extends Component {
 
 function validate(values) {
     const errors = {};
+
     if (!values.firstname) {
         errors.firstname = "Please enter your firstname"
-    } else if (!validator.isByteLength(values.firstname, { min : 1, max : 15 })) {
-        errors.firstname = "Your firstname is too short or too long"
+    // } else if (!validator.isByteLength(values.firstname, { min : 1, max : 30 })) {
+    //     errors.firstname = "Your firstname is too short or too long"
+    // } 
     } else if (!validator.isAlpha(values.firstname)) {
         errors.firstname = "Your firstname must contain only alphabetic characters"
     }
 
     if (!values.lastname) {
         errors.lastname = "Please enter your lastname"
-    } else if (!validator.isByteLength(values.lastname, { min : 1, max : 15 })) {
+    } else if (!validator.isByteLength(values.lastname, { min : 1, max : 30 })) {
         errors.lastname = "Your lastname is too short or too long"
     } else if (!validator.isAlpha(values.lastname)) {
         errors.lastname = "Your lastname must contain only alphabetic characters"
@@ -123,7 +161,7 @@ function validate(values) {
 
     if (!values.username) {
         errors.username = "Please enter your username"
-    } else if (!validator.isByteLength(values.username, { min : 1, max : 15 })) {
+    } else if (!validator.isByteLength(values.username, { min : 1, max : 30 })) {
         errors.username = "Your username is too short or too long"
     } else if (!validator.isAlphanumeric(values.username)) {
         errors.username = "Your username must contain only alphanumeric characters"
@@ -131,8 +169,10 @@ function validate(values) {
 
     if (!values.email) {
         errors.email = "Please enter your email"
-    } else if (!tools.isEmail(values.email)) {
-        errors.password = "Please enter a valid email address"
+    } else if (!validator.isByteLength(values.email, { min : 1, max : 30 })) {
+            errors.email= "Your email is too short or too long"
+    } else if (!validator.isEmail(values.email, { allow_display_name: false, require_display_name: false, allow_utf8_local_part: true, require_tld: true, allow_ip_domain: false, domain_specific_validation: false })) {
+        errors.email = "Please enter a valid email address"
     }
 
     if (!values.password) {

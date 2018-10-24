@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import validator from 'validator';
-import tools from '../utils/tools.js'
-
 import Oauth from './signin/Oauth';
+
+import validator from 'validator';
+import tools from '../utils/tools.js';
+import axios from 'axios';
 import { ReactComponent as Chevron} from '../assets/img/svg/chevron-thin-down.svg';
 
 class SignIn extends Component {   
@@ -36,10 +37,10 @@ class SignIn extends Component {
 		);
     }
 
-    
-    onSubmit() {
-
-
+    async onSubmit(values) {
+        console.log(values)
+        const res = await axios.post('http://localhost:8080/api/users', {userData: values});
+        console.log(res.data)
     }
 
     render() {
@@ -70,7 +71,7 @@ class SignIn extends Component {
                             <Field
                                 className1="card__form--input-label"
                                 className2="card__form--input-input"
-                                label="New Password"
+                                label="Password"
                                 name="password"
                                 type="password"
                                 placeholder=""
@@ -82,9 +83,7 @@ class SignIn extends Component {
                     <div className="card__forgot">
                             Forgot password?
                     </div>
-                    <Oauth 
-                        history = {this.props.history}
-                    />
+                    <Oauth />
                     <div className="card__newClient">
                         <span>New client</span>
                         <Chevron className="icon" fill='rgb(216, 3, 81)'/>
