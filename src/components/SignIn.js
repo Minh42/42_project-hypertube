@@ -11,32 +11,28 @@ import axios from 'axios';
 import { ReactComponent as Chevron} from '../assets/img/svg/chevron-thin-down.svg';
 
 class SignIn extends Component {   
-
     constructor(props) {
         super(props);
-
         const initData = {
             "username": null,
             "password": null
         };
-        
         this.props.initialize(initData);
     }
 
     renderField(field) {
 		const { meta: { touched, error } } = field;
-		const className= `input ${touched && error ? 'is-danger' : ''}`;
 
 		return (
 			<div className="card__form--field">
-				<label className={field.className1}>{field.label}</label>
+				<label className="card__form--input-label">{field.label}</label>
 				<input
-					className={field.className2}
+					className="card__form--input-input"
 					type={field.type}
 					placeholder={field.placeholder}
 					{ ...field.input}
 				/>
-				<div className= "help is-danger">
+				<div className= "card__form--input-error">
 					{touched ? error : ''}
 				</div>
 			</div>
@@ -77,7 +73,7 @@ class SignIn extends Component {
                             <Field
                                 className1="card__form--input-label"
                                 className2="card__form--input-input"
-                                label="New Password"
+                                label="Password"
                                 name="password"
                                 type="password"
                                 placeholder=""
@@ -105,8 +101,8 @@ function validate(values) {
         errors.username = "Please enter your username"
     } else if (!validator.isByteLength(values.username, { min : 1, max : 15 })) {
         errors.username = "Your username is too short or too long"
-    } else if (!validator.isAlpha(values.username)) {
-        errors.username = "Your username must contain just letter"
+    } else if (!validator.isAlphanumeric(values.username)) {
+        errors.username = "Your username must contain only alphanumeric characters"
     }
 
     if (!values.password) {
@@ -119,7 +115,7 @@ function validate(values) {
 
 const reduxFormSignIn = reduxForm({
     validate,
-    form: 'signIn'
+    form: 'signin'
 })(SignIn);
 
 export default connect(null, null)(reduxFormSignIn);

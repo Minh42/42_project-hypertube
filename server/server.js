@@ -9,7 +9,7 @@ const routes = require('./routes/routes.js')
 
 // const socketIO = require('socket.io');
 // const socketInit = require('./socket');
-const cors = require('cors')
+const cors = require('cors');
 const db = require('./db/connection');
 const PORT = process.env.PORT || 8080;
 
