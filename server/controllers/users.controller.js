@@ -14,14 +14,16 @@ exports.getAllUsers = (req, res) => {
 }
 
 exports.createUser = (req, res) => {
-    Users.findOne({ "username": req.body.username}, (err, username) => {
+    Users.findOne({"username": req.body.username}, (err, username) => {
         if (err) 
             res.sendStatus(500);
         if (!username) {
             var newUser = new Users(req.body);
             newUser.save(function(err) { 
                 if (err) {
-                    res.sendStatus(500);
+                    res.status(500).json({
+                        err: err
+                    });
                 }
                 else {
                     res.status(200).json({

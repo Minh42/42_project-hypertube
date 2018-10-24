@@ -4,13 +4,8 @@ import { connect } from 'react-redux';
 import validator from 'validator';
 import tools from '../utils/tools.js'
 
+import Oauth from './signin/Oauth';
 import { ReactComponent as Chevron} from '../assets/img/svg/chevron-thin-down.svg';
-import { ReactComponent as Facebook} from '../assets/img/svg/facebook.svg';
-import { ReactComponent as Twitter} from '../assets/img/svg/twitter.svg';
-import { ReactComponent as LinkedIn} from '../assets/img/svg/linkedin.svg';
-import { ReactComponent as Google} from '../assets/img/svg/google.svg';
-import { ReactComponent as Github} from '../assets/img/svg/github.svg';
-import { ReactComponent as School} from '../assets/img/svg/42_logo.svg';
 
 class SignIn extends Component {   
     constructor(props) {
@@ -87,14 +82,9 @@ class SignIn extends Component {
                     <div className="card__forgot">
                             Forgot password?
                     </div>
-                    <div className="card__OAuth">
-                        <Facebook className="card__OAuth--icon" fill='#777'/>
-                        <Twitter className="card__OAuth--icon" fill='#777'/>
-                        <Google className="card__OAuth--icon" fill='#777'/>
-                        <LinkedIn className="card__OAuth--icon" fill='#777'/>
-                        <Github className="card__OAuth--icon" fill='#777'/>
-                        <School className="card__OAuth--icon42" fill='#777'/>
-                    </div>
+                    <Oauth 
+                        history = {this.props.history}
+                    />
                     <div className="card__newClient">
                         <span>New client</span>
                         <Chevron className="icon" fill='rgb(216, 3, 81)'/>
