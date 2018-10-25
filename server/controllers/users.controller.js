@@ -12,6 +12,7 @@ const transporter = nodemailer.createTransport({
          pass: 'born2code'
      }
  });
+ 
 
 exports.getAllUsers = (req, res) => {
     Users.get(function (err, users) {
