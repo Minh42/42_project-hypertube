@@ -10,7 +10,12 @@ function isPassword(password) {
 	return true;
 }
 
+function getRandomArbitrary(min, max) {
+	return Math.round(Math.random() * (max - min) + min);
+  }
+
 module.exports = {
 	isEmail: isEmail,
-	isPassword: isPassword
+	isPassword: isPassword,
+	getRandomArbitrary: getRandomArbitrary
 }

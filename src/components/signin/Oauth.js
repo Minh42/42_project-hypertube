@@ -10,6 +10,11 @@ import { ReactComponent as School} from '../../assets/img/svg/42_logo.svg';
 
 class Oauth extends Component {  
     
+    onSubmitFacebook() {
+        window.location.href = "http://localhost:8080/api/auth/facebook";
+    }
+
+
     onSubmitGoogle() {
         window.location.href = "http://localhost:8080/api/auth/google";
     }
@@ -17,7 +22,7 @@ class Oauth extends Component {
     render() {
         return (
             <div className="card__OAuth">
-                <Facebook className="card__OAuth--icon" fill='#777'/>
+                <Facebook className="card__OAuth--icon" fill='#777' onClick={this.onSubmitFacebook}/>
                 <Twitter className="card__OAuth--icon" fill='#777'/>
                 <Google className="card__OAuth--icon" fill='#777' onClick={this.onSubmitGoogle}/>
                 <LinkedIn className="card__OAuth--icon" fill='#777'/>

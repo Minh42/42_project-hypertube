@@ -30,13 +30,19 @@ const userSchema = new Schema({
     lastname: { type: String, required: true, trim: true, validate: [isLength , 'Your lastname is too short or too long'], validate: [isAlpha, 'Your firstname must contain only alphabetic characters'] },
     username: { type: String, required: true, trim: true, unique: true, validate: [isLength , 'Your username is too short or too long'], validate: [isAlphanumeric, 'Your username must contain only alphanumeric characters']},
     email: { type: String, required: true, trim: true, unique: true, validate: [isLength , 'Your email is too short or too long'], validate: [isEmail, 'Please enter a valid email address']},
-    password: { type: String, required: true, trim: true, validate: [isPassword , 'Your password must contain at least 6 character, a capital letter and a number'] },
+    password: { type: String, required: false, trim: true, validate: [isPassword , 'Your password must contain at least 6 character, a capital letter and a number'] },
+    googleID: { type: String },
+    facebookID: { type: String },
+    twitterID: { type: String },
+    githubID: { type: String },
+    linkedinID: { type: String },
+    school42ID: { type: String },
+    date_created: { type: Date, required: true, default: Date.now },
+    date_updated: { type: Date, required: true, default: Date.now }
     // activation_code: { type: Boolean },
     // status: { type: Boolean, required: true },
     // profile_picture: { type: String },
-    // token: { type: Boolean },
-    // date_created: { type: Date },
-    // date_updated: { type: Date }
+    // token: { type: Boolean }
 })
 
 userSchema.pre('save', function(next){
