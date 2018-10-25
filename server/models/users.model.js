@@ -62,7 +62,7 @@ const userSchema = new Schema({
     twitterID: { type: String },
     githubID: { type: String },
     linkedinID: { type: String },
-    school42ID: { type: String },
+    fortytwoID: { type: String },
     date_created: { type: Date, required: true, default: Date.now },
     date_updated: { type: Date, required: true, default: Date.now },
     status: { type: Boolean, default: false, required: true }

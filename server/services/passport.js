@@ -2,6 +2,8 @@ const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const GitHubStrategy = require('passport-github2').Strategy;
+const FortyTwoStrategy = require('passport-42').Strategy;
 
 const Users = require('../models/users.model');
 const keys = require('../db/config/keys');
@@ -29,7 +31,6 @@ passport.use(new FacebookStrategy({
         var lastname = profile._json.last_name;
         var email = profile._json.email;
 
-        console.log(profile)
         Users.findOne({"facebookID": profile._json.id}).then(user => {
             if(user) {
                 done(null, user);
@@ -96,11 +97,9 @@ passport.use(new GoogleStrategy({
                 done(null, user);
             } else {
                 Users.findOneAndUpdate({"email": email} , {$set: {"googleID": profile.id}}, {new: true}).then(user => {
-                    console.log(user)
                     if (user) 
                         done(null, user)
                     else {
-                        console.log('im gere')
                         new Users({"firstname": firstname, "lastname": lastname, "username": firstname + tools.getRandomArbitrary(0, 1000), "email": email, "googleID": profile.id})
                         .save()
                         .then(user => done(null, user));
@@ -109,4 +108,60 @@ passport.use(new GoogleStrategy({
             }
         })
     }
+));
+
+passport.use(new GitHubStrategy({
+    clientID: keys.githubClientID,
+    clientSecret: keys.githubClientSecret,
+    callbackURL : '/api/auth/github/callback'
+  },
+  function(accessToken, refreshToken, profile, done) {
+    var name = profile._json.name;
+    var email = profile._json.email;
+    var username = profile._json.login;
+
+    Users.findOne({"githubID": profile._json.id}).then(user => {
+        if(user) {
+            done(null, user);
+        } else {
+            Users.findOneAndUpdate({"email": email} , {$set: {"githubID": profile._json.id}}, {new: true}).then(user => {
+                if (user) 
+                    done(null, user)
+                else {
+                    new Users({"firstname": name, "lastname": name, "username": username, "email": email, "githubID": profile._json.id})
+                    .save()
+                    .then(user => done(null, user));
+                }
+            });
+        }
+    })
+  }
+));
+
+passport.use(new FortyTwoStrategy({
+    clientID: keys.fortytwoClientID,
+    clientSecret: keys.fortytwoClientSecret,
+    callbackURL: "/api/auth/fortytwo/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    var firstname = profile._json.first_name;
+    var lastname = profile._json.last_name;
+    var email = profile._json.email;
+
+    Users.findOne({"fortytwoID": profile._json.id}).then(user => {
+        if(user) {
+            done(null, user);
+        } else {
+            Users.findOneAndUpdate({"email": email} , {$set: {"fortytwoID": profile._json.id}}, {new: true}).then(user => {
+                if (user) 
+                    done(null, user)
+                else {
+                    new Users({"firstname": name, "lastname": name, "username": firstname + tools.getRandomArbitrary(0, 1000), "email": email, "fortytwoID": profile._json.id})
+                    .save()
+                    .then(user => done(null, user));
+                }
+            });
+        }
+    })
+  }
 ));
