@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const usersRouter = require('./usersRoutes');
+const verificationRouter = require('./verificationRoutes');
 const authRouter = require('./authRoutes');
 
 router.get('/', (req, res) => {
@@ -8,6 +9,7 @@ router.get('/', (req, res) => {
 })
 
 router.use('/api/users', usersRouter);
+router.use('/api/verification', verificationRouter);
 router.use('/api/auth', authRouter);
 
 module.exports = router;

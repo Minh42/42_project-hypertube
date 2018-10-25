@@ -65,9 +65,9 @@ class SignUp extends Component {
             console.log(err.response)
             switch (err.response.status) {
                 case 409 :
-                    message = err.response.data.message;
+                    message = 'Invalid username or email';
                 case 500:
-                    message = err.response.data.message; 
+                    message = 'Your information is invalid'; 
             }
             this.setState ({
                 messageSuccess: "",

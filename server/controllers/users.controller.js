@@ -29,24 +29,24 @@ exports.getAllUsers = (req, res) => {
 exports.createUser = (req, res) => {
     Users.findOne({"username": req.body.username}, (err, user) => {
         if (err) 
-            res.status(500).json({ message: 'Your informations is invalid' });
+            res.sendStatus(500);
         if (!user) {
             Users.findOne({ "email": req.body.email }, (err, user) => {
                 if (err) {
-                    res.status(500).json({ message: 'Your informations is invalid' });
+                    res.sendStatus(500);
                 }
                 if (!user) {
                     var newUser = new Users(req.body);
                     newUser.save(function(err) { 
                         if (err) {
-                            res.status(500).json({ message: 'Your informations is invalid' });
+                            res.sendStatus(500);
                         } else {
                             let token = jwt.sign( { username : req.body.username } , key.jwtSecret)
                             let newToken = new Token({"userID": newUser._id, "token": token});
 
                             newToken.save(function(err) {
                                 if (err) {
-                                    res.status(500).json({ message: 'Your informations is invalid' });
+                                    res.sendStatus(500);
                                 }
                                 else {
                                     var mail = {
@@ -55,7 +55,7 @@ exports.createUser = (req, res) => {
                                         subject: "Welcome to Hypertube",
                                         html: '<h3> Hello ' + req.body.firstname + '</h3>' +
                                         '<p>To activate your account, please click on the link below.</p>' +
-                                        '<p>http://localhost:3000/api/activationMail?login='+ req.body.username +'&token=' + token + '</p>' +
+                                        '<p>http://localhost:8080/api/verification/token?username='+ req.body.username +'&token=' + token + '</p>' +
                                         '<p> --------------- /p>' +
                                         '<p>This is an automatic mail, Please do not reply.</p>'
                                     }
@@ -72,11 +72,11 @@ exports.createUser = (req, res) => {
                         }
                     });  
                 } else {
-                    res.status(409).json({ message: 'Invalid username or email' });      
+                    res.sendStatus(409);
                 }   
             })
         } else {
-            res.status(409).json({ message: 'Invalid username or email' });    
+            res.sendStatus(409);
         }
     })
 }
