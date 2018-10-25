@@ -7,6 +7,7 @@ const routes = require('./routes/index.js')
 // const socketInit = require('./socket');
 const cors = require('cors');
 const db = require('./db/connection');
+const passport = require('passport');
 const PORT = process.env.PORT || 8080;
 
 const app = express();
@@ -17,6 +18,8 @@ const middlewares = [
   cors(),
   bodyParser.urlencoded({ extended: true }),
   bodyParser.json(),
+  passport.initialize(),
+  passport.session()
 ]
 
 app.use(middlewares)

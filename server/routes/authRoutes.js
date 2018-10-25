@@ -8,7 +8,7 @@ auth.get('/facebook',
 
 auth.get('/facebook/callback',
   passport.authenticate('facebook', {
-    successRedirect : '/homepage',
+    successRedirect : 'http://localhost:3000/homepage',
     failureRedirect : '/'
   })
 );
@@ -19,7 +19,7 @@ auth.get('/google',
 
 auth.get('/google/callback',
   passport.authenticate('google', {
-    successRedirect : '/homepage',
+    successRedirect : 'http://localhost:3000/homepage',
     failureRedirect : '/'
   })
 )

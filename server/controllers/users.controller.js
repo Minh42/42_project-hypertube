@@ -41,9 +41,10 @@ exports.createUser = (req, res) => {
                         if (err) {
                             res.status(500).json({ message: 'Your informations is invalid' });
                         } else {
-                            let token = new Token({"userID": newUser._id, "token": key.jwtSecret});
+                            let token = jwt.sign( { username : req.body.username } , key.jwtSecret)
+                            let newToken = new Token({"userID": newUser._id, "token": token});
 
-                            token.save(function(err) {
+                            newToken.save(function(err) {
                                 if (err) {
                                     res.status(500).json({ message: 'Your informations is invalid' });
                                 }
