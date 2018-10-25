@@ -38,6 +38,7 @@
     "jsonwebtoken": "^8.3.0",
     "mini-css-extract-plugin": "0.4.3",
     "mongoose": "^5.3.5",
+    "mongoose-validator": "^2.1.0",
     "node-sass": "^4.9.4",
     "nodemailer": "^4.6.8",
     "nodemon": "^1.18.4",

@@ -60,7 +60,11 @@ class SignUp extends Component {
 
     onSubmit(values) {
         axios.post('http://localhost:8080/api/users', values).then((res) => {
-            console.log(res)
+            console.log(res.data.err)
+            var test = res.data.err.split(':').map(function(item) {
+                return item.trim();
+            });
+            console.log(test)
         })
         
         
@@ -142,44 +146,41 @@ class SignUp extends Component {
 function validate(values) {
     const errors = {};
 
-    if (!values.firstname) {
-        errors.firstname = "Please enter your firstname"
+    // if (!values.firstname) {
+    //     errors.firstname = "Please enter your firstname"
     // } else if (!validator.isByteLength(values.firstname, { min : 1, max : 30 })) {
     //     errors.firstname = "Your firstname is too short or too long"
-    // } 
-    } else if (!validator.isAlpha(values.firstname)) {
-        errors.firstname = "Your firstname must contain only alphabetic characters"
-    }
+    // } else if (!validator.isAlpha(values.firstname)) {
+    //     errors.firstname = "Your firstname must contain only alphabetic characters"
+    // }
 
-    if (!values.lastname) {
-        errors.lastname = "Please enter your lastname"
-    } else if (!validator.isByteLength(values.lastname, { min : 1, max : 30 })) {
-        errors.lastname = "Your lastname is too short or too long"
-    } else if (!validator.isAlpha(values.lastname)) {
-        errors.lastname = "Your lastname must contain only alphabetic characters"
-    }
+    // if (!values.lastname) {
+    //     errors.lastname = "Please enter your lastname"
+    // } else if (!validator.isByteLength(values.lastname, { min : 1, max : 30 })) {
+    //     errors.lastname = "Your lastname is too short or too long"
+    // } else if (!validator.isAlpha(values.lastname)) {
+    //     errors.lastname = "Your lastname must contain only alphabetic characters"
+    // }
 
-    if (!values.username) {
-        errors.username = "Please enter your username"
-    } else if (!validator.isByteLength(values.username, { min : 1, max : 30 })) {
-        errors.username = "Your username is too short or too long"
-    } else if (!validator.isAlphanumeric(values.username)) {
-        errors.username = "Your username must contain only alphanumeric characters"
-    }
+    // if (!values.username) {
+    //     errors.username = "Please enter your username"
+    // } else if (!validator.isByteLength(values.username, { min : 1, max : 30 })) {
+    //     errors.username = "Your username is too short or too long"
+    // } else if (!validator.isAlphanumeric(values.username)) {
+    //     errors.username = "Your username must contain only alphanumeric characters"
+    // }
 
-    if (!values.email) {
-        errors.email = "Please enter your email"
-    } else if (!validator.isByteLength(values.email, { min : 1, max : 30 })) {
-            errors.email= "Your email is too short or too long"
-    } else if (!validator.isEmail(values.email, { allow_display_name: false, require_display_name: false, allow_utf8_local_part: true, require_tld: true, allow_ip_domain: false, domain_specific_validation: false })) {
-        errors.email = "Please enter a valid email address"
-    }
+    // if (!values.email) {
+    //     errors.email = "Please enter your email"
+    // } else if (!validator.isEmail(values.email, { allow_display_name: false, require_display_name: false, allow_utf8_local_part: true, require_tld: true, allow_ip_domain: false, domain_specific_validation: false })) {
+    //     errors.email = "Please enter a valid email address"
+    // }
 
-    if (!values.password) {
-        errors.password = "Please enter your password"
-    } else if (!tools.isPassword(values.password)) {
-        errors.password = "Your password must contain at least 6 character, a capital letter and a number"
-    }
+    // if (!values.password) {
+    //     errors.password = "Please enter your password"
+    // } else if (!tools.isPassword(values.password)) {
+    //     errors.password = "Your password must contain at least 6 character, a capital letter and a number"
+    // }
     return errors;
 }
 

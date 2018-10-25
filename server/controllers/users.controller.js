@@ -3,7 +3,7 @@ const Token = require('../models/token.model');
 
 const jwt = require('jsonwebtoken');
 const key = require('../db/config/keys');
-//PARAMETER EMAIL (nodemailer)
+
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -29,23 +29,23 @@ exports.getAllUsers = (req, res) => {
 exports.createUser = (req, res) => {
     Users.findOne({"username": req.body.username}, (err, user) => {
         if (err) 
-            res.status(500).json({ err: err });
+            res.sendStatus(500);
         if (!user) {
             Users.findOne({ "email": req.body.email }, (err, user) => {
                 if (err) {
-                    res.status(500).json({ err: err });
+                    res.sendStatus(500);
                 }
                 if (!user) {
                     var newUser = new Users(req.body);
                     newUser.save(function(err) { 
                         if (err) {
-                            res.status(500).json({ err: err });
+                            res.send({ err: err.message });
                         } else {
                             let token = new Token({"userID": newUser._id, "token": key.jwtSecret});
 
                             token.save(function(err) {
                                 if (err) {
-                                    res.status(500).json({ err: err });
+                                    res.sendStatus(500);
                                 }
                                 else {
                                     var mail = {
