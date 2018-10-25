@@ -21,5 +21,6 @@ class Oauth extends Component {
         );
     }
 }
+s
 
 export default Oauth;
