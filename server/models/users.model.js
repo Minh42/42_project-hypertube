@@ -26,7 +26,7 @@ function isPassword (v) {
 }
   
 const userSchema = new Schema({
-    firstname: { type: String, required: true, trim: true, validate: [isLength , 'Your firstname is too short or too long'], validate: [isAlpha, 'Your firstname must contain only alphabetic characters'] },
+    firstname: { type: String, required: true, trim: true, validator: [isLength , 'Your firstname is too short or too long'], validate: [isAlpha, 'Your firstname must contain only alphabetic characters'] },
     lastname: { type: String, required: true, trim: true, validate: [isLength , 'Your lastname is too short or too long'], validate: [isAlpha, 'Your firstname must contain only alphabetic characters'] },
     username: { type: String, required: true, trim: true, unique: true, validate: [isLength , 'Your username is too short or too long'], validate: [isAlphanumeric, 'Your username must contain only alphanumeric characters']},
     email: { type: String, required: true, trim: true, unique: true, validate: [isLength , 'Your email is too short or too long'], validate: [isEmail, 'Please enter a valid email address']},
