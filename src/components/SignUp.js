@@ -59,14 +59,23 @@ class SignUp extends Component {
 
 
     onSubmit(values) {
-        console.log(values)
-        axios.post('http://localhost:8080/api/users', values).then((res) => {
-            console.log(res.data)
-            if (res.data.errors != undefined) {
-                this.setState ({
-                    messageError: res.data.errors.email.message
-                })
-            } else {
+        var message;
+        axios.post('http://localhost:8080/api/users', values)
+        .catch((err) => {
+            console.log(err.response)
+            switch (err.response.status) {
+                case 409 :
+                    message = err.response.data.message;
+                case 500:
+                    message = err.response.data.message; 
+            }
+            this.setState ({
+                messageSuccess: "",
+                messageError: message
+            })
+        }) 
+        .then((res) => {
+            if (res != undefined) {
                 this.setState ({
                     messageSuccess: res.data.message,
                     messageError: ""
@@ -164,8 +173,6 @@ function validate(values) {
 
     if (!values.email) {
         errors.email = "Please enter your email"
-    } else if (!validator.isByteLength(values.email, { min : 1, max : 30 })) {
-            errors.email= "Your email is too short or too long"
     } else if (!validator.isEmail(values.email, { allow_display_name: false, require_display_name: false, allow_utf8_local_part: true, require_tld: true, allow_ip_domain: false, domain_specific_validation: false })) {
         errors.email = "Please enter a valid email address"
     }

@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import Oauth from './signin/Oauth'
+import Oauth from './signin/Oauth';
 
 import validator from 'validator';
-import tools from '../utils/tools.js'
-
+import tools from '../utils/tools.js';
 import axios from 'axios';
-
 import { ReactComponent as Chevron} from '../assets/img/svg/chevron-thin-down.svg';
 
 class SignIn extends Component {   

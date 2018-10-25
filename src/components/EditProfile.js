@@ -70,6 +70,7 @@ class EditProfile extends Component {
         console.log(values);
         axios.put('http://localhost:8080/api/users/:id', values).then((res) => {
             console.log(res.data)
+
         })
     }
         

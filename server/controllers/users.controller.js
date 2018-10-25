@@ -1,7 +1,9 @@
 const Users = require('../models/users.model');
+const Token = require('../models/token.model');
+
 const jwt = require('jsonwebtoken');
 const key = require('../db/config/keys');
-//PARAMETER EMAIL (nodemailer)
+
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -25,52 +27,55 @@ exports.getAllUsers = (req, res) => {
 }
 
 exports.createUser = (req, res) => {
-    console.log(req.body)
-    Users.findOne({ "username": req.body.username }, (err, username) => {
-        if (err) {
-            res.sendStatus(500);
-        }
-        if (!username) {
-            Users.findOne({ "email": req.body.email }, (err, email) => {
+    Users.findOne({"username": req.body.username}, (err, user) => {
+        if (err) 
+            res.status(500).json({ message: 'Your informations is invalid' });
+        if (!user) {
+            Users.findOne({ "email": req.body.email }, (err, user) => {
                 if (err) {
-                    res.sendStatus(500);
+                    res.status(500).json({ message: 'Your informations is invalid' });
                 }
-                if (!email) {
+                if (!user) {
                     var newUser = new Users(req.body);
                     newUser.save(function(err) { 
                         if (err) {
-                            console.log(err)
-                            res.json(err);
-                        }
-                        else {
-                            //send an email
-                            let token = jwt.sign( {  username : req.body.username } , key.jwtSecret );
-                            var mail = {
-                                from: "matcha.appli@gmail.com",
-                                to: req.body.email,
-                                subject: "Welcome to Hypertube",
-                                html: '<h3> Hello ' + req.body.firstname + '</h3>' +
-                                '<p>To activate your account, please click on the link below.</p>' +
-                                '<p>http://localhost:3000/api/activationMail?login='+ req.body.username +'&token=' + token + '</p>' +
-                                '<p> --------------- /p>' +
-                                '<p>This is an automatic mail, Please do not reply.</p>'
+                            res.status(500).json({ message: 'Your informations is invalid' });
+                        } else {
+                            let token = new Token({"userID": newUser._id, "token": key.jwtSecret});
+
+                            token.save(function(err) {
+                                if (err) {
+                                    res.status(500).json({ message: 'Your informations is invalid' });
                                 }
-                                    
-                                transporter.sendMail(mail, function (err, info) {
-                                if(err)
-                                    console.log(err)
-                                else
-                                    console.log(info);
-                            });
-                            res.status(200).json({
-                                message: 'Please check your mailbox'
+                                else {
+                                    var mail = {
+                                        from: "matcha.appli@gmail.com",
+                                        to: req.body.email,
+                                        subject: "Welcome to Hypertube",
+                                        html: '<h3> Hello ' + req.body.firstname + '</h3>' +
+                                        '<p>To activate your account, please click on the link below.</p>' +
+                                        '<p>http://localhost:3000/api/activationMail?login='+ req.body.username +'&token=' + token + '</p>' +
+                                        '<p> --------------- /p>' +
+                                        '<p>This is an automatic mail, Please do not reply.</p>'
+                                    }
+                                                
+                                    transporter.sendMail(mail, function (err, info) {
+                                        if (err)
+                                            res.sendStatus(500);
+                                        console.log('Message sent: ' + info.response);
+                                    });
+
+                                    res.status(200).json({ message: 'Please check your mailbox' });
+                                }
                             });
                         }
-                    })  
-                }     
+                    });  
+                } else {
+                    res.status(409).json({ message: 'Invalid username or email' });      
+                }   
             })
         } else {
-            res.sendStatus(409);
+            res.status(409).json({ message: 'Invalid username or email' });    
         }
     })
 }

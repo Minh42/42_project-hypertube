@@ -7,13 +7,19 @@ import { ReactComponent as Google} from '../../assets/img/svg/google.svg';
 import { ReactComponent as Github} from '../../assets/img/svg/github.svg';
 import { ReactComponent as School} from '../../assets/img/svg/42_logo.svg';
 
-class Oauth extends Component {   
+
+class Oauth extends Component {  
+    
+    onSubmitGoogle() {
+        window.location.href = "http://localhost:8080/api/auth/google";
+    }
+    
     render() {
         return (
             <div className="card__OAuth">
                 <Facebook className="card__OAuth--icon" fill='#777'/>
                 <Twitter className="card__OAuth--icon" fill='#777'/>
-                <Google className="card__OAuth--icon" fill='#777'/>
+                <Google className="card__OAuth--icon" fill='#777' onClick={this.onSubmitGoogle}/>
                 <LinkedIn className="card__OAuth--icon" fill='#777'/>
                 <Github className="card__OAuth--icon" fill='#777'/>
                 <School className="card__OAuth--icon42" fill='#777'/>
@@ -21,6 +27,5 @@ class Oauth extends Component {
         );
     }
 }
-s
 
 export default Oauth;

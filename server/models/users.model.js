@@ -1,36 +1,62 @@
 const mongoose = require('mongoose');
+var validate = require('mongoose-validator')
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
-const valid  = require('validator');
-const tools = require('../../src/utils/tools.js');
 const SALT_WORK_FACTOR = 10;
 
-function isLength (v) {
-    return valid.isByteLength(values.firstname, { min : 1, max : 30 });
-};
+var nameValidator = [
+    validate({
+        validator: 'isLength',
+        arguments: [1, 30],
+        message: 'Your firstname/lastname is too short or too long'
+    }),
+    validate({
+        validator: 'isAlpha',
+        passIfEmpty: true,
+        message: 'Your firstname/lastname  must contain only alphabetic characters'
+    }),
+]
 
-function isAlpha (v) {
-    return valid.isAlpha(v);
-}
+var usernameValidator = [
+    validate({
+        validator: 'isLength',
+        arguments: [1, 30],
+        message: 'Your username is too short or too long'
+    }),
+    validate({
+        validator: 'isAlphanumeric',
+        passIfEmpty: true,
+        message: 'Your username must contain only alphanumeric characters'
+    }),
+]
 
-function isAlphanumeric (v) {
-    return valid.isAlphanumeric(v);
-}
+var emailValidator = [
+    validate({
+        validator: 'isLength',
+        arguments: [1, 30],
+        message: 'Your email is too short or too long'
+    }),
+    validate({
+        validator: 'isEmail',
+        passIfEmpty: true,
+        message: 'Please enter a valid email address'
+    }),
+]
 
-function isEmail (v) {
-    return valid.isEmail(v);
-}
+var passwordValidator = [
+    validate({
+        validator: 'matches',
+        arguments: /(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
+        message: 'Your password must contain at least 6 character, a capital letter and a number'
+    }),
+]
 
-function isPassword (v) {
-    return tools.isPassword(v);
-}
-  
 const userSchema = new Schema({
-    firstname: { type: String, required: true, trim: true, validate: [isLength , 'Your firstname is too short or too long'], validate: [isAlpha, 'Your firstname must contain only alphabetic characters'] },
-    lastname: { type: String, required: true, trim: true, validate: [isLength , 'Your lastname is too short or too long'], validate: [isAlpha, 'Your firstname must contain only alphabetic characters'] },
-    username: { type: String, required: true, trim: true, unique: true, validate: [isLength , 'Your username is too short or too long'], validate: [isAlphanumeric, 'Your username must contain only alphanumeric characters']},
-    email: { type: String, required: true, trim: true, unique: true, validate: [isLength , 'Your email is too short or too long'], validate: [isEmail, 'Please enter a valid email address']},
-    password: { type: String, required: true, validate: [isPassword , 'Your password must contain at least 6 character, a capital letter and a number'] },
+    firstname: { type: String, required: true, trim: true, validate: nameValidator },
+    lastname: { type: String, required: true, trim: true, validate: nameValidator },
+    username: { type: String, required: true, trim: true, unique: true, validate: usernameValidator },
+    email: { type: String, required: true, trim: true, unique: true, validate: emailValidator },
+    password: { type: String, required: true, trim: true, validate: passwordValidator },
     // activation_code: { type: Boolean },
     // status: { type: Boolean, required: true },
     // profile_picture: { type: String },

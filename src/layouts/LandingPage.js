@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { ReactComponent as Cycle} from '../assets/img/svg/cycle.svg';
 
 import SignIn from '../components/SignIn';
@@ -6,6 +7,7 @@ import SignUp from '../components/SignUp';
 
 class LandingPage extends Component {   
     render() {
+        console.log(this.props.hisory)
         return (
             <div className="landing">
                 <div className="landing__langage">
@@ -22,7 +24,9 @@ class LandingPage extends Component {
                     <Cycle className="icon" fill='#fff'/>
                     <input type="checkbox" id="toggle-1"/>
                     <div className="card">
-                        <SignIn />
+                        <SignIn 
+                            history = {this.props.history}
+                        />
                         <SignUp />
                     </div>
                 </div>
@@ -31,4 +35,4 @@ class LandingPage extends Component {
     }
 }
 
-export default LandingPage;
+export default withRouter(LandingPage);

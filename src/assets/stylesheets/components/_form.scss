@@ -107,10 +107,14 @@ input[type=checkbox] {
             }
 
             &-error {
+                display: flex;
+                justify-content: center;
                 color: $color-primary-light-1;
             } 
 
             &-success {
+                display: flex;
+                justify-content: center;
                 color: $color-primary-light-1;
             } 
         }
