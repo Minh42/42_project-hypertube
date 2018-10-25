@@ -2,6 +2,7 @@ const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const LinkedInStrategy = require('passport-linkedin').Strategy;
 const GitHubStrategy = require('passport-github2').Strategy;
 const FortyTwoStrategy = require('passport-42').Strategy;
 
@@ -57,8 +58,6 @@ passport.use(new TwitterStrategy({
     userProfileURL  : 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true'
   },
   function(token, tokenSecret, profile, done) {
-    // console.log(profile)
-    console.log(profile)
     var arrayName = profile._json.name.split(' ');
     var firstname = arrayName[0];
     var lastname = arrayName[1];
@@ -79,8 +78,6 @@ passport.use(new TwitterStrategy({
             });
         }
     })
-
-
   }
 ));
 
@@ -110,6 +107,34 @@ passport.use(new GoogleStrategy({
                 });
             }
         })
+    }
+));
+
+passport.use(new LinkedInStrategy({
+    consumerKey: keys.linkedinClientID,
+    consumerSecret: keys.linkedinClientSecret,
+    callbackURL: '/api/auth/linkedin/callback',
+    profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline']
+    },
+    function(accessToken, refreshToken, profile, done) {
+        var firstname = profile.name.givenName;
+        var lastname = profile.name.familyName;
+        var email = profile.emails[0].value;
+        Users.findOne({"linkedinID": profile.id}).then(user => {
+            if(user) {
+                done(null, user);
+            } else {
+                Users.findOneAndUpdate({"email": email} , {$set: {"linkedinID": profile.id}}, {new: true}).then(user => {
+                    if (user) 
+                        done(null, user)
+                    else {
+                        new Users({"firstname": firstname, "lastname": lastname, "username": firstname + tools.getRandomArbitrary(0, 1000), "email": email, "linkedinID": profile.id})
+                        .save()
+                        .then(user => done(null, user));
+                    }
+                });
+            }
+        });
     }
 ));
 

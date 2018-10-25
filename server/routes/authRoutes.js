@@ -35,6 +35,17 @@ auth.get('/google/callback',
   })
 )
 
+auth.get('/linkedin',
+  passport.authenticate('linkedin', { scope: ['r_basicprofile', 'r_emailaddress'] })
+);
+
+auth.get('/linkedin/callback',
+  passport.authenticate('linkedin', {
+    successRedirect : 'http://localhost:3000/homepage',
+    failureRedirect : '/'
+  })
+);
+
 auth.get('/github',
   passport.authenticate('github', { scope: [ 'user:email' ] })
 );
