@@ -1,28 +1,28 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
-const valid  = require('validator');
+const validator = require('validator');
 const tools = require('../../src/utils/tools.js');
 const SALT_WORK_FACTOR = 10;
 
-function isLength (v) {
-    return valid.isByteLength(v, { min : 1, max : 30 });
+function isLength (value) {
+    return validator.isByteLength(value, { min : 1, max : 30 });
 };
 
-function isAlpha (v) {
-    return valid.isAlpha(v);
+function isAlpha (value) {
+    return validator.isAlpha(value);
 }
 
-function isAlphanumeric (v) {
-    return valid.isAlphanumeric(v);
+function isAlphanumeric (value) {
+    return validator.isAlphanumeric(value);
 }
 
-function isEmail (v) {
-    return valid.isEmail(v);
+function isEmail (value) {
+    return validator.isEmail(value);
 }
 
-function isPassword (v) {
-    return tools.isPassword(v);
+function isPassword (value) {
+    return tools.isPassword(value);
 }
   
 const userSchema = new Schema({
@@ -30,7 +30,7 @@ const userSchema = new Schema({
     lastname: { type: String, required: true, trim: true, validate: [isLength , 'Your lastname is too short or too long'], validate: [isAlpha, 'Your firstname must contain only alphabetic characters'] },
     username: { type: String, required: true, trim: true, unique: true, validate: [isLength , 'Your username is too short or too long'], validate: [isAlphanumeric, 'Your username must contain only alphanumeric characters']},
     email: { type: String, required: true, trim: true, unique: true, validate: [isLength , 'Your email is too short or too long'], validate: [isEmail, 'Please enter a valid email address']},
-    password: { type: String, required: true, validate: [isPassword , 'Your password must contain at least 6 character, a capital letter and a number'] },
+    password: { type: String, required: true, trim: true, validate: [isPassword , 'Your password must contain at least 6 character, a capital letter and a number'] },
     // activation_code: { type: Boolean },
     // status: { type: Boolean, required: true },
     // profile_picture: { type: String },

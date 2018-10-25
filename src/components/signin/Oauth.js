@@ -10,9 +10,9 @@ import { ReactComponent as School} from '../../assets/img/svg/42_logo.svg';
 
 class Oauth extends Component {  
     
-    // onSubmitGoogle() {
-    //     location.href = "api/auth/google";
-    // }
+    onSubmitGoogle() {
+        window.location.href = "http://localhost:8080/api/auth/google";
+    }
     
     render() {
         return (
