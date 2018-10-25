@@ -1,4 +1,5 @@
 const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -19,6 +20,18 @@ passport.deserializeUser((id, done) => {
         done(null, user);
     });
 });
+
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+    //   User.findOne({ username: username }, function (err, user) {
+    //     if (err) { return done(err); }
+    //     if (!user) { return done(null, false); }
+    //     if (!user.verifyPassword(password)) { return done(null, false); }
+    //     return done(null, user);
+    //   });
+    }
+));
+
   
 passport.use(new FacebookStrategy({
     clientID: keys.facebookClientID,

@@ -37,10 +37,8 @@ class SignIn extends Component {
 		);
     }
 
-    async onSubmit(values) {
-        console.log(values)
-        const res = await axios.post('http://localhost:8080/api/users', {userData: values});
-        console.log(res.data)
+    onSubmit(values) {
+        
     }
 
     render() {
