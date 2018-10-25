@@ -24,4 +24,27 @@ auth.get('/google/callback',
   })
 )
 
+auth.get('/github',
+  passport.authenticate('github', { scope: [ 'user:email' ] })
+);
+
+auth.get('/github/callback',
+  passport.authenticate('github', {
+    successRedirect : 'http://localhost:3000/homepage',
+    failureRedirect : '/'
+  })
+)
+
+auth.get('/42',
+  passport.authenticate('42')
+);
+
+auth.get('/fortytwo/callback',
+  passport.authenticate('42', {
+    successRedirect : 'http://localhost:3000/homepage',
+    failureRedirect : '/'
+  })
+)
+
+
 module.exports = auth;

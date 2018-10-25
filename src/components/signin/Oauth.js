@@ -5,7 +5,7 @@ import { ReactComponent as Twitter} from '../../assets/img/svg/twitter.svg';
 import { ReactComponent as LinkedIn} from '../../assets/img/svg/linkedin.svg';
 import { ReactComponent as Google} from '../../assets/img/svg/google.svg';
 import { ReactComponent as Github} from '../../assets/img/svg/github.svg';
-import { ReactComponent as School} from '../../assets/img/svg/42_logo.svg';
+import { ReactComponent as FortyTwo} from '../../assets/img/svg/42_logo.svg';
 
 
 class Oauth extends Component {  
@@ -14,9 +14,16 @@ class Oauth extends Component {
         window.location.href = "http://localhost:8080/api/auth/facebook";
     }
 
-
     onSubmitGoogle() {
         window.location.href = "http://localhost:8080/api/auth/google";
+    }
+
+    onSubmitGithub() {
+        window.location.href = "http://localhost:8080/api/auth/github";
+    }
+
+    onSubmitFortyTwo() {
+        window.location.href = "http://localhost:8080/api/auth/42";
     }
     
     render() {
@@ -26,8 +33,8 @@ class Oauth extends Component {
                 <Twitter className="card__OAuth--icon" fill='#777'/>
                 <Google className="card__OAuth--icon" fill='#777' onClick={this.onSubmitGoogle}/>
                 <LinkedIn className="card__OAuth--icon" fill='#777'/>
-                <Github className="card__OAuth--icon" fill='#777'/>
-                <School className="card__OAuth--icon42" fill='#777'/>
+                <Github className="card__OAuth--icon" fill='#777' onClick={this.onSubmitGithub}/>
+                <FortyTwo className="card__OAuth--icon42" fill='#777' onClick={this.onSubmitFortyTwo}/>
             </div>
         );
     }
