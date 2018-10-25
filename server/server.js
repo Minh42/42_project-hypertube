@@ -4,6 +4,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const routes = require('./routes/index.js')
 const session = require('express-session')
+const keys = require('./db/config/keys');
 // const socketIO = require('socket.io');
 // const socketInit = require('./socket');
 const cors = require('cors');
@@ -20,7 +21,12 @@ const middlewares = [
   bodyParser.urlencoded({ extended: true }),
   bodyParser.json(),
   passport.initialize(),
-  passport.session()
+  passport.session(),
+  session({
+    secret: keys.sessionSecret,
+    resave: false,
+    saveUninitialized: true
+  })
 ]
 
 app.use(middlewares)
