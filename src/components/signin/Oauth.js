@@ -14,6 +14,9 @@ class Oauth extends Component {
         window.location.href = "http://localhost:8080/api/auth/facebook";
     }
 
+    onSubmitTwitter() {
+        window.location.href = "http://localhost:8080/api/auth/twitter";
+    }
 
     onSubmitGoogle() {
         window.location.href = "http://localhost:8080/api/auth/google";
@@ -23,7 +26,7 @@ class Oauth extends Component {
         return (
             <div className="card__OAuth">
                 <Facebook className="card__OAuth--icon" fill='#777' onClick={this.onSubmitFacebook}/>
-                <Twitter className="card__OAuth--icon" fill='#777'/>
+                <Twitter className="card__OAuth--icon" fill='#777' onClick={this.onSubmitTwitter}/>
                 <Google className="card__OAuth--icon" fill='#777' onClick={this.onSubmitGoogle}/>
                 <LinkedIn className="card__OAuth--icon" fill='#777'/>
                 <Github className="card__OAuth--icon" fill='#777'/>

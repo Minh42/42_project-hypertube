@@ -56,7 +56,7 @@ const userSchema = new Schema({
     lastname: { type: String, required: true, trim: true, validate: nameValidator },
     username: { type: String, required: true, trim: true, unique: true, validate: usernameValidator },
     email: { type: String, required: true, trim: true, unique: true, validate: emailValidator },
-    password: { type: String, required: true, trim: true, validate: passwordValidator },
+    password: { type: String, required: false, trim: true, validate: passwordValidator },
     googleID: { type: String },
     facebookID: { type: String },
     twitterID: { type: String },
@@ -64,11 +64,10 @@ const userSchema = new Schema({
     linkedinID: { type: String },
     school42ID: { type: String },
     date_created: { type: Date, required: true, default: Date.now },
-    date_updated: { type: Date, required: true, default: Date.now }
+    date_updated: { type: Date, required: true, default: Date.now },
+    status: { type: Boolean, default: false, required: true }
     // activation_code: { type: Boolean },
-    // status: { type: Boolean, required: true },
     // profile_picture: { type: String },
-    // token: { type: Boolean }
 })
 
 userSchema.pre('save', function(next){

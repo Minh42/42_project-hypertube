@@ -7,6 +7,4 @@ users.get('/:id', usersController.getUser);
 users.put('/:id', usersController.updateUser);
 users.delete('/:id', usersController.deleteUser);
 
-
-
 module.exports = users;

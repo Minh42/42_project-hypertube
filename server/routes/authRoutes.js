@@ -13,6 +13,17 @@ auth.get('/facebook/callback',
   })
 );
 
+auth.get('/twitter',
+  passport.authenticate('twitter')
+);
+
+auth.get('/twitter/callback',
+  passport.authenticate('twitter', {
+    successRedirect : 'http://localhost:3000/homepage',
+    failureRedirect : '/'
+  })
+);
+
 auth.get('/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
