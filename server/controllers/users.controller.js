@@ -2,7 +2,7 @@ const Users = require('../models/users.model');
 const Token = require('../models/token.model');
 
 const jwt = require('jsonwebtoken');
-const key = require('../db/config/keys');
+const keys = require('../db/config/keys');
 
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
@@ -42,7 +42,7 @@ exports.createUser = (req, res) => {
                         if (err) {
                             res.sendStatus(500);
                         } else {
-                            let token = jwt.sign( { username : req.body.username } , key.jwtSecret)
+                            let token = jwt.sign( { username : req.body.username } , keys.jwtSecret)
                             let newToken = new Token({"userID": newUser._id, "token": token});
 
                             newToken.save(function(err) {

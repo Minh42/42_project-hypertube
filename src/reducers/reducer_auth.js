@@ -1,4 +1,6 @@
 import axios from 'axios';
+import setAuthorizationToken from '../utils/setAuthorizationToken';
+
 const AUTHENTICATED = 'AUTHENTICATED';
 export const UNAUTHENTICATED = 'UNAUTHENTICATED';
 const AUTHENTICATION_ERROR = 'AUTHENTICATION_ERROR';
@@ -13,7 +15,7 @@ const INITIAL_STATE = {
     //     return {...state, currentUser: action.payload.currentUser
     //   };
       case AUTHENTICATED:
-        return { ...state, authenticated: true };
+        return { ...state, authenticated: true, error: action.payload };
       case UNAUTHENTICATED:
         return { ...state, authenticated: false };
       case AUTHENTICATION_ERROR:
@@ -25,23 +27,25 @@ const INITIAL_STATE = {
 
 export function signInAction({username, password}, history) {
 	return (dispatch) => {
-		try {
-			axios.post('http://localhost:8080/api/auth/signin', {username, password}).then(res => {
-                console.log(res.data)
-			// dispatch({ 
-			// 	type: AUTHENTICATED
-			// });
-			// dispatch(reset('signin'));
-			// const token = res.data.token;
-			// localStorage.setItem('jwtToken', token);
-			// setAuthorizationToken(token);
-			// history.push('/onboarding');
-			})
-		} catch (error) {
-			dispatch({
-				type: AUTHENTICATION_ERROR,
-				payload: 'Invalid email or password'
-			});
-		}
+        axios.post('http://localhost:8080/api/auth/signin', {username, password})
+            .catch((err) => {
+                if(err) {
+                    dispatch({
+                        type: AUTHENTICATION_ERROR,
+                        payload: 'Invalid email or password'
+                    });
+                }
+            })
+            .then(res => {
+                if(res) {
+                    setAuthorizationToken(res.data.xsrfToken);
+                        dispatch({ 
+                        type: AUTHENTICATED,
+                        payload: ''
+                    });
+                    history.push('/homepage');
+                } 
+            })
+			// localStorage.setItem('jwtToken', token);	
 	};
 }

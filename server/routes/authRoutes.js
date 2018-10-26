@@ -1,13 +1,63 @@
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
+const Cookies = require('cookies');
+const uid = require('uid-safe');
 const passportConfig = require('../services/passport');
+const keys = require('../db/config/keys');
 const auth = require('express').Router();
 
-auth.post('/signin', 
-  passport.authenticate('local', {
-    successRedirect : 'http://localhost:3000/homepage',
-    failureRedirect : '/'
-  })
-);
+// Double security auth with jwt and http only cookies
+
+auth.post('/signin', function(req, res) {
+  passport.authenticate('local', (err, user, info) => {
+    if (err || !user) {
+      return res.status(401).json({
+        message: info.message
+      });
+    } else {
+      var token = new Array();
+      token['classicToken'] = jwt.sign(JSON.parse(JSON.stringify(user)), keys.jwtSecret, {
+        expiresIn: 604800
+      });
+      token['xsrfToken'] = uid.sync(18); // generate random token
+
+      var jwt_token = jwt.sign({token: token}, keys.jwtSecret, {
+        expiresIn: 604800 // expires in 2 days
+      });
+      
+      new Cookies(req,res).set('access_token', jwt_token, {
+          httpOnly: true,
+          // secure: true
+      });
+
+      res.status(200).json({
+          xsrfToken : token.xsrfToken
+      });
+    }
+  })(req, res);
+});
+
+
+
+// router.post('/login', function (req, res) {
+//   passport.authenticate('local', {session: false}, (err, user) => {
+//       if (err || !user) {
+//           return res.status(400).json({
+//               message: 'Something is not right',
+//               user   : user
+//           });
+//       }
+//      req.login(user, {session: false}, (err) => {
+//          if (err) {
+//              res.send(err);
+//          }
+//          // generate a signed son web token with the contents of user object and return it in the response
+//          const token = jwt.sign(user, 'your_jwt_secret');
+//          return res.json({user, token});
+//       });
+//   })(req, res);
+// });
+
 
 auth.get('/facebook',
   passport.authenticate('facebook', { display: 'popup' }, { scope: ['public_profile', 'email'] })

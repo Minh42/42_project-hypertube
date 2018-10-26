@@ -24,25 +24,22 @@ passport.deserializeUser((id, done) => {
 
 passport.use(new LocalStrategy(
     function(username, password, done) {
-        console.log(username);
-        console.log(password);
-
       Users.findOne({ username: username }, function (err, user) {
         if (err) { 
             return done(err); 
         }
         if (!user) { 
-            return done(null, false); 
+            return done(null, false, {message: 'Incorrect username or password'}); 
         } else {
             bcrypt.compare(password, user.password, function(err, res) {
                 if(err) {
-                    return done(null, false)
+                    return done(err); 
                 }
-                if (res) {
-                    console.log("here")
-                    console.log(user)
-                    return done(null, user);
-                }
+                if (!res) {
+                    return done(null, false, {message: 'Incorrect username or password'})
+                } else {
+                    return done(null, user, {message: 'Logged in successfully'});     
+                } 
             });
         } 
       });

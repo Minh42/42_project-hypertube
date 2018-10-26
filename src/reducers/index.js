@@ -7,7 +7,7 @@ import { UNAUTHENTICATED } from './reducer_auth';
 // mapping of our state
 const appReducer = combineReducers({
     form: formReducer,
-    auth :authReducer
+    auth: authReducer
     // socket : socketReducer
 });
 

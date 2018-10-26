@@ -5,6 +5,7 @@ import { signInAction } from '../reducers/reducer_auth';
 import { bindActionCreators } from 'redux';
 
 import validator from 'validator';
+import izitoast from 'izitoast';
 import tools from '../utils/tools.js';  
 
 import Oauth from './signin/Oauth';
@@ -40,7 +41,13 @@ class SignIn extends Component {
     }
 
     onSubmit(values) {
-        this.props.signInAction(values, this.props.history);
+        this.props.signInAction(values, this.props.history)
+        if (this.props.errorMessage) {
+            izitoast.error({
+                message: this.props.errorMessage,
+                position: 'topRight'
+            });
+        }
     }
 
     render() {
@@ -111,6 +118,10 @@ function validate(values) {
     return errors;
 }
 
+function mapStateToProps(state) {
+	return { errorMessage : state.auth.error };
+}
+
 function mapDispatchToProps(dispatch) { 
 	return bindActionCreators({ signInAction : signInAction}, dispatch);
 } 
@@ -120,4 +131,4 @@ const reduxFormSignIn = reduxForm({
     form: 'signin'
 })(SignIn);
 
-export default connect(null, mapDispatchToProps)(reduxFormSignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(reduxFormSignIn);
