@@ -1,4 +1,5 @@
 const passport = require('passport');
+const bcrypt = require('bcrypt');
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
@@ -23,12 +24,28 @@ passport.deserializeUser((id, done) => {
 
 passport.use(new LocalStrategy(
     function(username, password, done) {
-    //   User.findOne({ username: username }, function (err, user) {
-    //     if (err) { return done(err); }
-    //     if (!user) { return done(null, false); }
-    //     if (!user.verifyPassword(password)) { return done(null, false); }
-    //     return done(null, user);
-    //   });
+        console.log(username);
+        console.log(password);
+
+      Users.findOne({ username: username }, function (err, user) {
+        if (err) { 
+            return done(err); 
+        }
+        if (!user) { 
+            return done(null, false); 
+        } else {
+            bcrypt.compare(password, user.password, function(err, res) {
+                if(err) {
+                    return done(null, false)
+                }
+                if (res) {
+                    console.log("here")
+                    console.log(user)
+                    return done(null, user);
+                }
+            });
+        } 
+      });
     }
 ));
 

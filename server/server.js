@@ -4,7 +4,6 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const routes = require('./routes/index.js')
 const session = require('express-session')
-const keys = require('./db/config/keys');
 // const socketIO = require('socket.io');
 // const socketInit = require('./socket');
 const cors = require('cors');
