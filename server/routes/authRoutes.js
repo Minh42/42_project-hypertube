@@ -5,6 +5,7 @@ const uid = require('uid-safe');
 const passportConfig = require('../services/passport');
 const keys = require('../db/config/keys');
 const auth = require('express').Router();
+const Users = require('../models/users.model');
 
 // Double security auth with jwt and http only cookies
 
@@ -31,7 +32,8 @@ auth.post('/signin', function(req, res) {
       });
 
       res.status(200).json({
-          xsrfToken : token.xsrfToken
+          xsrfToken : token.xsrfToken,
+          user : user.toJSON()
       });
     }
   })(req, res);
