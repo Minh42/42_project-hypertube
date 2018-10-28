@@ -51,6 +51,34 @@ export function signInAction({username, password}, history) {
                     history.push('/homepage');
                 } 
             })
-			// localStorage.setItem('jwtToken', token);	
+	};
+}
+
+export function signInActionOauth(OauthStrategy, history) {
+	return (dispatch) => {
+        axios.get('http://localhost:8080/api/auth/' + OauthStrategy)
+            .catch((err) => {
+                if(err) {
+                    console.log(err)
+                    // dispatch({
+                    //     type: AUTHENTICATION_ERROR
+                    // });
+                    // izitoast.error({
+                    //     message: 'Invalid email or password',
+                    //     position: 'topRight'
+                    // });
+                }
+            })
+            .then(res => {
+                if(res) {
+                    console.log(res)
+                    // setAuthorizationToken(res.data.xsrfToken);
+                    //     dispatch({ 
+                    //     type: AUTHENTICATED,
+                    //     payload: res.data
+                    // });
+                    // history.push('/homepage');
+                } 
+            })
 	};
 }

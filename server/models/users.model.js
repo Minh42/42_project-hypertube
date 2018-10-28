@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
-var validate = require('mongoose-validator')
 const Schema = mongoose.Schema;
+const validate = require('mongoose-validator')
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
+const jwt = require('jsonwebtoken');
+const uid = require('uid-safe');
+const keys = require('../db/config/keys');
 
 var nameValidator = [
     validate({
@@ -92,7 +95,18 @@ userSchema.methods = {
    toJSON() {
         var obj = this.toObject();
         delete obj.password;
-        return obj;
+        return JSON.stringify(obj);
+    },
+    createJwtToken(user) {
+        var token = new Array();
+        token['classicToken'] = jwt.sign({user: user}, keys.jwtSecret, {
+          expiresIn: 60 * 60 * 24
+        });
+        token['xsrfToken'] = uid.sync(18); // generate random token
+        token['jwtToken'] = jwt.sign({token: token}, keys.jwtSecret, {
+          expiresIn: 60 * 60 * 24
+        });
+        return token;
     }
 }
 
