@@ -5,7 +5,7 @@ import { ReactComponent as Cycle} from '../assets/img/svg/cycle.svg';
 import SignIn from '../components/SignIn';
 import SignUp from '../components/SignUp';
 
-class LandingPage extends Component {   
+class LandingPage extends Component {
     render() {
         return (
             <div className="landing">

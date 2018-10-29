@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import EditForm from './EditProfile/EditForm';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -9,30 +8,21 @@ import tools from '../utils/tools.js';
 class EditProfile extends Component {   
     constructor(props) {
         super(props);
-        const initData = {
-            "firstname": 'Minh',
-            "lastname": 'Pham',
-            "username": 'Minhou',
-            "email": 'mq.pham@hotmail.com',
-            "password": 'Born2Code'
-        };
         this.state = {
 			messageSuccess : "",
 			messageError: ""
         }
-        this.props.initialize(initData);
     }
     
-    // componentDidMount() {
-    //     let initData = {
-    //         "firstname": this.props.user.firstname,
-    //         "lastname": this.props.user.lastname,
-    //         "username": this.props.user.username,
-    //         "email": this.props.user.email,
-    //         "password": this.props.user.password,
-    //     };
-    //     this.props.initialize(initData);
-    // }
+    componentDidMount() {
+        let initData = {
+            "firstname": this.props.user.firstname,
+            "lastname": this.props.user.lastname,
+            "username": this.props.user.username,
+            "email": this.props.user.email
+        };
+        this.props.initialize(initData);
+    }
     
 	renderField(field) {
 		const { meta: { touched, error } } = field;
@@ -67,12 +57,18 @@ class EditProfile extends Component {
 	}
 
     onSubmit(values) {
-        console.log(values);
+        console.log('i came ere')
+        let userID = this.props._id;
+        console.log(userID)
         axios.put('http://localhost:8080/api/users/:id', values).then((res) => {
             console.log(res.data)
 
         })
     }
+
+    // changeUserPassword(values) {
+
+    // }
         
     render() {
         const { handleSubmit } = this.props;  
@@ -83,7 +79,7 @@ class EditProfile extends Component {
                         <div className="card__side card__side--front">
                             <div className="card__text">
                                 <h4>
-                                    Need to change your information?
+                                    Need to change your personal information?
                                 </h4>
                                 <h2 className="card__text-span">
                                     <span className="card__text-span--1">
@@ -118,8 +114,37 @@ class EditProfile extends Component {
                                         type="email"
                                         component= {this.renderField}
                                     />
+                                    <button type="submit" className="btn btn-primary btn-primary--pink">Sign Up</button>
+                                    { this.renderMessages() }
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/* <div className="form">
+                    <div className="card">
+                        <div className="card__side card__side--front">
+                            <div className="card__text">
+                                <h4>
+                                    Need to change your password information?
+                                </h4>
+                                <h2 className="card__text-span">
+                                    <span className="card__text-span--1">
+                                        change password
+                                    </span>
+                                </h2>  
+                            </div>
+
+                            <div className="card__form">
+                                <form className="card__form--input" onSubmit={handleSubmit(this.changeUserPassword.bind(this))}>
                                     <Field
                                         label="New Password"
+                                        name="password"
+                                        type="password"
+                                        component={this.renderField}
+                                    />
+                                    <Field
+                                        label="Confirm Password"
                                         name="password"
                                         type="password"
                                         component={this.renderField}
@@ -130,7 +155,7 @@ class EditProfile extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         );
     }
@@ -176,15 +201,15 @@ function validate(values) {
     return errors;
 }
 
-// function mapStateToProps(state) {
-//     return {
-// 	    users: state.auth.currentUser
-//     };
-// }
+function mapStateToProps(state) {
+    return {
+	    user: state.auth.currentUser
+    };
+}
 
 const reduxFormEditProfile = reduxForm({
     validate,
     form: 'editProfile'
 })(EditProfile);
 
-export default connect(null, null)(reduxFormEditProfile);
+export default connect(mapStateToProps, null)(reduxFormEditProfile);

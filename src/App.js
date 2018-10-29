@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { withCookies } from 'react-cookie';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import requireAuth from './utils/HOC/requireAuth';
 
 import Header from './components/Header';
 import HomePage from './layouts/HomePage';
@@ -14,12 +14,12 @@ class App extends Component {
       return (
           <Router>
               <div>
-                  {/* <Header/> */}
+                  <Header/>
                   <Switch>
                       <Route exact path="/" component={LandingPage} />
-                      <Route path="/homepage" render={() => (<HomePage cookies={this.props.cookies}/>)} />
-                      <Route path="/edit" component={EditProfile} />
-                      <Route path="/movie" component={Curtain} />
+                      <Route path="/homepage" component={requireAuth(HomePage)} />
+                      <Route path="/profile" component={requireAuth(EditProfile)} />
+                      <Route path="/movie" component={requireAuth(Curtain)} />
                       {/* <Route component={NotFound} /> */}
                   </Switch>
               </div>
@@ -28,4 +28,4 @@ class App extends Component {
   }
 }
 
-export default withCookies(App);
+export default App;

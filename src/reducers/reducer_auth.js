@@ -44,9 +44,9 @@ export function signInAction({username, password}, history) {
             .then(res => {
                 if(res) {
                     setAuthorizationToken(res.data.xsrfToken);
-                        dispatch({ 
+                    dispatch({ 
                         type: AUTHENTICATED,
-                        payload: res.data
+                        payload: res.data.user
                     });
                     history.push('/homepage');
                 } 
@@ -54,31 +54,12 @@ export function signInAction({username, password}, history) {
 	};
 }
 
-export function signInActionOauth(OauthStrategy, history) {
+export function signInActionOauth(accessToken, history) {
 	return (dispatch) => {
-        axios.get('http://localhost:8080/api/auth/' + OauthStrategy)
-            .catch((err) => {
-                if(err) {
-                    console.log(err)
-                    // dispatch({
-                    //     type: AUTHENTICATION_ERROR
-                    // });
-                    // izitoast.error({
-                    //     message: 'Invalid email or password',
-                    //     position: 'topRight'
-                    // });
-                }
-            })
-            .then(res => {
-                if(res) {
-                    console.log(res)
-                    // setAuthorizationToken(res.data.xsrfToken);
-                    //     dispatch({ 
-                    //     type: AUTHENTICATED,
-                    //     payload: res.data
-                    // });
-                    // history.push('/homepage');
-                } 
-            })
+        setAuthorizationToken(accessToken);
+        dispatch({ 
+            type: AUTHENTICATED
+        });
+        history.push('/homepage');
 	};
 }

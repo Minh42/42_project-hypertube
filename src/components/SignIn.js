@@ -20,10 +20,6 @@ class SignIn extends Component {
         this.props.initialize(initData);
     }
 
-    componentDidUpdate() {
-        console.log(this.props.currentUser)
-    }
-
     renderField(field) {
 		const { meta: { touched, error } } = field;
 
@@ -115,13 +111,6 @@ function validate(values) {
     return errors;
 }
 
-
-function mapStateToProps(state) {
-    return { 
-		currentUser: state.auth.currentUser,
-    };
-}
-
 function mapDispatchToProps(dispatch) { 
 	return bindActionCreators({ signInAction : signInAction}, dispatch);
 } 
@@ -131,4 +120,4 @@ const reduxFormSignIn = reduxForm({
     form: 'signin'
 })(SignIn);
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxFormSignIn);
+export default connect(null, mapDispatchToProps)(reduxFormSignIn);
