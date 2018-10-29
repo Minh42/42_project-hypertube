@@ -95,7 +95,7 @@ userSchema.methods = {
    toJSON() {
         var obj = this.toObject();
         delete obj.password;
-        return JSON.stringify(obj);
+        return obj;
     },
     createJwtToken(user) {
         var token = new Array();

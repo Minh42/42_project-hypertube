@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
 import axios from 'axios';
 import validator from 'validator';
 import izitoast from 'izitoast';
@@ -52,7 +51,7 @@ class ForgotPassword extends Component {
                     <div className="card__side card__side--front">
                         <div className="card__text">
                             <h4>
-                                Need to change your password?
+                                Please enter your email to reset your password.
                             </h4>
                             <h2 className="card__text-span">
                                 <span className="card__text-span--1">
@@ -96,4 +95,4 @@ const reduxFormForgotPassword = reduxForm({
     form: 'forgotPassword'
 })(ForgotPassword);
 
-export default connect(null, null)(reduxFormForgotPassword);
+export default reduxFormForgotPassword;

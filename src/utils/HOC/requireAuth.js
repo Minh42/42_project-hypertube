@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
-import { addFlashMessage } from '../src/actions/actionMessages';
+import izitoast from 'izitoast';
 
 export default function(ComposedComponent) {
 	class Authenticate extends Component {
 		componentDidMount() {
 			if(!this.props.isAuthenticated) {
-				this.props.addFlashMessage({
-					type: '',
-					text: 'You need to login to access this page'
+				izitoast.error({
+					message: 'You need to login to access this page',
+					position: 'topRight'
 				});
 				this.props.history.push('/');
 			}
@@ -31,8 +30,7 @@ export default function(ComposedComponent) {
 	}
 
 	Authenticate.propTypes = {
-		isAuthenticated: PropTypes.bool,
-		addFlashMessage: PropTypes.func.isRequired
+		isAuthenticated: PropTypes.bool
 	}
 
 	function mapStateToProps(state) {
@@ -41,9 +39,5 @@ export default function(ComposedComponent) {
 		};
 	}
 
-	function mapDispatchToProps(dispatch) {
-		return bindActionCreators({ addFlashMessage: addFlashMessage}, dispatch);
-	}
-
-	return withRouter(connect(mapStateToProps, mapDispatchToProps)(Authenticate));
+	return withRouter(connect(mapStateToProps, null)(Authenticate));
 }

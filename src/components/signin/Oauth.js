@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { signInActionOauth } from '../../reducers/reducer_auth';
 
 import { ReactComponent as Facebook} from '../../assets/img/svg/facebook.svg';
 import { ReactComponent as Twitter} from '../../assets/img/svg/twitter.svg';
@@ -17,8 +14,7 @@ class Oauth extends Component {
     }
 
     signInOauth(OauthStrategy) {
-        // window.location.href = 'http://localhost:8080/api/auth/' + OauthStrategy;   
-        this.props.signInActionOauth(OauthStrategy, this.props.history);
+        window.location.href = 'http://localhost:8080/api/auth/' + OauthStrategy;
     }
 
     render() {
@@ -35,8 +31,4 @@ class Oauth extends Component {
     }
 }
 
-function mapDispatchToProps(dispatch) { 
-	return bindActionCreators({ signInActionOauth : signInActionOauth}, dispatch);
-} 
-
-export default connect(null, mapDispatchToProps)(Oauth);
+export default Oauth;

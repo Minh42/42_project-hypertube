@@ -34,7 +34,6 @@ exports.verifyTokenActivation = (req, res) => {
     })
 }
 
-
 exports.verifyTokenReset = (req, res) => {
     var user_id = req.param('user_id');
     var resetToken = req.param('resetToken');
@@ -44,7 +43,7 @@ exports.verifyTokenReset = (req, res) => {
             res.sendStatus(500);
         } else {
             if (resetToken === existingToken.resetToken)
-                res.redirect('http://localhost:3000/changePassword');
+                res.redirect('http://localhost:3000/changePassword/' + user_id);
             else 
                 res.sendStatus(500); 
         }
@@ -52,7 +51,6 @@ exports.verifyTokenReset = (req, res) => {
 }
 
 exports.sendMessageReset = (req, res) => {
-    console.log('reset')
     var email = req.body.email;
 
     Users.findOne({ "email": email }, (err, user) => {
@@ -91,4 +89,23 @@ exports.sendMessageReset = (req, res) => {
             })
         }
     })
+}
+
+exports.changePassword = (req, res) => {
+    console.log(req.body)
+    var password = req.body.password;
+    var confirmPassword = req.body.password;
+
+    if (password === confirmPassword) {
+        
+        Users.findOneAndUpdate({"_id": req.body.user_id}, (err, user) => {
+            if (err) 
+                res.sendStatus(500);
+            else {
+                
+            }
+        })
+    } else {
+        res.sendStatus(500);
+    }
 }

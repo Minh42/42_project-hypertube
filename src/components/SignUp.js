@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
 import axios from 'axios';
 import validator from 'validator';
 import izitoast from 'izitoast';
@@ -17,12 +16,10 @@ class SignUp extends Component {
             "email": null,
             "password": null
         };
-
         this.state = {
 			messageSuccess : "",
 			messageError: ""
         }
-
         this.props.initialize(initData);
     }
 
@@ -66,8 +63,12 @@ class SignUp extends Component {
             switch (err.response.status) {
                 case 409 :
                     message = 'Invalid username or email';
+                    break;
                 case 500:
-                    message = 'Your information is invalid'; 
+                    message = 'Your information is invalid';
+                    break;
+                default: 
+                    break;
             }
             izitoast.error({
                 message: message,
@@ -190,4 +191,4 @@ const reduxFormSignUp = reduxForm({
     form: 'signup'
 })(SignUp);
 
-export default connect(null, null)(reduxFormSignUp);
+export default reduxFormSignUp;

@@ -88,16 +88,22 @@ exports.getUser = (req, res) => {
 
 
 exports.updateUser = (req, res) => {
-    Users.findById({_id :req.params.id}, (err, user) => {
+    var update = {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        username: req.body.username,
+        email: req.body.email,
+    }
+
+    Users.findOneAndUpdate({_id :req.params.id}, update, {new: true}, (err, user) => {
         if (err)
             res.sendStatus(500);     
         if (!user) {
             res.sendStatus(404);  
         } else {
-            console.log(user);
-            Users.editUser(user);
+            res.status(200).json({ message: 'Your information was updated successfully' });
         }
-    })
+    });
 }
 
 exports.deleteUser = (req, res) => {
