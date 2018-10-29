@@ -5,7 +5,7 @@ const authenticate = require('../middlewares/authenticate');
 users.get('/', authenticate, usersController.getAllUsers);
 users.post('/', authenticate, usersController.createUser);
 users.get('/:id', authenticate, usersController.getUser);
-users.put('/:id', authenticate, usersController.updateUser);
+users.put('/:id', usersController.updateUser);
 users.delete('/:id', authenticate, usersController.deleteUser);
 
 module.exports = users;

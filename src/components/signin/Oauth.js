@@ -14,7 +14,7 @@ class Oauth extends Component {
     }
 
     signInOauth(OauthStrategy) {
-        window.location.href = 'http://localhost:8080/api/auth/' + OauthStrategy;   
+        window.location.href = 'http://localhost:8080/api/auth/' + OauthStrategy;
     }
 
     render() {

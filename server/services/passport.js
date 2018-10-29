@@ -62,6 +62,7 @@ passport.use(new FacebookStrategy({
             if(user) {
                 return done(null, user);
             } else {
+                // {new: true} to return the new updated user
                 Users.findOneAndUpdate({"email": email} , {$set: {"facebookID": profile._json.id}}, {new: true}).then(user => {
                     if (user) 
                         return done(null, user)

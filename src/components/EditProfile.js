@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import izitoast from 'izitoast';
 import validator from 'validator';
 import tools from '../utils/tools.js';
 
@@ -54,21 +55,20 @@ class EditProfile extends Component {
 				<p className="card__form--input-error">{this.state.messageError}</p>	
 			)
 		}
-	}
-
-    onSubmit(values) {
-        console.log('i came ere')
-        let userID = this.props._id;
-        console.log(userID)
-        axios.put('http://localhost:8080/api/users/:id', values).then((res) => {
-            console.log(res.data)
-
-        })
     }
-
-    // changeUserPassword(values) {
-
-    // }
+    
+    changeUserInformation(values) {
+        let message;
+        let userID = this.props.user._id;
+        axios.put('http://localhost:8080/api/users/' + userID, values)
+            .catch((err) => {
+                this.setState({ messageError: "Invalid information" })
+            })
+            .then((res) => {
+                this.setState({ messageSuccess: res.data.message })
+                this.props.history.push('/homepage');
+            })
+    }
         
     render() {
         const { handleSubmit } = this.props;  
@@ -87,9 +87,8 @@ class EditProfile extends Component {
                                     </span>
                                 </h2>  
                             </div>
-
                             <div className="card__form">
-                                <form className="card__form--input" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                                <form className="card__form--input" onSubmit={handleSubmit(this.changeUserInformation.bind(this))}>
                                     <Field
                                         label="Firstname"
                                         name="firstname"
@@ -121,41 +120,6 @@ class EditProfile extends Component {
                         </div>
                     </div>
                 </div>
-                {/* <div className="form">
-                    <div className="card">
-                        <div className="card__side card__side--front">
-                            <div className="card__text">
-                                <h4>
-                                    Need to change your password information?
-                                </h4>
-                                <h2 className="card__text-span">
-                                    <span className="card__text-span--1">
-                                        change password
-                                    </span>
-                                </h2>  
-                            </div>
-
-                            <div className="card__form">
-                                <form className="card__form--input" onSubmit={handleSubmit(this.changeUserPassword.bind(this))}>
-                                    <Field
-                                        label="New Password"
-                                        name="password"
-                                        type="password"
-                                        component={this.renderField}
-                                    />
-                                    <Field
-                                        label="Confirm Password"
-                                        name="password"
-                                        type="password"
-                                        component={this.renderField}
-                                    />
-                                    <button className="btn btn-primary btn-primary--pink" type="submit">Submit</button>
-                                    { this.renderMessages() }
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
             </div>
         );
     }
@@ -191,12 +155,6 @@ function validate(values) {
         errors.email = "Please enter your email"
     } else if (!tools.isEmail(values.email)) {
         errors.password = "Please enter a valid email address"
-    }
-
-    if (!values.password) {
-        errors.password = "Please enter your password"
-    } else if (!tools.isPassword(values.password)) {
-        errors.password = "Your password must contain at least 6 character, a capital letter and a number"
     }
     return errors;
 }
