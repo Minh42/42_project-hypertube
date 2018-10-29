@@ -89,18 +89,7 @@ userSchema.pre('save', function(next){
  
 
 userSchema.methods = {
-    editUser(userData) {
-        user.save(function(err) {
-            if (err) 
-                res.sendStatus(500);
-            else {
-                res.status(200).json({
-                    message: 'User info updated',
-                    data: user
-                });
-            }
-        })
-    }
+
 
 }
 

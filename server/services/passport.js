@@ -1,4 +1,6 @@
 const passport = require('passport');
+const bcrypt = require('bcrypt');
+const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -19,6 +21,35 @@ passport.deserializeUser((id, done) => {
         done(null, user);
     });
 });
+
+
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+        console.log(username);
+        console.log(password);
+
+      Users.findOne({ username: username }, function (err, user) {
+        if (err) { 
+            return done(err); 
+        }
+        if (!user) { 
+            return done(null, false); 
+        } else {
+            bcrypt.compare(password, user.password, function(err, res) {
+                if(err) {
+                    return done(null, false)
+                }
+                if (res) {
+                    console.log("here")
+                    console.log(user)
+                    return done(null, user);
+                }
+            });
+        } 
+      });
+    }
+));
+
   
 passport.use(new FacebookStrategy({
     clientID: keys.facebookClientID,
@@ -50,36 +81,35 @@ passport.use(new FacebookStrategy({
     }
 ));
 
+
 passport.use(new TwitterStrategy({
     consumerKey: keys.twitterClientID,
     consumerSecret: keys.twitterClientSecret,
-    callbackURL: '/api/auth/twitter/callback'
+    callbackURL: "/api/auth/twitter/callback",
+    userProfileURL  : 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true'
   },
   function(token, tokenSecret, profile, done) {
-    console.log(profile)
-    var arrayName = profile.displayName.split(' ');
+    var arrayName = profile._json.name.split(' ');
     var firstname = arrayName[0];
     var lastname = arrayName[1];
-    var email = profile.emails[0].value;
+    var email = profile._json.email;
 
-    // Users.findOne({"googleID": profile.id}).then(user => {
-    //     if(user) {
-    //         done(null, user);
-    //     } else {
-    //         Users.findOneAndUpdate({"email": email} , {$set: {"googleID": profile.id}}, {new: true}).then(user => {
-    //             console.log(user)
-    //             if (user) 
-    //                 done(null, user)
-    //             else {
-    //                 console.log('im gere')
-    //                 new Users({"firstname": firstname, "lastname": lastname, "username": firstname + tools.getRandomArbitrary(0, 1000), "email": email, "googleID": profile.id})
-    //                 .save()
-    //                 .then(user => done(null, user));
-    //             }
-    //         });
-    //     }
-    // })
-    }
+    Users.findOne({"twitterID": profile._json.id}).then(user => {
+        if(user) {
+            done(null, user);
+        } else {
+            Users.findOneAndUpdate({"email": email} , {$set: {"twitterID": profile._json.id}}, {new: true}).then(user => {
+                if (user) 
+                    done(null, user)
+                else {
+                    new Users({"firstname": firstname, "lastname": lastname, "username": firstname + tools.getRandomArbitrary(0, 1000), "email": email, "twitterID": profile._json.id})
+                    .save()
+                    .then(user => done(null, user));
+                }
+            });
+        }
+    })
+  }
 ));
 
 passport.use(new GoogleStrategy({
@@ -118,7 +148,6 @@ passport.use(new LinkedInStrategy({
     profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline']
     },
     function(accessToken, refreshToken, profile, done) {
-        console.log(profile)
         var firstname = profile.name.givenName;
         var lastname = profile.name.familyName;
         var email = profile.emails[0].value;

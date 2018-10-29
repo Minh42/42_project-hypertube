@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import Oauth from './signin/Oauth';
+import { signInAction } from '../reducers/reducer_auth';
+import { bindActionCreators } from 'redux';
 
 import validator from 'validator';
-import tools from '../utils/tools.js';
-import axios from 'axios';
+import tools from '../utils/tools.js';  
+
+import Oauth from './signin/Oauth';
 import { ReactComponent as Chevron} from '../assets/img/svg/chevron-thin-down.svg';
 
 class SignIn extends Component {   
@@ -37,10 +39,8 @@ class SignIn extends Component {
 		);
     }
 
-    async onSubmit(values) {
-        console.log(values)
-        const res = await axios.post('http://localhost:8080/api/users', {userData: values});
-        console.log(res.data)
+    onSubmit(values) {
+        this.props.signInAction(values, this.props.history);
     }
 
     render() {
@@ -111,9 +111,13 @@ function validate(values) {
     return errors;
 }
 
+function mapDispatchToProps(dispatch) { 
+	return bindActionCreators({ signInAction : signInAction}, dispatch);
+} 
+
 const reduxFormSignIn = reduxForm({
     validate,
     form: 'signin'
 })(SignIn);
 
-export default connect(null, null)(reduxFormSignIn);
+export default connect(null, mapDispatchToProps)(reduxFormSignIn);
