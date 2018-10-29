@@ -3,6 +3,7 @@ import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import validator from 'validator';
+import izitoast from 'izitoast';
 import tools from '../utils/tools.js';
 
 class SignUp extends Component {   
@@ -62,24 +63,23 @@ class SignUp extends Component {
         var message;
         axios.post('http://localhost:8080/api/users', values)
         .catch((err) => {
-            console.log(err.response)
             switch (err.response.status) {
                 case 409 :
                     message = 'Invalid username or email';
                 case 500:
                     message = 'Your information is invalid'; 
             }
-            this.setState ({
-                messageSuccess: "",
-                messageError: message
-            })
+            izitoast.error({
+                message: message,
+                position: 'topRight'
+            });
         }) 
         .then((res) => {
-            if (res != undefined) {
-                this.setState ({
-                    messageSuccess: res.data.message,
-                    messageError: ""
-                })
+            if (res) {
+                izitoast.success({
+                    message: res.data.message,
+                    position: 'topRight'
+                });
             }
         })
     }

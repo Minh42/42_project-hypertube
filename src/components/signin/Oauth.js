@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { signInActionOauth } from '../../reducers/reducer_auth';
 
 import { ReactComponent as Facebook} from '../../assets/img/svg/facebook.svg';
 import { ReactComponent as Twitter} from '../../assets/img/svg/twitter.svg';
@@ -7,45 +10,33 @@ import { ReactComponent as Google} from '../../assets/img/svg/google.svg';
 import { ReactComponent as Github} from '../../assets/img/svg/github.svg';
 import { ReactComponent as FortyTwo} from '../../assets/img/svg/42_logo.svg';
 
-
 class Oauth extends Component {  
-    
-    onSubmitFacebook() {
-        window.location.href = "http://localhost:8080/api/auth/facebook";
+    constructor(props) {
+        super(props);
+        this.signInOauth = this.signInOauth.bind(this);
     }
 
-    onSubmitTwitter() {
-        window.location.href = "http://localhost:8080/api/auth/twitter";
+    signInOauth(OauthStrategy) {
+        // window.location.href = 'http://localhost:8080/api/auth/' + OauthStrategy;   
+        this.props.signInActionOauth(OauthStrategy, this.props.history);
     }
 
-    onSubmitGoogle() {
-        window.location.href = "http://localhost:8080/api/auth/google";
-    }
-
-    onSubmitLinkedin() {
-        window.location.href = "http://localhost:8080/api/auth/linkedin";
-    }
-
-    onSubmitGithub() {
-        window.location.href = "http://localhost:8080/api/auth/github";
-    }
-
-    onSubmitFortyTwo() {
-        window.location.href = "http://localhost:8080/api/auth/42";
-    }
-    
     render() {
         return (
             <div className="card__OAuth">
-                <Facebook className="card__OAuth--icon" fill='#777' onClick={this.onSubmitFacebook}/>
-                <Twitter className="card__OAuth--icon" fill='#777' onClick={this.onSubmitTwitter}/>
-                <Google className="card__OAuth--icon" fill='#777' onClick={this.onSubmitGoogle}/>
-                <LinkedIn className="card__OAuth--icon" fill='#777' onClick={this.onSubmitLinkedin}/>
-                <Github className="card__OAuth--icon" fill='#777' onClick={this.onSubmitGithub}/>
-                <FortyTwo className="card__OAuth--icon42" fill='#777' onClick={this.onSubmitFortyTwo}/>
+                <Facebook className="card__OAuth--icon" fill='#777' onClick={() => this.signInOauth('facebook')}/>
+                <Twitter className="card__OAuth--icon" fill='#777' onClick={() => this.signInOauth('twitter')}/>
+                <Google className="card__OAuth--icon" fill='#777' onClick={() => this.signInOauth('google')}/>
+                <LinkedIn className="card__OAuth--icon" fill='#777' onClick={() => this.signInOauth('linkedin')}/>
+                <Github className="card__OAuth--icon" fill='#777' onClick={() => this.signInOauth('github')}/>
+                <FortyTwo className="card__OAuth--icon42" fill='#777' onClick={() => this.signInOauth('fortytwo')}/>
             </div>
         );
     }
 }
 
-export default Oauth;
+function mapDispatchToProps(dispatch) { 
+	return bindActionCreators({ signInActionOauth : signInActionOauth}, dispatch);
+} 
+
+export default connect(null, mapDispatchToProps)(Oauth);

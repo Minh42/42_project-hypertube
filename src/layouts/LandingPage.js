@@ -7,7 +7,6 @@ import SignUp from '../components/SignUp';
 
 class LandingPage extends Component {   
     render() {
-        console.log(this.props.hisory)
         return (
             <div className="landing">
                 <div className="landing__langage">

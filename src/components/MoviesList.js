@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import movie from '../assets/img/movie-poster.jpg';
 
-class MoviesList extends Component {    
+class MoviesList extends Component {     
     render() {
         return (
             <div className="movies-list">

@@ -1,10 +1,14 @@
 import axios from 'axios';
+import izitoast from 'izitoast';
+import setAuthorizationToken from '../utils/setAuthorizationToken';
+
 const AUTHENTICATED = 'AUTHENTICATED';
 export const UNAUTHENTICATED = 'UNAUTHENTICATED';
 const AUTHENTICATION_ERROR = 'AUTHENTICATION_ERROR';
 
 const INITIAL_STATE = {
-    authenticated: false
+    authenticated: false,
+    currentUser: null
   };
   
   export default function(state = INITIAL_STATE, action) {
@@ -13,11 +17,11 @@ const INITIAL_STATE = {
     //     return {...state, currentUser: action.payload.currentUser
     //   };
       case AUTHENTICATED:
-        return { ...state, authenticated: true };
+        return { ...state, authenticated: true, currentUser: action.payload};
       case UNAUTHENTICATED:
         return { ...state, authenticated: false };
       case AUTHENTICATION_ERROR:
-        return { ...state, error: action.payload };
+        return { ...state};
       default:
         return state;
     }
@@ -25,23 +29,56 @@ const INITIAL_STATE = {
 
 export function signInAction({username, password}, history) {
 	return (dispatch) => {
-		try {
-			axios.post('http://localhost:8080/api/auth/signin', {username, password}).then(res => {
-                console.log(res.data)
-			// dispatch({ 
-			// 	type: AUTHENTICATED
-			// });
-			// dispatch(reset('signin'));
-			// const token = res.data.token;
-			// localStorage.setItem('jwtToken', token);
-			// setAuthorizationToken(token);
-			// history.push('/onboarding');
-			})
-		} catch (error) {
-			dispatch({
-				type: AUTHENTICATION_ERROR,
-				payload: 'Invalid email or password'
-			});
-		}
+        axios.post('http://localhost:8080/api/auth/signin', {username, password})
+            .catch((err) => {
+                if(err) {
+                    dispatch({
+                        type: AUTHENTICATION_ERROR
+                    });
+                    izitoast.error({
+                        message: 'Invalid email or password',
+                        position: 'topRight'
+                    });
+                }
+            })
+            .then(res => {
+                if(res) {
+                    setAuthorizationToken(res.data.xsrfToken);
+                        dispatch({ 
+                        type: AUTHENTICATED,
+                        payload: res.data
+                    });
+                    history.push('/homepage');
+                } 
+            })
+	};
+}
+
+export function signInActionOauth(OauthStrategy, history) {
+	return (dispatch) => {
+        axios.get('http://localhost:8080/api/auth/' + OauthStrategy)
+            .catch((err) => {
+                if(err) {
+                    console.log(err)
+                    // dispatch({
+                    //     type: AUTHENTICATION_ERROR
+                    // });
+                    // izitoast.error({
+                    //     message: 'Invalid email or password',
+                    //     position: 'topRight'
+                    // });
+                }
+            })
+            .then(res => {
+                if(res) {
+                    console.log(res)
+                    // setAuthorizationToken(res.data.xsrfToken);
+                    //     dispatch({ 
+                    //     type: AUTHENTICATED,
+                    //     payload: res.data
+                    // });
+                    // history.push('/homepage');
+                } 
+            })
 	};
 }

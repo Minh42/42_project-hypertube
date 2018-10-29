@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const tokenSchema = new Schema({
     userID: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Users' },
-    token: { type: String, required: true },
+    activationToken: { type: String, required: true },
+    resetToken: { type: String },
     date_created: { type: Date, required: true, default: Date.now }
 });
 

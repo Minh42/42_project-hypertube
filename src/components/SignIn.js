@@ -3,6 +3,8 @@ import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { signInAction } from '../reducers/reducer_auth';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 
 import validator from 'validator';
 import tools from '../utils/tools.js';  
@@ -18,6 +20,8 @@ class SignIn extends Component {
             "password": null
         };
         this.props.initialize(initData);
+
+        this.showPageReset = this.showPageReset.bind(this)
     }
 
     renderField(field) {
@@ -37,6 +41,10 @@ class SignIn extends Component {
 				</div>
 			</div>
 		);
+    }
+
+    showPageReset() {
+        this.props.history.push('/reset')
     }
 
     onSubmit(values) {
@@ -81,7 +89,7 @@ class SignIn extends Component {
                         </form>
                     </div>
                     <div className="card__forgot">
-                            Forgot password?
+                            <a className="card__forgot--link" onClick={this.showPageReset}>Forgot password?</a>
                     </div>
                     <Oauth />
                     <div className="card__newClient">
@@ -111,6 +119,13 @@ function validate(values) {
     return errors;
 }
 
+
+function mapStateToProps(state) {
+    return { 
+		currentUser: state.auth.currentUser,
+    };
+}
+
 function mapDispatchToProps(dispatch) { 
 	return bindActionCreators({ signInAction : signInAction}, dispatch);
 } 
@@ -120,4 +135,4 @@ const reduxFormSignIn = reduxForm({
     form: 'signin'
 })(SignIn);
 
-export default connect(null, mapDispatchToProps)(reduxFormSignIn);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(reduxFormSignIn));

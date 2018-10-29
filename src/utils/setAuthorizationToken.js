@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export default function setAuthorizationToken(token) {
-    if (token) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+export default function setAuthorizationToken(xsrfToken) {
+    if (xsrfToken) {
+        axios.defaults.headers.common['X-CSRF-Token'] = xsrfToken;
     } else {
-        delete axios.defaults.headers.common['Authorization'];
+        delete axios.defaults.headers.common['X-CSRF-Token'];
     }
 }
