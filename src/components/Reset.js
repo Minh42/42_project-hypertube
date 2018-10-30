@@ -33,7 +33,7 @@ class ForgotPassword extends Component {
 
     async submitMessageReset(email) {
         console.log(email);
-        const res = await axios.post('http://localhost:8080/api/verification/sendMessageReset', email)
+        const res = await axios.post('http://localhost:8080/api/verification/sendMessage', email)
         if (res) {
             izitoast.success({
                 message: res.data.message,

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import izitoast from 'izitoast';
 import tools from '../utils/tools.js';  
@@ -36,17 +37,28 @@ class ChangePassword extends Component {
 
     async submitNewPassword(values) {
         console.log(values);
-        var dataReset = { newPasswordReset : values.password,
+        var dataReset = { password : values.password,
             confirmedNewPassword : values.confirmPassword,
             user_id : this.state.user_id
         }
         const res = await axios.post('http://localhost:8080/api/verification/changePassword', dataReset)
-        // if (res) {
-        //     izitoast.success({
-        //         message: res.data.message,
-        //         position: 'topRight'
-        //     });
-        // }
+        .catch((err) => {
+            if (err) {
+                izitoast.error({
+                    message: 'Your passwords not matched',
+                    position: 'topRight'
+                });
+            }
+        })
+        .then((res) => {
+            if (res) {
+                this.props.history.push('/')
+                izitoast.success({
+                    message: res.data.message,
+                    position: 'topRight'
+                });
+            }
+        })
     }
 
     render() {
@@ -116,4 +128,4 @@ const reduxFormChangePassword = reduxForm({
     form: 'changePassword'
 })(ChangePassword);
 
-export default reduxFormChangePassword;
+export default withRouter(reduxFormChangePassword);

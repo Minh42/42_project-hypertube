@@ -90,7 +90,6 @@ userSchema.pre('save', function(next){
     });
 });
  
-
 userSchema.methods = {
    toJSON() {
         var obj = this.toObject();
