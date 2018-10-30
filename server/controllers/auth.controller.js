@@ -11,7 +11,7 @@ exports.local = (req, res) => {
             });
         } else {
             // Double security auth with jwt and http only cookies
-            var token = user.createJwtToken(user);
+            const token = user.createJwtToken(user);
             new Cookies(req, res).set('accessToken', token['jwtToken'], { httpOnly: true });
             res.status(200).json({ 
                 xsrfToken : token['xsrfToken'],
@@ -29,8 +29,8 @@ exports.facebook = (req, res) => {
                 message: 'Please check your Facebook credentials'
             });
         } else {
-            var token = user.createJwtToken(user);
-            var xsrfToken = token['xsrfToken'];
+            const token = user.createJwtToken(user);
+            const xsrfToken = token['xsrfToken'];
             new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
             // res.status(200).json({ 
             //     xsrfToken : token['xsrfToken'],

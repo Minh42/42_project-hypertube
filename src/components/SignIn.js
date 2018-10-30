@@ -8,7 +8,9 @@ import { withRouter } from 'react-router-dom';
 import validator from 'validator';
 import tools from '../utils/tools.js';  
 
-import Oauth from './signin/Oauth';
+import Oauth from './Signin/Oauth';
+import RenderField from './Form/RenderField';
+import FormHeader from './Form/FormHeader';
 import { ReactComponent as Chevron} from '../assets/img/svg/chevron-thin-down.svg';
 
 class SignIn extends Component {   
@@ -19,27 +21,7 @@ class SignIn extends Component {
             "password": null
         };
         this.props.initialize(initData);
-
         this.showPageReset = this.showPageReset.bind(this)
-    }
-
-    renderField(field) {
-		const { meta: { touched, error } } = field;
-
-		return (
-			<div className="card__form--field">
-				<label className="card__form--input-label">{field.label}</label>
-				<input
-					className="card__form--input-input"
-					type={field.type}
-					placeholder={field.placeholder}
-					{ ...field.input}
-				/>
-				<div className= "card__form--input-error">
-					{touched ? error : ''}
-				</div>
-			</div>
-		);
     }
 
     showPageReset() {
@@ -54,48 +36,42 @@ class SignIn extends Component {
         const { handleSubmit } = this.props;
         return (
             <div className="card__side card__side--front">
-                <div className="card__text">
-                    <h4>
-                        Already client? choose your movie
-                    </h4>
-                    <h2 className="card__text-span">
-                        <span className="card__text-span--1">
-                            sign in now
-                        </span>
-                    </h2>  
-                    </div>
-                    <div className="card__form">
-                        <form className="card__form--input" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                            <Field
-                                className1="card__form--input-label"
-                                className2="card__form--input-input"
-                                label="Username"
-                                name="username"
-                                type="text"
-                                component= {this.renderField}
-                                placeholder=""
-                            />
-                            <Field
-                                className1="card__form--input-label"
-                                className2="card__form--input-input"
-                                label="Password"
-                                name="password"
-                                type="password"
-                                placeholder=""
-                                component={this.renderField}
-                            />
-                            <button className="btn btn-primary btn-primary--pink" type="submit">Sign In</button>
-                        </form>
-                    </div>
-                    <div className="card__forgot">
-                            <a className="card__forgot--link" onClick={this.showPageReset}>Forgot password?</a>
-                    </div>
-                    <Oauth />
-                    <div className="card__newClient">
-                        <span>New client</span>
-                        <Chevron className="icon" fill='rgb(216, 3, 81)'/>
-                    </div>
+                <FormHeader 
+                    heading1 = "Already client? choose your movie"
+                    heading2 = "sign in now"
+                />
+                <div className="card__form">
+                    <form className="card__form--input" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                        <Field
+                            className1="card__form--input-label"
+                            className2="card__form--input-input"
+                            label="Username"
+                            name="username"
+                            type="text"
+                            component= {RenderField}
+                            placeholder=""
+                        />
+                        <Field
+                            className1="card__form--input-label"
+                            className2="card__form--input-input"
+                            label="Password"
+                            name="password"
+                            type="password"
+                            placeholder=""
+                            component={RenderField}
+                        />
+                        <button className="btn btn-primary btn-primary--pink" type="submit">Sign In</button>
+                    </form>
                 </div>
+                <div className="card__forgot">
+                    <a className="card__forgot--link" onClick={this.showPageReset}>Forgot password?</a>
+                </div>
+                <Oauth />
+                <div className="card__newClient">
+                    <span>New client</span>
+                    <Chevron className="icon" fill='rgb(216, 3, 81)'/>
+                </div>
+            </div>
         )
     }
 }
@@ -109,7 +85,6 @@ function validate(values) {
     } else if (!validator.isAlphanumeric(values.username)) {
         errors.username = "Your username must contain only alphanumeric characters"
     }
-
     if (!values.password) {
         errors.password = "Please enter your password"
     } else if (!tools.isPassword(values.password)) {

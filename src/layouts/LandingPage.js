@@ -23,9 +23,7 @@ class LandingPage extends Component {
                     <Cycle className="icon" fill='#fff'/>
                     <input type="checkbox" id="toggle-1"/>
                     <div className="card">
-                        <SignIn 
-                            history = {this.props.history}
-                        />
+                        <SignIn />
                         <SignUp />
                     </div>
                 </div>
