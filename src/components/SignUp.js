@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import RenderField from './Form/RenderField';
 import FormHeader from './Form/FormHeader';
+import DropZone from './Signup/DropZone';
 import axios from 'axios';
 import validator from 'validator';
 import izitoast from 'izitoast';
@@ -58,6 +59,7 @@ class SignUp extends Component {
                     heading2 = "sign up now"
                 />
                 <div className="card__form">
+                    <DropZone />
                     <form className="card__form--input" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                         <Field
                             label="Firstname"
