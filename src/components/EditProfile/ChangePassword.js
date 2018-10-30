@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { withRouter } from 'react-router-dom';
+import RenderField from '../Form/RenderField';
+import FormHeader from '../Form/FormHeader';
 import axios from 'axios';
 import izitoast from 'izitoast';
-import tools from '../utils/tools.js';  
-
+import tools from '../../utils/tools.js';  
 
 class ChangePassword extends Component {   
     constructor(props) {
@@ -14,25 +15,6 @@ class ChangePassword extends Component {
          }
 
         this.submitNewPassword = this.submitNewPassword.bind(this)
-    }
-
-    renderField(field) {
-		const { meta: { touched, error } } = field;
-
-		return (
-			<div className="card__form--field">
-				<label className="card__form--input-label">{field.label}</label>
-				<input
-					className="card__form--input-input"
-					type={field.type}
-					placeholder={field.placeholder}
-					{ ...field.input}
-				/>
-				<div className= "card__form--input-error">
-					{touched ? error : ''}
-				</div>
-			</div>
-		);
     }
 
     async submitNewPassword(values) {
@@ -68,16 +50,10 @@ class ChangePassword extends Component {
             <div className="form">
                 <div className="card">
                     <div className="card__side card__side--front">
-                        <div className="card__text">
-                            <h4>
-                                Please enter you new password and submit.
-                            </h4>
-                            <h2 className="card__text-span">
-                                <span className="card__text-span--1">
-                                    New Password
-                                </span>
-                            </h2>  
-                        </div>
+                        <FormHeader 
+                            heading1 = "Please enter you new password and submit."
+                            heading2 = "New Password"
+                        />
                         <div className="card__form">
                             <form className="card__form--input" onSubmit={handleSubmit(this.submitNewPassword.bind(this))}>  
                                 <Field
@@ -85,14 +61,14 @@ class ChangePassword extends Component {
                                     name="password"
                                     type="password"
                                     placeholder=""
-                                    component={this.renderField}
+                                    component={RenderField}
                                 />
                                 <Field
                                     label="Confirm password"
                                     name="confirmPassword"
                                     type="password"
                                     placeholder=""
-                                    component={this.renderField}
+                                    component={RenderField}
                                 /> 
                                 <button className="btn btn-primary btn-primary--pink" type="submit">Submit</button>
                             </form>
@@ -118,7 +94,6 @@ function validate(values) {
     } else if (!tools.isPassword(values.confirmPassword)) {
         errors.confirmPassword = "Your confirmation password must contain at least 6 character, a capital letterand a number"
     }
-
     return errors;
 }
 

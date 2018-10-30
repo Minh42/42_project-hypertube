@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import RenderField from './Form/RenderField';
+import FormHeader from './Form/FormHeader';
 import axios from 'axios';
 import validator from 'validator';
 import izitoast from 'izitoast';
 import tools from '../utils/tools.js';
 
 class SignUp extends Component {   
-
     constructor(props) {
         super(props);
         const initData = {
@@ -16,45 +17,8 @@ class SignUp extends Component {
             "email": null,
             "password": null
         };
-        this.state = {
-			messageSuccess : "",
-			messageError: ""
-        }
         this.props.initialize(initData);
     }
-
-    renderField(field) {
-		const { meta: { touched, error } } = field;
-
-		return (
-			<div className="card__form--field">
-				<label className="card__form--input-label">{field.label}</label>
-				<input
-					className="card__form--input-input"
-					type={field.type}
-					placeholder={field.placeholder}
-					{ ...field.input}
-				/>
-				<div className= "card__form--input-error">
-					{touched ? error : ''}
-				</div>
-			</div>
-		);
-    }
-
-    renderMessages() {
-		if (this.state.messageSuccess) {
-			return (
-				<p className="card__form--input-success">{this.state.messageSuccess}</p>
-			)
-		}
-		if (this.state.messageError) {
-			return (
-				<p className="card__form--input-error">{this.state.messageError}</p>	
-			)
-		}
-	}
-
 
     onSubmit(values) {
         var message;
@@ -89,58 +53,51 @@ class SignUp extends Component {
         const { handleSubmit } = this.props;
         return (
             <div className="card__side card__side--back">
-                <div className="card__text">
-                    <h4>
-                        You want to see our film's selection
-                    </h4>
-                    <h2 className="card__text-span">
-                    <span className="card__text-span--1">
-                        sign up now
-                        </span> 
-                    </h2>  
-                    </div>
-                    <div className="card__form">
-                        <form className="card__form--input" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                            <Field
-                                label="Firstname"
-                                name="firstname"
-                                type="text"
-                                component= {this.renderField}
-                                placeholder=""
-                            />
-                            <Field
-                                label="Lastname"
-                                name="lastname"
-                                type="text"
-                                component= {this.renderField}
-                                placeholder=""
-                            />
-                            <Field
-                                label="Username"
-                                name="username"
-                                type="text"
-                                component= {this.renderField}
-                                placeholder=""
-                            />
-                            <Field
-                                label="Email"
-                                name="email"
-                                type="email"
-                                component= {this.renderField}
-                                placeholder=""
-                            />
-                            <Field
-                                label="Password"
-                                name="password"
-                                type="password"
-                                placeholder=""
-                                component={this.renderField}
-                            />
-                            <button type="submit" className="btn btn-primary btn-primary--pink">Sign Up</button>
-                            { this.renderMessages() }
-                        </form>
-                    </div>
+                <FormHeader 
+                    heading1 = "You want to see our film's selection"
+                    heading2 = "sign up now"
+                />
+                <div className="card__form">
+                    <form className="card__form--input" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                        <Field
+                            label="Firstname"
+                            name="firstname"
+                            type="text"
+                            component= {RenderField}
+                            placeholder=""
+                        />
+                        <Field
+                            label="Lastname"
+                            name="lastname"
+                            type="text"
+                            component= {RenderField}
+                            placeholder=""
+                        />
+                        <Field
+                            label="Username"
+                            name="username"
+                            type="text"
+                            component= {RenderField}
+                            placeholder=""
+                        />
+                        <Field
+                            label="Email"
+                            name="email"
+                            type="email"
+                            component= {RenderField}
+                            placeholder=""
+                        />
+                        <Field
+                            label="Password"
+                            name="password"
+                            type="password"
+                            placeholder=""
+                            component={RenderField}
+                        />
+                        <button type="submit" className="btn btn-primary btn-primary--pink">Sign Up</button>
+                    </form>
                 </div>
+            </div>
         )
     }
 }
