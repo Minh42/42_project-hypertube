@@ -11,7 +11,14 @@ import { ReactComponent as Login} from '../assets/img/svg/login.svg';
 class Header extends Component {
     constructor(props) {
         super(props);
-        this.onSubmit = this.onSubmit.bind(this)
+        this.onSubmit = this.onSubmit.bind(this);
+        this.editProfile = this.editProfile.bind(this);     
+    }
+
+    editProfile() {
+        if (this.props.user) {
+            this.props.history.push('/profile/' + this.props.user._id)
+        }
     }
 
     onSubmit () {
@@ -19,44 +26,54 @@ class Header extends Component {
     }
     
     render() {
-        return (
-            <header className="header">
-                <img src={logo} alt="Logo" className="logo" />
-   
-                <form action="#" className="search">
-                    <input type="text" className="search__input" placeholder="Search movies"/>
-                    <button className="search__button">
-                        <Glass fill='#999'/>
-                    </button>
-                </form>
-   
-                <nav className="user-nav">
-                    <div className="user-nav__langage">
-                        <span className="user-nav__langage-en">EN</span> 
-                            | 
-                        <span className="user-nav__langage-fr">FR</span>
-                    </div>
-                    <div className="user-nav__user">
-                        <img src={user} alt="user" className="user-nav__user-photo"/>
-                        <span className="user-nav__user-name">Minh</span>
-                    </div>
-                    <div className="user-nav__signout">
-                        <button className="btn btn-secondary" onClick={this.onSubmit}>
-                            <span className="btn btn-secondary__icon">
-                                <Login fill='#eb2f64'/>
-                            </span>
-                                Signout
+        if (this.props.isAuthenticated) {
+            return (
+                <header className="header">
+                    <img src={logo} alt="Logo" className="logo" />
+       
+                    <form action="#" className="search">
+                        <input type="text" className="search__input" placeholder="Search movies"/>
+                        <button className="search__button">
+                            <Glass fill='#999'/>
                         </button>
-                    </div>
-                </nav>
-
-            </header>
-        );
+                    </form>
+       
+                    <nav className="user-nav">
+                        <div className="user-nav__langage">
+                            <span className="user-nav__langage-en">EN</span> 
+                                | 
+                            <span className="user-nav__langage-fr">FR</span>
+                        </div>
+                        <div className="user-nav__user" onClick={this.editProfile}>
+                            <img src={user} alt="user" className="user-nav__user-photo"/>
+                            <span className="user-nav__user-name">Minh</span>
+                        </div>
+                        <div className="user-nav__signout">
+                            <button className="btn btn-secondary" onClick={this.onSubmit}>
+                                <span className="btn btn-secondary__icon">
+                                    <Login fill='#eb2f64'/>
+                                </span>
+                                    Signout
+                            </button>
+                        </div>
+                    </nav>
+                </header>
+            );
+        } else {
+            return null;
+        }
     }
+}
+
+function mapStateToProps(state) {
+    return {
+        isAuthenticated: state.auth.authenticated,
+        user: state.auth.currentUser
+    };
 }
 
 function mapDispatchToProps(dispatch) { 
 	return bindActionCreators({ signOutAction : signOutAction}, dispatch);
 } 
 
-export default withRouter(connect(null, mapDispatchToProps)(Header));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

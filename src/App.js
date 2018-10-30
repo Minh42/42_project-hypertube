@@ -22,7 +22,7 @@ class App extends Component {
                       <Route path="/reset" component={Reset} />
                       <Route path="/changePassword/:id" component={ChangePassword} />
                       <Route path="/homepage" component={requireAuth(HomePage)} />
-                      <Route path="/profile" component={requireAuth(EditProfile)} />
+                      <Route path="/profile/:id" component={requireAuth(EditProfile)} />
                       <Route path="/movie" component={requireAuth(Movie)} />
                       <Route component={NotFound} />
                   </Switch>

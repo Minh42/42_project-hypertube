@@ -43,7 +43,7 @@ class ChangePassword extends Component {
                     message: res.data.message,
                     position: 'topRight'
                 });
-                if(this.props.history.location.pathname != '/profile') {
+                if(this.props.history.location.pathname !== '/profile') {
                     this.props.history.push('/')
                 } 
             }
@@ -53,7 +53,6 @@ class ChangePassword extends Component {
     render() {
         const { handleSubmit } = this.props;  
         return (
-        <div className="forgot-password">
             <div className="form">
                 <div className="card">
                     <div className="card__side card__side--front">
@@ -83,7 +82,6 @@ class ChangePassword extends Component {
                     </div>
                 </div>
             </div>
-        </div>
         )
     }
 }
@@ -103,7 +101,6 @@ function validate(values) {
     }
     return errors;
 }
-
 
 const reduxFormChangePassword = reduxForm({
     validate,
