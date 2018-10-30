@@ -69,3 +69,8 @@ exports.fortytwo = (req, res) => {
 
 
 }
+
+exports.logout = (req, res) => {
+    new Cookies(req,res).set('accessToken');
+    req.logout();
+}

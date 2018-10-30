@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { withRouter } from 'react-router-dom';
 import RenderField from '../Form/RenderField';
 import FormHeader from '../Form/FormHeader';
 import axios from 'axios';
@@ -9,26 +10,44 @@ import tools from '../../utils/tools.js';
 class ChangePassword extends Component {   
     constructor(props) {
         super(props);
-        this.state = {
-            user_id : this.props.match.params.id
-         }
-
         this.submitNewPassword = this.submitNewPassword.bind(this)
     }
 
-    async submitNewPassword(values) {
-        console.log(values);
-        var dataReset = { newPasswordReset : values.password,
+    submitNewPassword(values) {
+        let message;
+        const dataReset = { 
+            password : values.password,
             confirmedNewPassword : values.confirmPassword,
-            user_id : this.state.user_id
+            user_id : this.props.match.params.id
         }
-        const res = await axios.post('http://localhost:8080/api/verification/changePassword', dataReset)
-        // if (res) {
-        //     izitoast.success({
-        //         message: res.data.message,
-        //         position: 'topRight'
-        //     });
-        // }
+        axios.post('http://localhost:8080/api/verification/changePassword', dataReset)
+        .catch((err) => {
+            switch (err.response.status) {
+                case 403 :
+                    message = 'Passwords do not match';
+                    break;
+                case 500:
+                    message = 'Oops, something went wrong!';
+                    break;
+                default: 
+                    break;
+            }
+            izitoast.error({
+                message: message,
+                position: 'topRight'
+            });
+        })
+        .then((res) => {
+            if (res) {
+                izitoast.success({
+                    message: res.data.message,
+                    position: 'topRight'
+                });
+                if(this.props.history.location.pathname != '/profile') {
+                    this.props.history.push('/')
+                } 
+            }
+        })
     }
 
     render() {
@@ -91,4 +110,4 @@ const reduxFormChangePassword = reduxForm({
     form: 'changePassword'
 })(ChangePassword);
 
-export default reduxFormChangePassword;
+export default withRouter(reduxFormChangePassword);

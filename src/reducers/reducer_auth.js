@@ -21,7 +21,7 @@ const INITIAL_STATE = {
       case AUTHENTICATED:
         return { ...state, authenticated: true, currentUser: action.payload};
       case UNAUTHENTICATED:
-        return { ...state, authenticated: false };
+        return { ...state, authenticated: false, currentUser: action.payload };
       case AUTHENTICATION_ERROR:
         return { ...state};
       default:
@@ -70,5 +70,17 @@ export function signInActionOauth(OauthStrategy, history) {
 		// 	});
 		// 	history.push('/homepage');
 		// })
+	}
+}
+
+export function signOutAction(history) {
+	return (dispatch) => {
+		setAuthorizationToken(false);
+		dispatch({ 
+			type: UNAUTHENTICATED,
+			payload: null
+		})
+        axios.get('http://localhost:8080/api/auth/logout');
+        history.push('/')
 	}
 }

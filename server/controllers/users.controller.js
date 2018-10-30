@@ -13,7 +13,6 @@ const transporter = nodemailer.createTransport({
      }
  });
  
-
 exports.getAllUsers = (req, res) => {
     Users.get(function (err, users) {
         if (err)

@@ -34,7 +34,6 @@ class ChangeUserInfo extends Component {
                     message: res.data.message,
                     position: 'topRight'
                 });
-                this.props.history.push('/homepage');
             })
     }
 

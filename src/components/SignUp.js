@@ -29,7 +29,7 @@ class SignUp extends Component {
                     message = 'Invalid username or email';
                     break;
                 case 500:
-                    message = 'Your information is invalid';
+                    message = 'Oops, something went wrong!';
                     break;
                 default: 
                     break;

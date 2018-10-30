@@ -7,7 +7,7 @@ class EditProfile extends Component {
         return (
             <div className="edit-profile">
                 <ChangeUserInfo />
-                {/* <ChangePassword /> */}
+                <ChangePassword />
             </div>
         );
     }

@@ -76,20 +76,27 @@ exports.sendMessage = (req, res) => {
 }
 
 exports.changePassword = (req, res) => {
-    console.log(req.body)
-    var password = req.body.password;
-    var confirmPassword = req.body.password;
-
-    if (password === confirmPassword) {
-        
-        Users.findOneAndUpdate({"_id": req.body.user_id}, (err, user) => {
-            if (err) 
+    console.log(req.body.password)
+    console.log(req.body.confirmedNewPassword)
+    if (req.body.password === req.body.confirmedNewPassword) {
+        Users.findOne({"_id": req.body.user_id}, (err, user) => {
+            if (err) {
                 res.sendStatus(500);
-            else {
-                
+            }
+            if (!user) {
+                res.sendStatus(404);
+            } else {
+                user.password = req.body.password;
+                user.save(function(err) { 
+                    if (err) 
+                        res.sendStatus(500);
+                    else {
+                        res.status(200).json({ message: 'Your password was updated' });
+                    }
+                })
             }
         })
     } else {
-        res.sendStatus(500);
+        res.sendStatus(403);
     }
 }

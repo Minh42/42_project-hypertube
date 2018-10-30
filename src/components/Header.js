@@ -1,10 +1,23 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { signOutAction } from '../reducers/reducer_auth';
+import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
 import logo from '../assets/img/logo-white.png';
 import user from '../assets/img/user.jpg';
 import { ReactComponent as Glass} from '../assets/img/svg/magnifying-glass.svg';
 import { ReactComponent as Login} from '../assets/img/svg/login.svg';
 
-class Header extends Component {    
+class Header extends Component {
+    constructor(props) {
+        super(props);
+        this.onSubmit = this.onSubmit.bind(this)
+    }
+
+    onSubmit () {
+        this.props.signOutAction(this.props.history);
+    }
+    
     render() {
         return (
             <header className="header">
@@ -28,7 +41,7 @@ class Header extends Component {
                         <span className="user-nav__user-name">Minh</span>
                     </div>
                     <div className="user-nav__signout">
-                        <button className="btn btn-secondary">
+                        <button className="btn btn-secondary" onClick={this.onSubmit}>
                             <span className="btn btn-secondary__icon">
                                 <Login fill='#eb2f64'/>
                             </span>
@@ -42,4 +55,8 @@ class Header extends Component {
     }
 }
 
-export default Header;
+function mapDispatchToProps(dispatch) { 
+	return bindActionCreators({ signOutAction : signOutAction}, dispatch);
+} 
+
+export default withRouter(connect(null, mapDispatchToProps)(Header));
