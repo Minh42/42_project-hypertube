@@ -1,5 +1,4 @@
-const defaultListeners = (socket) => {
-
+const usersListeners = (socket) => {
     socket.on('joinRequested', function(user_id) {
         if (users.length === 0) {
           users.push({
@@ -36,4 +35,4 @@ const defaultListeners = (socket) => {
     })
 };
 
-module.exports = defaultListeners;
+module.exports = usersListeners;

@@ -50,7 +50,6 @@ exports.sendMessage = (req, res) => {
 
             Token.findOneAndUpdate({"userID": user._id} , {$set: {"resetToken": resetToken}}, {new: true}, (err, existingToken) => {
                 if (!existingToken) {
-                    console.log('im here')
                     res.sendStatus(500);
                 } else {
                     var mail = {

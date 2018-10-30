@@ -2,6 +2,7 @@ const passport = require('passport');
 const Cookies = require('cookies');
 const passportConfig = require('../services/passport');
 const Users = require('../models/users.model');
+const io = require('../server').io;
 
 exports.local = (req, res) => {
     passport.authenticate('local', (err, user, info) => {
@@ -17,7 +18,6 @@ exports.local = (req, res) => {
                 xsrfToken : token['xsrfToken'],
                 user: user.toJSON()
             });
-            // res.status(200).json({ xsrfToken : token['xsrfToken'] });
         }
     })(req, res);
 }
@@ -36,7 +36,11 @@ exports.facebook = (req, res) => {
             //     xsrfToken : token['xsrfToken'],
             //     user: user.toJSON()
             // });
-            res.redirect(`http://localhost:3000/homepage?accessToken=${xsrfToken}`);
+            // res.redirect(`http://localhost:3000/homepage?accessToken=${xsrfToken}`);
+            console.log(io)
+            io.sockets.on('connection', function (socket) {
+                io.emit('authChecked', {xsrfToken : xsrfToken, user: user.toJSON()});
+            })
         }
     })(req, res);
 }

@@ -4,8 +4,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const routes = require('./routes/index.js')
 const session = require('express-session')
-// const socketIO = require('socket.io');
-// const socketInit = require('./socket');
+const socketIO = require('socket.io');
+const socketInit = require('./socket');
 const cors = require('cors');
 const db = require('./db/connection');
 const passport = require('passport');
@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 8080;
 
 const app = express();
 const server = http.createServer(app);
-// const io = socketIO(server);
+const io = socketIO(server);
 
 const middlewares = [
   cors(),
@@ -52,3 +52,5 @@ app.use((err, req, res, next) => {
 server.listen(PORT, () => {
   console.log('App running at http://localhost:8080')
 })
+
+module.exports.io = io; 

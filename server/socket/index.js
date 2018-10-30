@@ -1,7 +1,7 @@
-const defaultListeners = require('./listeners/default');
+const usersListeners = require('./listeners/usersListeners');
 
 const initListeners = (socket) => {
-	defaultListeners(socket);
+	usersListeners(socket);
 };
 
 module.exports = initListeners;
