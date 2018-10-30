@@ -12,78 +12,63 @@ const transporter = nodemailer.createTransport({
      }
  });
 
-exports.verifyTokenActivation = (req, res) => {
-    var username = req.param('username');
-    var token = req.param('token');
-
-    Users.findOne({"username": username}, (err, user) => {
-        if (!user) {
-            res.sendStatus(500);
-        } else {
-            Token.findOne({ "userID": user._id }, (err, existingToken) => {
-                if (!existingToken) {
-                    res.sendStatus(500);
-                } else {
-                    if (token === existingToken.activationToken)
-                        res.redirect('http://localhost:3000/');
-                    else 
-                        res.sendStatus(500); 
-                }
-            })
-        }
-    })
-}
-
-exports.verifyTokenReset = (req, res) => {
-    var user_id = req.param('user_id');
+exports.verifyToken = (req, res) => {
+    var userID = req.param('userID');
+    var activationToken = req.param('activationToken');
     var resetToken = req.param('resetToken');
 
-    Token.findOne({ "userID": user_id }, (err, existingToken) => {
+    Token.findOne({ "userID": userID }, (err, existingToken) => {
         if (!existingToken) {
             res.sendStatus(500);
         } else {
-            if (resetToken === existingToken.resetToken)
-                res.redirect('http://localhost:3000/changePassword/' + user_id);
-            else 
-                res.sendStatus(500); 
+            if (activationToken) {
+                if (activationToken === existingToken.activationToken)
+                    res.redirect('http://localhost:3000/');
+                else 
+                    res.sendStatus(500); 
+            } else if (resetToken) {
+                if (resetToken === existingToken.resetToken)
+                    res.redirect('http://localhost:3000/changePassword/' + userID);
+                else 
+                    res.sendStatus(500); 
+            }
         }
     })
 }
 
-exports.sendMessageReset = (req, res) => {
+exports.sendMessage = (req, res) => {
     var email = req.body.email;
 
     Users.findOne({ "email": email }, (err, user) => {
-        if (!user) {
+        if (err) {
             res.sendStatus(500);
+        }
+        if (!user) {
+            res.sendStatus(404);
         } else {
-            user_id = user._id;
-            username = user.username;
-            firstname = user.firstname;
+            let resetToken = jwt.sign( { username : user.username } , keys.jwtSecret);
 
-            let resetToken = jwt.sign( { username : req.body.username } , keys.jwtSecret);
-
-            Token.findOneAndUpdate({"userID": user._id} , {$set: {"resetToken": resetToken}}, {new: true}, (err, token) => {
-                if (!user) {
+            Token.findOneAndUpdate({"userID": user._id} , {$set: {"resetToken": resetToken}}, {new: true}, (err, existingToken) => {
+                if (!existingToken) {
+                    console.log('im here')
                     res.sendStatus(500);
                 } else {
                     var mail = {
                         from: "matcha.appli@gmail.com",
-                        to: req.body.email,
+                        to: user.email,
                         subject: "Reset your password Hypertube",
-                        html: '<h3> Hello ' + firstname + '</h3>' +
+                        html: '<h3> Hello ' + user.firstname + '</h3>' +
                         '<p>To reset your password, please click on the link below.</p>' +
-                        '<p>http://localhost:8080/api/verification/tokenReset?user_id='+ user_id +'&resetToken=' + resetToken + '</p>' +
+                        '<p>http://localhost:8080/api/verification/token?userID='+ user._id +'&resetToken=' + existingToken.resetToken + '</p>' +
                         '<p> --------------- /p>' +
                         '<p>This is an automatic mail, Please do not reply.</p>'
                       }
                                             
-                      transporter.sendMail(mail, function (err, info) {
+                    transporter.sendMail(mail, function (err, info) {
                         if (err)
                             res.sendStatus(500);
                         console.log('Message sent: ' + info.response);
                       });
-
                     res.status(200).json({ message: 'Please check your mailbox' });
                 }
             })

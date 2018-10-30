@@ -42,8 +42,8 @@ exports.createUser = (req, res) => {
                         if (err) {
                             res.sendStatus(500);
                         } else {
-                            let token = jwt.sign( { username : req.body.username } , keys.jwtSecret)
-                            let newToken = new Token({"userID": newUser._id, "activationToken": token});
+                            let activationToken = jwt.sign( { username : req.body.username } , keys.jwtSecret)
+                            let newToken = new Token({"userID": newUser._id, "activationToken": activationToken});
 
                             newToken.save(function(err) {
                                 if (err) {
@@ -56,7 +56,7 @@ exports.createUser = (req, res) => {
                                         subject: "Welcome to Hypertube",
                                         html: '<h3> Hello ' + req.body.firstname + '</h3>' +
                                         '<p>To activate your account, please click on the link below.</p>' +
-                                        '<p>http://localhost:8080/api/verification/token?username='+ req.body.username +'&token=' + token + '</p>' +
+                                        '<p>http://localhost:8080/api/verification/token?userID='+ newUser._id +'&activationToken=' + activationToken + '</p>' +
                                         '<p> --------------- /p>' +
                                         '<p>This is an automatic mail, Please do not reply.</p>'
                                     }
