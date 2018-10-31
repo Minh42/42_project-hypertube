@@ -19,6 +19,7 @@ class SignUp extends Component {
         };
         this.props.initialize(initData);
     }
+    
 
     onSubmit(values) {
         var message;
