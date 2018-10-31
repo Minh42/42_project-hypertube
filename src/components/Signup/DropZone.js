@@ -1,25 +1,43 @@
 import React, { Component } from 'react';
 import DropzoneComponent from 'react-dropzone-component';
+import axios from 'axios';
 
-var componentConfig = {
-    iconFiletypes: ['.jpg', '.png', '.gif'],
-    showFiletypeIcon: true,
-    postUrl: '/uploadHandler'
-};
+class DropZone extends Component { 
+    constructor(props) {
+        super(props);
 
-const djsConfig = {
-    maxFiles: 1
-}
+        this.componentConfig = {
+            iconFiletypes: ['.jpg', '.png', '.gif'],
+            showFiletypeIcon: false,
+            postUrl: '/uploadHandler'
+        };
+        
+        this.djsConfig = {
+            dictDefaultMessage: "Click here to add a picture",
+            maxFiles: 1
+        }
+    }
 
-var eventHandlers = { addedfile: (file) => console.log(file) }
+    async handleFileAdded(file) {
+        // console.log(file);
+        // console.log(file.upload);
+        const res = await axios.post('http://localhost:8080/api/users/upload', file.upload)
+        this.props.triggerParentUpdate = file;
+        console.log(this.props.triggerParentUpdate)
+    }
 
-class DropZone extends Component {   
     render() {
+        const config = this.componentConfig;
+        const djsConfig = this.djsConfig;
+        const eventHandlers = { 
+            addedfile: this.handleFileAdded.bind(this)
+        }
+
         return (
-            <DropzoneComponent config={componentConfig}
+            <DropzoneComponent config={config}
                 eventHandlers={eventHandlers}
-                djsConfig={djsConfig} />,
-            document.getElementById('content')
+                djsConfig={djsConfig}>
+            </DropzoneComponent>
         )
     }
 }

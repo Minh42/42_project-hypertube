@@ -26,8 +26,6 @@ class PopUp extends Component {
         // STEP 4: append the container <div> (that has props.children appended to it) to the body of the new window
         this.externalWindow.document.body.appendChild(this.containerEl);
 
-        axios.get('https://graph.facebook.com/oauth/access_token?client_id=' + keys.fa'  &client_secret=your-app-secret&redirect_uri=your-redirect-url&grant_type=client_credentials"')
-
     }
     
     componentWillUnmount() {
