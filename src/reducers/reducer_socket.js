@@ -2,7 +2,6 @@ import io from 'socket.io-client';
 import { messageTypes } from '../constants/websockets';
 
 export const socket = io('http://localhost:8080', { transports: ['websocket'] });
-console.log(socket)
 
 export default function (state = null, action) {
 	switch(action.type) {

@@ -31,11 +31,6 @@ exports.facebook = (req, res) => {
             const token = user.createJwtToken(user);
             const xsrfToken = token['xsrfToken'];
             new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
-            // res.status(200).json({ 
-            //     xsrfToken : token['xsrfToken'],
-            //     user: user.toJSON()
-            // });
-            // res.redirect(`http://localhost:3000/homepage?accessToken=${xsrfToken}`);
             const io = require('../server').io;
             io.emit('authChecked', {xsrfToken : xsrfToken, user: user.toJSON()});
         }

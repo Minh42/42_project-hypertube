@@ -1,6 +1,7 @@
 const path = require('path')
 const http = require('http')
 const express = require('express')
+const routes = require('./routes/index.js')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const socketIO = require('socket.io');
@@ -27,7 +28,6 @@ const middlewares = [
     saveUninitialized: true
   })
 ]
-const routes = require('./routes/index.js')
 
 app.use(middlewares)
 app.use('/', routes)
