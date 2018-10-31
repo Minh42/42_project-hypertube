@@ -17,7 +17,6 @@ exports.local = (req, res) => {
                 xsrfToken : token['xsrfToken'],
                 user: user.toJSON()
             });
-            // res.status(200).json({ xsrfToken : token['xsrfToken'] });
         }
     })(req, res);
 }
@@ -36,32 +35,39 @@ exports.facebook = (req, res) => {
             //     xsrfToken : token['xsrfToken'],
             //     user: user.toJSON()
             // });
-            res.redirect(`http://localhost:3000/homepage?accessToken=${xsrfToken}`);
+            // res.redirect(`http://localhost:3000/homepage?accessToken=${xsrfToken}`);
+            const io = require('../server').io;
+            io.emit('authChecked', {xsrfToken : xsrfToken, user: user.toJSON()});
         }
     })(req, res);
 }
 
-exports.google = (req, res) => {
+// exports.google = (req, res) => {
 
 
-}
+// }
 
-exports.twitter = (req, res) => {
-
-
-}
-
-exports.linkedin = (req, res) => {
+// exports.twitter = (req, res) => {
 
 
-}
+// }
 
-exports.github = (req, res) => {
-
-
-}
-
-exports.fortytwo = (req, res) => {
+// exports.linkedin = (req, res) => {
 
 
+// }
+
+// exports.github = (req, res) => {
+
+
+// }
+
+// exports.fortytwo = (req, res) => {
+
+
+// }
+
+exports.logout = (req, res) => {
+    new Cookies(req,res).set('accessToken');
+    req.logout();
 }

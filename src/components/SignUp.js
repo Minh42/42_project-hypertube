@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import DropzoneComponent from 'react-dropzone-component';
 import RenderField from './Form/RenderField';
 import FormHeader from './Form/FormHeader';
+import DropZone from './Signup/DropZone';
 import axios from 'axios';
 import validator from 'validator';
 import izitoast from 'izitoast';
@@ -17,13 +19,34 @@ class SignUp extends Component {
             "email": null,
             "password": null
         };
+
+        this.state = {
+			file: null
+        }
+
+        this.componentConfig = {
+            iconFiletypes: ['.jpg', '.png', '.gif'],
+            showFiletypeIcon: false,
+            postUrl: '/uploadHandler'
+        };
+        
+        this.djsConfig = {
+            dictDefaultMessage: "Click here to add a picture",
+            maxFiles: 1
+        }
+
         this.props.initialize(initData);
     }
     
+    async handleFileAdded(file) {
+        this.setState ({ file: file.upload })
+    }
 
     onSubmit(values) {
+        var data = { values: values,
+                    img: this.state.file}
         var message;
-        axios.post('http://localhost:8080/api/users', values)
+        axios.post('http://localhost:8080/api/users', data)
         .catch((err) => {
             switch (err.response.status) {
                 case 409 :
@@ -52,6 +75,11 @@ class SignUp extends Component {
 
     render() {
         const { handleSubmit } = this.props;
+        const config = this.componentConfig;
+        const djsConfig = this.djsConfig;
+        const eventHandlers = { 
+            addedfile: this.handleFileAdded.bind(this)
+        }
         return (
             <div className="card__side card__side--back">
                 <FormHeader 
@@ -59,6 +87,12 @@ class SignUp extends Component {
                     heading2 = "sign up now"
                 />
                 <div className="card__form">
+                <div className="card__form--dropzone">
+                    <DropzoneComponent config={config}
+                        eventHandlers={eventHandlers}
+                        djsConfig={djsConfig}>
+                    </DropzoneComponent>
+                </div>
                     <form className="card__form--input" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                         <Field
                             label="Firstname"

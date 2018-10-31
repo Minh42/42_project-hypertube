@@ -10,17 +10,18 @@ import validator from 'validator';
 
 class ChangeUserInfo extends Component {
     componentDidMount() {
-        let initData = {
-            "firstname": this.props.user.firstname,
-            "lastname": this.props.user.lastname,
-            "username": this.props.user.username,
-            "email": this.props.user.email
-        };
-        this.props.initialize(initData);
+        if(this.props.user) {
+            let initData = {
+                "firstname": this.props.user.firstname,
+                "lastname": this.props.user.lastname,
+                "username": this.props.user.username,
+                "email": this.props.user.email
+            };
+            this.props.initialize(initData);
+        }
     }
     
     changeUserInformation(values) {
-        let message;
         let userID = this.props.user._id;
         axios.put('http://localhost:8080/api/users/' + userID, values)
             .catch((err) => {
@@ -34,7 +35,6 @@ class ChangeUserInfo extends Component {
                     message: res.data.message,
                     position: 'topRight'
                 });
-                this.props.history.push('/homepage');
             })
     }
 

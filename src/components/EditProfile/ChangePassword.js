@@ -10,35 +10,42 @@ import tools from '../../utils/tools.js';
 class ChangePassword extends Component {   
     constructor(props) {
         super(props);
-        this.state = {
-            user_id : this.props.match.params.id
-         }
-
         this.submitNewPassword = this.submitNewPassword.bind(this)
     }
 
-    async submitNewPassword(values) {
-        console.log(values);
-        var dataReset = { password : values.password,
+    submitNewPassword(values) {
+        let message;
+        const dataReset = { 
+            password : values.password,
             confirmedNewPassword : values.confirmPassword,
-            user_id : this.state.user_id
+            user_id : this.props.match.params.id
         }
-        const res = await axios.post('http://localhost:8080/api/verification/changePassword', dataReset)
+        axios.post('http://localhost:8080/api/verification/changePassword', dataReset)
         .catch((err) => {
-            if (err) {
-                izitoast.error({
-                    message: 'Your passwords not matched',
-                    position: 'topRight'
-                });
+            switch (err.response.status) {
+                case 403 :
+                    message = 'Passwords do not match';
+                    break;
+                case 500:
+                    message = 'Oops, something went wrong!';
+                    break;
+                default: 
+                    break;
             }
+            izitoast.error({
+                message: message,
+                position: 'topRight'
+            });
         })
         .then((res) => {
             if (res) {
-                this.props.history.push('/')
                 izitoast.success({
                     message: res.data.message,
                     position: 'topRight'
                 });
+                if(this.props.history.location.pathname !== '/profile') {
+                    this.props.history.push('/')
+                } 
             }
         })
     }
@@ -46,7 +53,6 @@ class ChangePassword extends Component {
     render() {
         const { handleSubmit } = this.props;  
         return (
-        <div className="forgot-password">
             <div className="form">
                 <div className="card">
                     <div className="card__side card__side--front">
@@ -76,7 +82,6 @@ class ChangePassword extends Component {
                     </div>
                 </div>
             </div>
-        </div>
         )
     }
 }
@@ -96,7 +101,6 @@ function validate(values) {
     }
     return errors;
 }
-
 
 const reduxFormChangePassword = reduxForm({
     validate,

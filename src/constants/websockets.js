@@ -1,7 +1,8 @@
 export const messageTypes = [
     'joinRequested',
     'userJoined',
-    'userLeft'
+    'userLeft',
+    'authChecked'
   ].reduce((accum, msg) => {
     accum[msg] = msg;
     return accum;

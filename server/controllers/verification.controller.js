@@ -50,7 +50,6 @@ exports.sendMessage = (req, res) => {
 
             Token.findOneAndUpdate({"userID": user._id} , {$set: {"resetToken": resetToken}}, {new: true}, (err, existingToken) => {
                 if (!existingToken) {
-                    console.log('im here')
                     res.sendStatus(500);
                 } else {
                     var mail = {
@@ -77,12 +76,9 @@ exports.sendMessage = (req, res) => {
 }
 
 exports.changePassword = (req, res) => {
-    console.log(req.body)
-    const password = req.body.password;
-    const confirmPassword = req.body.confirmedNewPassword;
-    const user_id = req.body.user_id
-
-    if (password === confirmPassword) {
+    console.log(req.body.password)
+    console.log(req.body.confirmedNewPassword)
+    if (req.body.password === req.body.confirmedNewPassword) {
         Users.findOne({"_id": req.body.user_id}, (err, user) => {
             if (err) {
                 res.sendStatus(500);
@@ -90,18 +86,17 @@ exports.changePassword = (req, res) => {
             if (!user) {
                 res.sendStatus(404);
             } else {
-                user.password = password
-                const updateUser = new Users(user);
-                updateUser.save(function(err) { 
+                user.password = req.body.password;
+                user.save(function(err) { 
                     if (err) 
                         res.sendStatus(500);
                     else {
-                        res.status(200).json({ message: 'Your password is updated' });
+                        res.status(200).json({ message: 'Your password was updated' });
                     }
                 })
             }
         })
     } else {
-        res.sendStatus(500);
+        res.sendStatus(403);
     }
 }

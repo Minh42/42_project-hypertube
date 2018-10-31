@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-import queryString from 'query-string';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
-import { signInActionOauth } from '../reducers/reducer_auth';
 import MoviesList from '../components/MoviesList';
 
 class HomePage extends Component {
     componentDidMount() {
-        if (this.props.location.search) {
-            let accessToken = queryString.parse(this.props.location.search).accessToken;
-            this.props.signInActionOauth(accessToken, this.props.history);
+        if (!this.props.isAuthenticated) {
+            this.props.history.push('/');
+        } else {
+            // this.props.joinSocket(this.props.currentUser[0].user_id);
         }
     }
 
@@ -21,8 +18,10 @@ class HomePage extends Component {
     }
 }
 
-function mapDispatchToProps(dispatch) { 
-	return bindActionCreators({ signInActionOauth : signInActionOauth}, dispatch);
-} 
+function mapStateToProps(state) {
+    return {
+        isAuthenticated: state.auth.authenticated
+    };
+}
 
-export default withRouter(connect(null, mapDispatchToProps)(HomePage));
+export default connect(mapStateToProps, null)(HomePage);

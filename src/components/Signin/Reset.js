@@ -89,7 +89,6 @@ function validate(values) {
     return errors;
 }
 
-
 const reduxFormForgotPassword = reduxForm({
     validate,
     form: 'forgotPassword'

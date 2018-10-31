@@ -78,145 +78,145 @@ passport.use(new FacebookStrategy({
     }
 ));
 
-passport.use(new TwitterStrategy({
-    consumerKey: keys.twitterClientID,
-    consumerSecret: keys.twitterClientSecret,
-    callbackURL: "/api/auth/twitter/callback",
-    userProfileURL  : 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true'
-  },
-  function(token, tokenSecret, profile, done) {
-    var arrayName = profile._json.name.split(' ');
-    var firstname = arrayName[0];
-    var lastname = arrayName[1];
-    var email = profile._json.email;
+// passport.use(new TwitterStrategy({
+//     consumerKey: keys.twitterClientID,
+//     consumerSecret: keys.twitterClientSecret,
+//     callbackURL: "/api/auth/twitter/callback",
+//     userProfileURL  : 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true'
+//   },
+//   function(token, tokenSecret, profile, done) {
+//     var arrayName = profile._json.name.split(' ');
+//     var firstname = arrayName[0];
+//     var lastname = arrayName[1];
+//     var email = profile._json.email;
 
-    Users.findOne({"twitterID": profile._json.id}).then(user => {
-        if(user) {
-            done(null, user);
-        } else {
-            Users.findOneAndUpdate({"email": email} , {$set: {"twitterID": profile._json.id}}, {new: true}).then(user => {
-                if (user) 
-                    done(null, user)
-                else {
-                    new Users({"firstname": firstname, "lastname": lastname, "username": firstname + tools.getRandomArbitrary(0, 1000), "email": email, "twitterID": profile._json.id})
-                    .save()
-                    .then(user => done(null, user));
-                }
-            });
-        }
-    })
-  }
-));
+//     Users.findOne({"twitterID": profile._json.id}).then(user => {
+//         if(user) {
+//             done(null, user);
+//         } else {
+//             Users.findOneAndUpdate({"email": email} , {$set: {"twitterID": profile._json.id}}, {new: true}).then(user => {
+//                 if (user) 
+//                     done(null, user)
+//                 else {
+//                     new Users({"firstname": firstname, "lastname": lastname, "username": firstname + tools.getRandomArbitrary(0, 1000), "email": email, "twitterID": profile._json.id})
+//                     .save()
+//                     .then(user => done(null, user));
+//                 }
+//             });
+//         }
+//     })
+//   }
+// ));
 
-passport.use(new GoogleStrategy({
-    clientID : keys.googleClientID,
-    clientSecret : keys.googleClientSecret,
-    callbackURL : '/api/auth/google/callback'
-    }, 
-    function(accessToken, refreshToken, profile, done) {
-        var arrayName = profile.displayName.split(' ');
-        var firstname = arrayName[0];
-        var lastname = arrayName[1];
-        var email = profile.emails[0].value;
+// passport.use(new GoogleStrategy({
+//     clientID : keys.googleClientID,
+//     clientSecret : keys.googleClientSecret,
+//     callbackURL : '/api/auth/google/callback'
+//     }, 
+//     function(accessToken, refreshToken, profile, done) {
+//         var arrayName = profile.displayName.split(' ');
+//         var firstname = arrayName[0];
+//         var lastname = arrayName[1];
+//         var email = profile.emails[0].value;
 
-        Users.findOne({"googleID": profile.id}).then(user => {
-            if(user) {
-                done(null, user);
-            } else {
-                Users.findOneAndUpdate({"email": email} , {$set: {"googleID": profile.id}}, {new: true}).then(user => {
-                    if (user) 
-                        done(null, user)
-                    else {
-                        new Users({"firstname": firstname, "lastname": lastname, "username": firstname + tools.getRandomArbitrary(0, 1000), "email": email, "googleID": profile.id})
-                        .save()
-                        .then(user => done(null, user));
-                    }
-                });
-            }
-        })
-    }
-));
+//         Users.findOne({"googleID": profile.id}).then(user => {
+//             if(user) {
+//                 done(null, user);
+//             } else {
+//                 Users.findOneAndUpdate({"email": email} , {$set: {"googleID": profile.id}}, {new: true}).then(user => {
+//                     if (user) 
+//                         done(null, user)
+//                     else {
+//                         new Users({"firstname": firstname, "lastname": lastname, "username": firstname + tools.getRandomArbitrary(0, 1000), "email": email, "googleID": profile.id})
+//                         .save()
+//                         .then(user => done(null, user));
+//                     }
+//                 });
+//             }
+//         })
+//     }
+// ));
 
-passport.use(new LinkedInStrategy({
-    consumerKey: keys.linkedinClientID,
-    consumerSecret: keys.linkedinClientSecret,
-    callbackURL: '/api/auth/linkedin/callback',
-    profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline']
-    },
-    function(accessToken, refreshToken, profile, done) {
-        var firstname = profile.name.givenName;
-        var lastname = profile.name.familyName;
-        var email = profile.emails[0].value;
-        Users.findOne({"linkedinID": profile.id}).then(user => {
-            if(user) {
-                done(null, user);
-            } else {
-                Users.findOneAndUpdate({"email": email} , {$set: {"linkedinID": profile.id}}, {new: true}).then(user => {
-                    if (user) 
-                        done(null, user)
-                    else {
-                        new Users({"firstname": firstname, "lastname": lastname, "username": firstname + tools.getRandomArbitrary(0, 1000), "email": email, "linkedinID": profile.id})
-                        .save()
-                        .then(user => done(null, user));
-                    }
-                });
-            }
-        });
-    }
-));
+// passport.use(new LinkedInStrategy({
+//     consumerKey: keys.linkedinClientID,
+//     consumerSecret: keys.linkedinClientSecret,
+//     callbackURL: '/api/auth/linkedin/callback',
+//     profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline']
+//     },
+//     function(accessToken, refreshToken, profile, done) {
+//         var firstname = profile.name.givenName;
+//         var lastname = profile.name.familyName;
+//         var email = profile.emails[0].value;
+//         Users.findOne({"linkedinID": profile.id}).then(user => {
+//             if(user) {
+//                 done(null, user);
+//             } else {
+//                 Users.findOneAndUpdate({"email": email} , {$set: {"linkedinID": profile.id}}, {new: true}).then(user => {
+//                     if (user) 
+//                         done(null, user)
+//                     else {
+//                         new Users({"firstname": firstname, "lastname": lastname, "username": firstname + tools.getRandomArbitrary(0, 1000), "email": email, "linkedinID": profile.id})
+//                         .save()
+//                         .then(user => done(null, user));
+//                     }
+//                 });
+//             }
+//         });
+//     }
+// ));
 
-passport.use(new GitHubStrategy({
-    clientID: keys.githubClientID,
-    clientSecret: keys.githubClientSecret,
-    callbackURL : '/api/auth/github/callback'
-  },
-  function(accessToken, refreshToken, profile, done) {
-    var name = profile._json.name;
-    var email = profile._json.email;
-    var username = profile._json.login;
+// passport.use(new GitHubStrategy({
+//     clientID: keys.githubClientID,
+//     clientSecret: keys.githubClientSecret,
+//     callbackURL : '/api/auth/github/callback'
+//   },
+//   function(accessToken, refreshToken, profile, done) {
+//     var name = profile._json.name;
+//     var email = profile._json.email;
+//     var username = profile._json.login;
 
-    Users.findOne({"githubID": profile._json.id}).then(user => {
-        if(user) {
-            done(null, user);
-        } else {
-            Users.findOneAndUpdate({"email": email} , {$set: {"githubID": profile._json.id}}, {new: true}).then(user => {
-                if (user) 
-                    done(null, user)
-                else {
-                    new Users({"firstname": name, "lastname": name, "username": username, "email": email, "githubID": profile._json.id})
-                    .save()
-                    .then(user => done(null, user));
-                }
-            });
-        }
-    })
-  }
-));
+//     Users.findOne({"githubID": profile._json.id}).then(user => {
+//         if(user) {
+//             done(null, user);
+//         } else {
+//             Users.findOneAndUpdate({"email": email} , {$set: {"githubID": profile._json.id}}, {new: true}).then(user => {
+//                 if (user) 
+//                     done(null, user)
+//                 else {
+//                     new Users({"firstname": name, "lastname": name, "username": username, "email": email, "githubID": profile._json.id})
+//                     .save()
+//                     .then(user => done(null, user));
+//                 }
+//             });
+//         }
+//     })
+//   }
+// ));
 
-passport.use(new FortyTwoStrategy({
-    clientID: keys.fortytwoClientID,
-    clientSecret: keys.fortytwoClientSecret,
-    callbackURL: "/api/auth/fortytwo/callback"
-  },
-  function(accessToken, refreshToken, profile, done) {
-    var firstname = profile._json.first_name;
-    var lastname = profile._json.last_name;
-    var email = profile._json.email;
+// passport.use(new FortyTwoStrategy({
+//     clientID: keys.fortytwoClientID,
+//     clientSecret: keys.fortytwoClientSecret,
+//     callbackURL: "/api/auth/fortytwo/callback"
+//   },
+//   function(accessToken, refreshToken, profile, done) {
+//     var firstname = profile._json.first_name;
+//     var lastname = profile._json.last_name;
+//     var email = profile._json.email;
 
-    Users.findOne({"fortytwoID": profile._json.id}).then(user => {
-        if(user) {
-            done(null, user);
-        } else {
-            Users.findOneAndUpdate({"email": email} , {$set: {"fortytwoID": profile._json.id}}, {new: true}).then(user => {
-                if (user) 
-                    done(null, user)
-                else {
-                    new Users({"firstname": name, "lastname": name, "username": firstname + tools.getRandomArbitrary(0, 1000), "email": email, "fortytwoID": profile._json.id})
-                    .save()
-                    .then(user => done(null, user));
-                }
-            });
-        }
-    })
-  }
-));
+//     Users.findOne({"fortytwoID": profile._json.id}).then(user => {
+//         if(user) {
+//             done(null, user);
+//         } else {
+//             Users.findOneAndUpdate({"email": email} , {$set: {"fortytwoID": profile._json.id}}, {new: true}).then(user => {
+//                 if (user) 
+//                     done(null, user)
+//                 else {
+//                     new Users({"firstname": name, "lastname": name, "username": firstname + tools.getRandomArbitrary(0, 1000), "email": email, "fortytwoID": profile._json.id})
+//                     .save()
+//                     .then(user => done(null, user));
+//                 }
+//             });
+//         }
+//     })
+//   }
+// ));

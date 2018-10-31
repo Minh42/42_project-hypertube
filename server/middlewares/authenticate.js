@@ -6,8 +6,6 @@ module.exports = function verifyToken(req, res, next) {
     // retrieve xsrftoken from header's request
     var xsrfToken = req.headers['x-xsrf-token'];
     var accessToken = new Cookies(req, res).get('accessToken');
-    console.log(xsrfToken)
-    console.log(accessToken)
     if(accessToken != undefined && xsrfToken != undefined) {
         jwt.verify(accessToken, keys.jwtSecret, function(err, decoded) {
             if(decoded.xsrfToken != xsrfToken) {
