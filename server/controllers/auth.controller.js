@@ -31,41 +31,93 @@ exports.facebook = (req, res) => {
             const token = user.createJwtToken(user);
             const xsrfToken = token['xsrfToken'];
             new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
-            // res.status(200).json({ 
-            //     xsrfToken : token['xsrfToken'],
-            //     user: user.toJSON()
-            // });
-            // res.redirect(`http://localhost:3000/homepage?accessToken=${xsrfToken}`);
+            res.status(200).json({ 
+                xsrfToken : xsrfToken,
+                user: user.toJSON()
+            });
+        }
+    })(req, res);
+}
+
+exports.google = (req, res) => {
+    passport.authenticate('google', { failureRedirect: '/' }, (err, user) => {
+        if (err || !user) {
+            return res.status(401).json({
+                message: 'Please check your Google credentials'
+            });
+        } else {
+            const token = user.createJwtToken(user);
+            const xsrfToken = token['xsrfToken'];
+            new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
             const io = require('../server').io;
             io.emit('authChecked', {xsrfToken : xsrfToken, user: user.toJSON()});
         }
     })(req, res);
 }
 
-// exports.google = (req, res) => {
+exports.twitter = (req, res) => {
+    passport.authenticate('twitter', { failureRedirect: '/' }, (err, user) => {
+        if (err || !user) {
+            return res.status(401).json({
+                message: 'Please check your Google credentials'
+            });
+        } else {
+            const token = user.createJwtToken(user);
+            const xsrfToken = token['xsrfToken'];
+            new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
+            const io = require('../server').io;
+            io.emit('authChecked', {xsrfToken : xsrfToken, user: user.toJSON()});
+        }
+    })(req, res);
+}
 
+exports.linkedin = (req, res) => {
+    passport.authenticate('linkedin', { failureRedirect: '/' }, (err, user) => {
+        if (err || !user) {
+            return res.status(401).json({
+                message: 'Please check your Google credentials'
+            });
+        } else {
+            const token = user.createJwtToken(user);
+            const xsrfToken = token['xsrfToken'];
+            new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
+            const io = require('../server').io;
+            io.emit('authChecked', {xsrfToken : xsrfToken, user: user.toJSON()});
+        }
+    })(req, res);
+}
 
-// }
+exports.github = (req, res) => {
+    passport.authenticate('github', { failureRedirect: '/' }, (err, user) => {
+        if (err || !user) {
+            return res.status(401).json({
+                message: 'Please check your Google credentials'
+            });
+        } else {
+            const token = user.createJwtToken(user);
+            const xsrfToken = token['xsrfToken'];
+            new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
+            const io = require('../server').io;
+            io.emit('authChecked', {xsrfToken : xsrfToken, user: user.toJSON()});
+        }
+    })(req, res);
+}
 
-// exports.twitter = (req, res) => {
-
-
-// }
-
-// exports.linkedin = (req, res) => {
-
-
-// }
-
-// exports.github = (req, res) => {
-
-
-// }
-
-// exports.fortytwo = (req, res) => {
-
-
-// }
+exports.fortytwo = (req, res) => {
+    passport.authenticate('fortytwo', { failureRedirect: '/' }, (err, user) => {
+        if (err || !user) {
+            return res.status(401).json({
+                message: 'Please check your Google credentials'
+            });
+        } else {
+            const token = user.createJwtToken(user);
+            const xsrfToken = token['xsrfToken'];
+            new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
+            const io = require('../server').io;
+            io.emit('authChecked', {xsrfToken : xsrfToken, user: user.toJSON()});
+        }
+    })(req, res);
+}
 
 exports.logout = (req, res) => {
     new Cookies(req,res).set('accessToken');

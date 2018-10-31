@@ -1,6 +1,7 @@
 const path = require('path')
 const http = require('http')
 const express = require('express')
+const routes = require('./routes/index.js')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const socketIO = require('socket.io');
@@ -14,6 +15,7 @@ const PORT = process.env.PORT || 8080;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
+socketInit(io);
 
 const middlewares = [
   cors(),
@@ -27,7 +29,6 @@ const middlewares = [
     saveUninitialized: true
   })
 ]
-const routes = require('./routes/index.js')
 
 app.use(middlewares)
 app.use('/', routes)

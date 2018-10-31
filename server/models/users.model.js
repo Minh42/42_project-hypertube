@@ -68,7 +68,8 @@ const userSchema = new Schema({
     fortytwoID: { type: String },
     date_created: { type: Date, required: true, default: Date.now },
     date_updated: { type: Date, required: true, default: Date.now },
-    status: { type: Boolean, default: false, required: true }
+    status: { type: Boolean, default: false, required: true },
+    accessToken: { type: String }
     // activation_code: { type: Boolean },
     // profile_picture: { type: String },
 })
