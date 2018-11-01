@@ -48,20 +48,22 @@ class SignUp extends Component {
         var message;
         axios.post('http://localhost:8080/api/users', data)
         .catch((err) => {
-            switch (err.response.status) {
-                case 409 :
-                    message = 'Invalid username or email';
-                    break;
-                case 500:
-                    message = 'Your information is invalid';
-                    break;
-                default: 
-                    break;
+            if (err) {
+                switch (err.response.status) {
+                    case 409 :
+                        message = 'Invalid username or email';
+                        break;
+                    case 500:
+                        message = 'Your information is invalid';
+                        break;
+                    default: 
+                        break;
+                }
+                izitoast.error({
+                    message: message,
+                    position: 'topRight'
+                });
             }
-            izitoast.error({
-                message: message,
-                position: 'topRight'
-            });
         }) 
         .then((res) => {
             if (res) {

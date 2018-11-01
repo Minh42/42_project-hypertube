@@ -15,7 +15,7 @@ exports.local = (req, res) => {
             new Cookies(req, res).set('accessToken', token['jwtToken'], { httpOnly: true });
             res.status(200).json({ 
                 xsrfToken : token['xsrfToken'],
-                user: user.toJSON()
+                user: user._id
             });
         }
     })(req, res);
@@ -31,12 +31,7 @@ exports.facebook = (req, res) => {
             const token = user.createJwtToken(user);
             const xsrfToken = token['xsrfToken'];
             new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
-<<<<<<< HEAD
-=======
-            res.status(200).json({ 
-                xsrfToken : xsrfToken,
-                user: user.toJSON()
-            });
+            res.redirect('http://localhost:3000?xsrfToken=' + xsrfToken + '&userID=' + user._id)
         }
     })(req, res);
 }
@@ -51,9 +46,7 @@ exports.google = (req, res) => {
             const token = user.createJwtToken(user);
             const xsrfToken = token['xsrfToken'];
             new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
->>>>>>> cd8cff289e41ef69aea14bc61281529b24918846
-            const io = require('../server').io;
-            io.emit('authChecked', {xsrfToken : xsrfToken, user: user.toJSON()});
+            res.redirect('http://localhost:3000?xsrfToken=' + xsrfToken + '&userID=' + user._id)
         }
     })(req, res);
 }
@@ -62,14 +55,13 @@ exports.twitter = (req, res) => {
     passport.authenticate('twitter', { failureRedirect: '/' }, (err, user) => {
         if (err || !user) {
             return res.status(401).json({
-                message: 'Please check your Google credentials'
+                message: 'Please check your Twitter credentials'
             });
         } else {
             const token = user.createJwtToken(user);
             const xsrfToken = token['xsrfToken'];
             new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
-            const io = require('../server').io;
-            io.emit('authChecked', {xsrfToken : xsrfToken, user: user.toJSON()});
+            res.redirect('http://localhost:3000?xsrfToken=' + xsrfToken + '&userID=' + user._id)
         }
     })(req, res);
 }
@@ -78,14 +70,13 @@ exports.linkedin = (req, res) => {
     passport.authenticate('linkedin', { failureRedirect: '/' }, (err, user) => {
         if (err || !user) {
             return res.status(401).json({
-                message: 'Please check your Google credentials'
+                message: 'Please check your Linkedin credentials'
             });
         } else {
             const token = user.createJwtToken(user);
             const xsrfToken = token['xsrfToken'];
             new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
-            const io = require('../server').io;
-            io.emit('authChecked', {xsrfToken : xsrfToken, user: user.toJSON()});
+            res.redirect('http://localhost:3000?xsrfToken=' + xsrfToken + '&userID=' + user._id)
         }
     })(req, res);
 }
@@ -94,14 +85,13 @@ exports.github = (req, res) => {
     passport.authenticate('github', { failureRedirect: '/' }, (err, user) => {
         if (err || !user) {
             return res.status(401).json({
-                message: 'Please check your Google credentials'
+                message: 'Please check your Github credentials'
             });
         } else {
             const token = user.createJwtToken(user);
             const xsrfToken = token['xsrfToken'];
             new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
-            const io = require('../server').io;
-            io.emit('authChecked', {xsrfToken : xsrfToken, user: user.toJSON()});
+            res.redirect('http://localhost:3000?xsrfToken=' + xsrfToken + '&userID=' + user._id)
         }
     })(req, res);
 }
@@ -110,14 +100,13 @@ exports.fortytwo = (req, res) => {
     passport.authenticate('fortytwo', { failureRedirect: '/' }, (err, user) => {
         if (err || !user) {
             return res.status(401).json({
-                message: 'Please check your Google credentials'
+                message: 'Please check your 42 credentials'
             });
         } else {
             const token = user.createJwtToken(user);
             const xsrfToken = token['xsrfToken'];
             new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
-            const io = require('../server').io;
-            io.emit('authChecked', {xsrfToken : xsrfToken, user: user.toJSON()});
+            res.redirect('http://localhost:3000?xsrfToken=' + xsrfToken + '&userID=' + user._id)
         }
     })(req, res);
 }

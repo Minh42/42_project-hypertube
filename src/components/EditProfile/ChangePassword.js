@@ -22,20 +22,22 @@ class ChangePassword extends Component {
         }
         axios.post('http://localhost:8080/api/verification/changePassword', dataReset)
         .catch((err) => {
-            switch (err.response.status) {
-                case 403 :
-                    message = 'Passwords do not match';
-                    break;
-                case 500:
-                    message = 'Oops, something went wrong!';
-                    break;
-                default: 
-                    break;
+            if (err) {
+                switch (err.response.status) {
+                    case 403 :
+                        message = 'Passwords do not match';
+                        break;
+                    case 500:
+                        message = 'Oops, something went wrong!';
+                        break;
+                    default: 
+                        break;
+                }
+                izitoast.error({
+                    message: message,
+                    position: 'topRight'
+                });
             }
-            izitoast.error({
-                message: message,
-                position: 'topRight'
-            });
         })
         .then((res) => {
             if (res) {

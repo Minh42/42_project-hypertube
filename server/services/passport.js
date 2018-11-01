@@ -22,7 +22,6 @@ passport.deserializeUser((id, done) => {
     });
 });
 
-
 passport.use(new LocalStrategy(
     function(username, password, done) {
       Users.findOne({ username: username }, function (err, user) {
@@ -82,7 +81,7 @@ passport.use(new TwitterStrategy({
     consumerKey: keys.twitterClientID,
     consumerSecret: keys.twitterClientSecret,
     callbackURL: "/api/auth/twitter/callback",
-    userProfileURL  : 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true'
+    userProfileURL: 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true'
   },
   function(token, tokenSecret, profile, done) {
     var arrayName = profile._json.name.split(' ');
@@ -118,6 +117,7 @@ passport.use(new GoogleStrategy({
         var firstname = arrayName[0];
         var lastname = arrayName[1];
         var email = profile.emails[0].value;
+        console.log(profile)
 
         Users.findOne({"googleID": profile.id}).then(user => {
             if(user) {
@@ -202,6 +202,7 @@ passport.use(new FortyTwoStrategy({
     var firstname = profile._json.first_name;
     var lastname = profile._json.last_name;
     var email = profile._json.email;
+    console.log(profile)
 
     Users.findOne({"fortytwoID": profile._json.id}).then(user => {
         if(user) {

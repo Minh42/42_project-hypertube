@@ -1,8 +1,6 @@
 import axios from 'axios';
 import izitoast from 'izitoast';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
-import { messageTypes } from '../constants/websockets';
-import { socket } from './reducer_socket';
 
 export const AUTHENTICATED = 'AUTHENTICATED';
 export const UNAUTHENTICATED = 'UNAUTHENTICATED';
@@ -56,19 +54,16 @@ export function signInAction({username, password}, history) {
 	};
 }
 
-// export function signInActionOauth(OauthStrategy, history) {
-// 	return (dispatch, { emit }) => {
-//         
-// 		socket.on(messageTypes.authChecked, function(data) {
-// 			setAuthorizationToken(data.xsrfToken);
-// 			dispatch({ 
-// 				type: AUTHENTICATED,
-// 				payload: data.user
-// 			});
-// 			history.push('/homepage');
-// 		})
-// 	}
-// }
+export function signInActionOauth(xsrfToken, user, history) {
+	return (dispatch) => {
+		setAuthorizationToken(xsrfToken);
+        dispatch({ 
+            type: AUTHENTICATED,
+            payload: user
+        });
+        history.push('/homepage');
+	}
+}
 
 export function signOutAction(history) {
 	return (dispatch) => {
