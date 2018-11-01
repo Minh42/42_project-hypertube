@@ -117,3 +117,8 @@ exports.deleteUser = (req, res) => {
         } 
     });
 }
+
+exports.verifyUpload = (req, res) => {
+    console.log('hey');
+    console.log(req.file)
+}
