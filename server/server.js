@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 8080;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
+socketInit(io);
 
 const middlewares = [
   cors(),

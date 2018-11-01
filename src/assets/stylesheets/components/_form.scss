@@ -73,9 +73,13 @@ input[type=checkbox] {
     }
 
     &__form {
-        margin-top: 4rem;
+        margin-top: 2rem;
         margin-left: 2rem;
         margin-right: 2rem;
+
+        &--dropzone {
+            display: flex;
+        }
 
         &--field {
             display: flex;

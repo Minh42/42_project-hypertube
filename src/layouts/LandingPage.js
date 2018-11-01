@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { ReactComponent as Cycle} from '../assets/img/svg/cycle.svg';
-
 import SignIn from '../components/SignIn';
 import SignUp from '../components/SignUp';
 
 class LandingPage extends Component {
+    componentDidMount() {
+        if (this.props.isAuthenticated) {
+            this.props.history.push('/homepage');
+        }
+    }
+
     render() {
         return (
             <div className="landing">
@@ -32,4 +37,10 @@ class LandingPage extends Component {
     }
 }
 
-export default withRouter(LandingPage);
+function mapStateToProps(state) {
+    return {
+        isAuthenticated: state.auth.authenticated
+    };
+}
+
+export default connect(mapStateToProps, null)(LandingPage);

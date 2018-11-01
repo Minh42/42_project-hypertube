@@ -56,19 +56,19 @@ export function signInAction({username, password}, history) {
 	};
 }
 
-export function signInActionOauth(OauthStrategy, history) {
-	return (dispatch, { emit }) => {
-        window.location.href = 'http://localhost:8080/api/auth/' + OauthStrategy;
-		socket.on(messageTypes.authChecked, function(data) {
-			setAuthorizationToken(data.xsrfToken);
-			dispatch({ 
-				type: AUTHENTICATED,
-				payload: data.user
-			});
-			history.push('/homepage');
-		})
-	}
-}
+// export function signInActionOauth(OauthStrategy, history) {
+// 	return (dispatch, { emit }) => {
+//         
+// 		socket.on(messageTypes.authChecked, function(data) {
+// 			setAuthorizationToken(data.xsrfToken);
+// 			dispatch({ 
+// 				type: AUTHENTICATED,
+// 				payload: data.user
+// 			});
+// 			history.push('/homepage');
+// 		})
+// 	}
+// }
 
 export function signOutAction(history) {
 	return (dispatch) => {

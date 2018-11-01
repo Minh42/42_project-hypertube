@@ -1,4 +1,4 @@
-const usersListeners = (socket) => {
+const usersListeners = (socket, io) => {
     socket.on('joinRequested', function(user_id) {
         if (users.length === 0) {
           users.push({
