@@ -2,20 +2,40 @@ const path = require('path')
 const http = require('http')
 const express = require('express')
 const routes = require('./routes/index.js')
-const bodyParser = require('body-parser')
-const session = require('express-session')
-const socketIO = require('socket.io');
-const socketInit = require('./socket');
-const cors = require('cors');
 const db = require('./db/connection');
-const passport = require('passport');
 const keys = require('./db/config/keys');
 const PORT = process.env.PORT || 8080;
 
 const app = express();
 const server = http.createServer(app);
+
+// SOCKET IO
+const socketIO = require('socket.io');
+const socketInit = require('./socket');
 const io = socketIO(server);
 socketInit(io);
+
+// ELASTIC SEARCH
+const elasticsearch = require('elasticsearch');
+const client = new elasticsearch.Client({  
+  hosts: [ 'http://localhost:9200']
+});
+
+client.ping({
+  requestTimeout: 30000,
+}, function(err) {
+  if (err) {
+      console.error('Elasticsearch cluster is down!');
+  } else {
+      console.log('Everything is ok');
+  }
+});
+
+// MIDDLEWARES
+const cors = require('cors');
+const bodyParser = require('body-parser')
+const session = require('express-session')
+const passport = require('passport')
 
 const middlewares = [
   cors(),
@@ -55,3 +75,4 @@ server.listen(PORT, () => {
 })
 
 module.exports.io = io;
+module.exports.client = client;
