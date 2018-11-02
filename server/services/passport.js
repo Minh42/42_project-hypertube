@@ -200,6 +200,7 @@ passport.use(new FortyTwoStrategy({
     callbackURL: "/api/auth/fortytwo/callback"
   },
   function(accessToken, refreshToken, profile, done) {
+      console.log('here')
     var firstname = profile._json.first_name;
     var lastname = profile._json.last_name;
     var email = profile._json.email;
@@ -213,7 +214,7 @@ passport.use(new FortyTwoStrategy({
                 if (user) 
                     done(null, user)
                 else {
-                    new Users({"firstname": name, "lastname": name, "username": firstname + tools.getRandomArbitrary(0, 1000), "email": email, "fortytwoID": profile._json.id})
+                    new Users({"firstname": firstname, "lastname": lastname, "username": firstname + tools.getRandomArbitrary(0, 1000), "email": email, "fortytwoID": profile._json.id})
                     .save()
                     .then(user => done(null, user));
                 }

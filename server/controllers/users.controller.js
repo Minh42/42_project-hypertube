@@ -130,28 +130,28 @@ exports.deleteUser = (req, res) => {
     });
 }
 
-var multer  = require('multer')
+// var multer  = require('multer')
+// const uuidv4 = require('uuid/v4');
 
-exports.multer = (req, res, next) => {
-    console.log(req.body)
-    console.log('here')
-    var upload = multer ({
-        storage : multer.diskStorage({
-            destination: (req, file, cb) => {
-              cb(null, './assets');
-            },
-            filename: (req, file, cb) => {
-                console.log('here')
-              const newFilename = `${uuidv4()}${path.extname(file.originalname)}`;
-              cb(null, newFilename);
-            },
-        })
-    })
+// exports.multer = (req, res, next) => {
+//     console.log(req.body)
+//     console.log('here')
+//     var upload = multer ({
+//         storage : multer.diskStorage({
+//             destination: (req, file, callback) => {
+//               callback(null, './uploads');
+//             },
+//             filename: (req, file, callback) => {
+//               const newFilename = `${uuidv4()}${path.extname(file.originalname)}`;
+//               callback(null, newFilename);
+//             },
+//         })
+//     })
 
-    return upload.single('file')(req, res, next)
+//     return upload.single('file')(req, res, next)
 
-    return next()
-}
+//     return next()
+// }
 
 exports.verifyUpload = (req, res) => {
     console.log(req.file)

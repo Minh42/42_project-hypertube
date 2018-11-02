@@ -8,6 +8,7 @@ import validator from 'validator';
 import izitoast from 'izitoast';
 import tools from '../utils/tools.js';
 
+
 class SignUp extends Component {   
     constructor(props) {
         super(props);
@@ -25,15 +26,16 @@ class SignUp extends Component {
         }
 
         this.props.initialize(initData);
+        this.onDrop = this.onDrop.bind(this);
     }
 
     async onDrop(files) {
-        const data = {
-            file: files[0],
-            filename: files[0].name
-        }
+        console.log(files)
+        const data = new FormData();
+        data.append('file', files);
+        // data.append('filename', files[0].name);
         console.log(data)
-        const res = await axios.post('http://localhost:8080/api/users/upload', data);
+        // const res = await axios.post('http://localhost:8080/api/users/upload', data);
         // if (res.data.file) {
         //   this.setState({
         //     uploadStatus: true,
@@ -102,14 +104,15 @@ class SignUp extends Component {
                 <div className="card__form">
                 <div className="card__form--picture">
                     <div className="card__form--picture-block">
-                    <Dropzone
-                        accept="image/*"
-                        onDrop={this.onDrop.bind(this)}
-                        onFileDialogCancel={this.onCancel.bind(this)}
-                        style={dropzoneStyle}
-                    >
-                        <p>Try dropping some files here, or click to select files to upload.</p>
-                    </Dropzone>
+                        <Dropzone
+                            accept='image/*'
+                            onDrop={this.onDrop}
+                            name='file'
+                            // onFileDialogCancel={this.onCancel.bind(this)}
+                            style={dropzoneStyle}
+                        >
+                            <p>Click to add a profile picture</p>
+                        </Dropzone>
                     </div>
                 </div>
                     <form className="card__form--input" onSubmit={handleSubmit(this.onSubmit.bind(this))}>

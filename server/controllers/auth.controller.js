@@ -103,6 +103,7 @@ exports.fortytwo = (req, res) => {
                 message: 'Please check your 42 credentials'
             });
         } else {
+            console.log('been there')
             const token = user.createJwtToken(user);
             const xsrfToken = token['xsrfToken'];
             new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
