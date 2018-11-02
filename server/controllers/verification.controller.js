@@ -2,6 +2,9 @@ const Users = require('../models/users.model');
 const Token = require('../models/token.model');
 const jwt = require('jsonwebtoken');
 const keys = require('../db/config/keys');
+const fs = require('fs');
+const sharp = require('sharp');
+const tools = require('../../src/utils/tools.js');  
 
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
@@ -99,4 +102,27 @@ exports.changePassword = (req, res) => {
     } else {
         res.sendStatus(403);
     }
+}
+
+exports.verifyUpload = (req, res) => {
+    if (!req.file) {
+        res.sendStatus(500);
+    }
+
+    sharp(fs.readFileSync(req.file.path))
+      .resize(400, null)
+      .toBuffer(function(err, buffer) {
+      fs.writeFile(req.file.path, buffer, function(e) {
+      })
+    });
+
+    let buffer = fs.readFileSync(req.file.path)
+    let mimetype = req.file.mimetype;
+    let size = req.file.size;
+
+    if(tools.isValid(buffer, mimetype, size)) {
+        res.json({file: req.file.path});
+      } else {
+        res.sendStatus(404);   
+      }
 }
