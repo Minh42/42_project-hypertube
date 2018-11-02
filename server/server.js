@@ -16,20 +16,20 @@ const io = socketIO(server);
 socketInit(io);
 
 // ELASTIC SEARCH
-const elasticsearch = require('elasticsearch');
-const client = new elasticsearch.Client({  
-  hosts: [ 'http://localhost:9200']
-});
+// const elasticsearch = require('elasticsearch');
+// const client = new elasticsearch.Client({  
+//   hosts: [ 'http://localhost:9200']
+// });
 
-client.ping({
-  requestTimeout: 30000,
-}, function(err) {
-  if (err) {
-      console.error('Elasticsearch cluster is down!');
-  } else {
-      console.log('Everything is ok');
-  }
-});
+// client.ping({
+//   requestTimeout: 30000,
+// }, function(err) {
+//   if (err) {
+//       console.error('Elasticsearch cluster is down!');
+//   } else {
+//       console.log('Everything is ok');
+//   }
+// });
 
 // MIDDLEWARES
 const cors = require('cors');
@@ -39,8 +39,8 @@ const passport = require('passport')
 
 const middlewares = [
   cors(),
-  bodyParser.urlencoded({ extended: true }),
   bodyParser.json(),
+  bodyParser.urlencoded({ extended: true }),
   passport.initialize(),
   passport.session(),
   session({
@@ -75,4 +75,4 @@ server.listen(PORT, () => {
 })
 
 module.exports.io = io;
-module.exports.client = client;
+// module.exports.client = client;

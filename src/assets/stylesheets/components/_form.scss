@@ -77,8 +77,26 @@ input[type=checkbox] {
         margin-left: 2rem;
         margin-right: 2rem;
 
-        &--dropzone {
-            display: flex;
+        &--picture {
+            // display: flex;
+     
+            margin-top: -6rem;
+
+            &-block {
+                border: solid .3rem white;
+                width: 115px;
+                margin-left: 2rem;
+                margin-bottom: 2rem;
+                padding-top: 11rem;
+                background-color: white;
+
+                & input {
+                    display: flex;
+                    justify-content: center;
+                    color: transparent;
+                    
+                }
+            }
         }
 
         &--field {

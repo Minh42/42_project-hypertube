@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import DropzoneComponent from 'react-dropzone-component';
+import Dropzone from 'react-dropzone'
 import RenderField from './Form/RenderField';
 import FormHeader from './Form/FormHeader';
-import DropZone from './Signup/DropZone';
 import axios from 'axios';
 import validator from 'validator';
 import izitoast from 'izitoast';
 import tools from '../utils/tools.js';
+
 
 class SignUp extends Component {   
     constructor(props) {
@@ -20,26 +20,38 @@ class SignUp extends Component {
             "password": null
         };
 
-        this.state = {
-			file: null
-        }
-
-        this.componentConfig = {
-            iconFiletypes: ['.jpg', '.png', '.gif'],
-            showFiletypeIcon: false,
-            postUrl: '/uploadHandler'
-        };
-        
-        this.djsConfig = {
-            dictDefaultMessage: "Click here to add a picture",
-            maxFiles: 1
+        this.state = { 
+            uploadStatus: false,
+            files: [] 
         }
 
         this.props.initialize(initData);
     }
+
+    async onDrop(files) {
+        const data = new FormData();
+        data.append('file', files[0]);
+        data.append('filename', files[0].name);
+        const res = await axios.post('http://localhost:8080/api/users/upload', data);
+
+
+        // if (res.data.file) {
+        //   this.setState({
+        //     uploadStatus: true,
+        //     files: this.state.files.concat(`http://localhost:8080/${res.data.file}`),
+        //   });
+        // } else {
+        //   izitoast.show({
+        //     message: res.data.error,
+        //     position: 'topRight'
+        //   });
+        // }
+    }
     
-    async handleFileAdded(file) {
-        this.setState ({ file: file.upload })
+    onCancel() {
+        this.setState({
+          files: []
+        });
     }
 
     onSubmit(values) {
@@ -48,22 +60,20 @@ class SignUp extends Component {
         var message;
         axios.post('http://localhost:8080/api/users', data)
         .catch((err) => {
-            if (err) {
-                switch (err.response.status) {
-                    case 409 :
-                        message = 'Invalid username or email';
-                        break;
-                    case 500:
-                        message = 'Your information is invalid';
-                        break;
-                    default: 
-                        break;
-                }
-                izitoast.error({
-                    message: message,
-                    position: 'topRight'
-                });
+            switch (err.response.status) {
+                case 409 :
+                    message = 'Invalid username or email';
+                    break;
+                case 500:
+                    message = 'Your information is invalid';
+                    break;
+                default: 
+                    break;
             }
+            izitoast.error({
+                message: message,
+                position: 'topRight'
+            });
         }) 
         .then((res) => {
             if (res) {
@@ -77,11 +87,13 @@ class SignUp extends Component {
 
     render() {
         const { handleSubmit } = this.props;
-        const config = this.componentConfig;
-        const djsConfig = this.djsConfig;
-        const eventHandlers = { 
-            addedfile: this.handleFileAdded.bind(this)
-        }
+        const dropzoneStyle = {
+            width: 110,
+            height: 100,
+            borderRadius: 20,
+            border: "1px solid black",
+            marginTop: -100,
+          };
         return (
             <div className="card__side card__side--back">
                 <FormHeader 
@@ -89,11 +101,15 @@ class SignUp extends Component {
                     heading2 = "sign up now"
                 />
                 <div className="card__form">
-                <div className="card__form--dropzone">
-                    <DropzoneComponent config={config}
-                        eventHandlers={eventHandlers}
-                        djsConfig={djsConfig}>
-                    </DropzoneComponent>
+                <div className="card__form--picture">
+                    <div className="card__form--picture-block">
+                    <Dropzone accept="image/*" onDrop={this.onDrop.bind(this)} style={dropzoneStyle}>
+                        <div className="is-overlay is-clipped has-text-centered">
+                            <span className="icon is-small"><i className="fas fa-plus-circle"></i></span>
+                            <p className="help">Drag &amp; drop or upload files</p>
+                        </div>
+                    </Dropzone>
+                    </div>
                 </div>
                     <form className="card__form--input" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                         <Field

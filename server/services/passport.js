@@ -88,6 +88,7 @@ passport.use(new TwitterStrategy({
     var firstname = arrayName[0];
     var lastname = arrayName[1];
     var email = profile._json.email;
+    console.log(email)
 
     Users.findOne({"twitterID": profile._json.id}).then(user => {
         if(user) {
