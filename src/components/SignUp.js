@@ -49,6 +49,7 @@ class SignUp extends Component {
         // }
     }
     
+    
     onCancel() {
         this.setState({
           files: []
