@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import './assets/stylesheets/main.scss';
 import App from './App';
-import ErrorBoundary from './layouts/ErrorBoundary';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import configureStore from './store/configureStore';
 import * as serviceWorker from './serviceWorker';
@@ -13,9 +12,7 @@ const { persistor, store } = configureStore();
 ReactDOM.render(
     <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-            <ErrorBoundary>
-                <App />
-            </ErrorBoundary>
+            <App />
         </PersistGate>
     </Provider>
     , document.getElementById('root')

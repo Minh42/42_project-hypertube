@@ -1,6 +1,5 @@
 const Users = require('../models/users.model');
 const Token = require('../models/token.model');
-
 const jwt = require('jsonwebtoken');
 const keys = require('../db/config/keys');
 
@@ -83,9 +82,20 @@ exports.createUser = (req, res) => {
 }
 
 exports.getUser = (req, res) => {
-
+    Users.findOne({_id :req.params.id}, (err, user) => {
+        if (err) {
+            res.sendStatus(500);  
+        }
+        if (!user) {
+            res.sendStatus(404);    
+        } else {
+            res.status(200).json({
+                message: 'User retrieved successfully',
+                user: user.toJSON()
+            });
+        }
+    })
 }
-
 
 exports.updateUser = (req, res) => {
     var update = {
@@ -101,7 +111,9 @@ exports.updateUser = (req, res) => {
         if (!user) {
             res.sendStatus(404);  
         } else {
-            res.status(200).json({ message: 'Your information was updated successfully' });
+            res.status(200).json({ 
+                message: 'Your information was updated successfully' 
+            });
         }
     });
 }
@@ -118,7 +130,30 @@ exports.deleteUser = (req, res) => {
     });
 }
 
+var multer  = require('multer')
+
+exports.multer = (req, res, next) => {
+    console.log(req.body)
+    console.log('here')
+    var upload = multer ({
+        storage : multer.diskStorage({
+            destination: (req, file, cb) => {
+              cb(null, './assets');
+            },
+            filename: (req, file, cb) => {
+                console.log('here')
+              const newFilename = `${uuidv4()}${path.extname(file.originalname)}`;
+              cb(null, newFilename);
+            },
+        })
+    })
+
+    return upload.single('file')(req, res, next)
+
+    return next()
+}
+
 exports.verifyUpload = (req, res) => {
-    console.log('hey');
     console.log(req.file)
+    console.log(req.body)
 }

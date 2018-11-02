@@ -25,10 +25,12 @@ class ChangeUserInfo extends Component {
         let userID = this.props.user._id;
         axios.put('http://localhost:8080/api/users/' + userID, values)
             .catch((err) => {
-                izitoast.error({
-                    message: "Oops, something went wrong!",
-                    position: 'topRight'
-                });
+                if (err) {
+                    izitoast.error({
+                        message: "Oops, something went wrong!",
+                        position: 'topRight'
+                    });
+                }
             })
             .then((res) => {
                 izitoast.success({
