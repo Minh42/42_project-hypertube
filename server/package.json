@@ -4,10 +4,12 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.11.0",
     "cookies": "^0.7.3",
     "cors": "^2.8.5",
+    "elasticsearch": "^15.2.0",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "is-bmp": "^1.0.1",
@@ -29,6 +31,7 @@
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
     "socket.io": "^2.1.1",
+    "thepiratebay": "^1.4.7",
     "uid-safe": "^2.1.5",
     "uuid": "^3.3.2"
   },

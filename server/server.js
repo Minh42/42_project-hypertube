@@ -10,26 +10,27 @@ const app = express();
 const server = http.createServer(app);
 
 // SOCKET IO
-const socketIO = require('socket.io');
-const socketInit = require('./socket');
+// const socketIO = require('socket.io');
+// const socketInit = require('./socket');
 // const io = socketIO(server);
 // socketInit(io);
 
 // ELASTIC SEARCH
-// const elasticsearch = require('elasticsearch');
-// const client = new elasticsearch.Client({  
-//   hosts: [ 'localhost:9200']
-// });
+const elasticsearch = require('elasticsearch');
+const client = new elasticsearch.Client({  
+  host: '0.0.0.0:9200',
+  log: 'trace'
+});
 
-// client.ping({
-//   requestTimeout: 30000,
-// }, function(err) {
-//   if (err) {
-//       console.error('Elasticsearch cluster is down!');
-//   } else {
-//       console.log('Everything is ok');
-//   }
-// });
+client.ping({
+  requestTimeout: 30000,
+}, function(err) {
+  if (err) {
+      console.error('Elasticsearch cluster is down!');
+  } else {
+      console.log('Everything is ok');
+  }
+});
 
 // MIDDLEWARES
 const cors = require('cors');
@@ -71,8 +72,8 @@ app.use((err, req, res, next) => {
 })
 
 server.listen(PORT, () => {
-  console.log('App running at http://localhost:3000')
+  console.log('App running at http://localhost:8080')
 })
 
 // module.exports.io = io;
-// module.exports.client = client;
+module.exports.client = client;

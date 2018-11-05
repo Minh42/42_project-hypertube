@@ -1,51 +1,55 @@
 const client = require('../server').client;
 
-client.indices.create({ 
-  index: 'hypertube'
-}, function(error, response, status) {
-  if (error) {
-      console.log(error);
-  } else {
-      console.log("created a new index", response);
-  }
+client.cluster.health({},function(err,resp,status) {  
+  console.log("-- Client Health --",resp);
 });
 
-const bulkIndex = function bulkIndex(index, type, data) {
-  let bulkBody = [];
+// client.indices.create({ 
+//   index: 'hypertube'
+// }, function(error, response, status) {
+//   if (error) {
+//       console.log(error);
+//   } else {
+//       console.log("created a new index", response);
+//   }
+// });
 
-  data.forEach(item => {
-    bulkBody.push({
-      index: {
-        _index: index,
-        _type: type,
-        _id: item.id
-      }
-    });
+// const bulkIndex = function bulkIndex(index, type, data) {
+//   let bulkBody = [];
 
-    bulkBody.push(item);
-  });
+//   data.forEach(item => {
+//     bulkBody.push({
+//       index: {
+//         _index: index,
+//         _type: type,
+//         _id: item.id
+//       }
+//     });
 
-client.bulk({body: bulkBody})
-  .then(response => {
-    let errorCount = 0;
-    response.items.forEach(item => {
-      if (item.index && item.index.error) {
-        console.log(++errorCount, item.index.error);
-      }
-    });
-    console.log(
-      `Successfully indexed ${data.length - errorCount}
-       out of ${data.length} items`
-    );
-  })
-  .catch(console.err);
-};
+//     bulkBody.push(item);
+//   });
 
-async function indexData() {
-  const moviesRaw = await fs.readFileSync('../db/seeds/movies.json');
-  const movies = JSON.parse(moviesRaw);
-  console.log(`${movies.length} items parsed from movies file`);
-  bulkIndex('hypertube', 'movies', movies);
-};
+// client.bulk({body: bulkBody})
+//   .then(response => {
+//     let errorCount = 0;
+//     response.items.forEach(item => {
+//       if (item.index && item.index.error) {
+//         console.log(++errorCount, item.index.error);
+//       }
+//     });
+//     console.log(
+//       `Successfully indexed ${data.length - errorCount}
+//        out of ${data.length} items`
+//     );
+//   })
+//   .catch(console.err);
+// };
 
-indexData();
+// async function indexData() {
+//   const moviesRaw = await fs.readFileSync('../db/seeds/movies.json');
+//   const movies = JSON.parse(moviesRaw);
+//   console.log(`${movies.length} items parsed from movies file`);
+//   bulkIndex('hypertube', 'movies', movies);
+// };
+
+// indexData();
