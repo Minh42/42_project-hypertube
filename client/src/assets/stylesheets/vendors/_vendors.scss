@@ -1,0 +1,41 @@
+@import "../../../../node_modules/react-dropzone-component/styles/filepicker.css";
+@import "../../../../node_modules/dropzone/dist/min/dropzone.min.css";
+
+div.filepicker {
+    width: 15rem;
+    margin-top: -9rem;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+}
+
+.filepicker-file-icon::before {
+    border: none;
+}
+
+.filepicker-file-icon::after {
+    background-color: transparent;
+}
+
+.dropzone .dz-message {
+    border: solid .4rem white;
+    margin-top: 3rem;
+    margin-left: 2rem;
+    margin-bottom: 3rem;
+    padding-top: 10rem;
+    background-color: white;
+    color: black;
+}
+
+.dropzone .dz-preview .dz-image {
+    border-radius: 0;
+}
+
+.dz-image {
+    border: solid .4rem white;
+    margin-top: 1rem;
+}
+
+.dropzone .dz-preview.dz-image-preview {
+    background-color: transparent;
+}

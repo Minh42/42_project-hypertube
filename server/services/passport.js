@@ -1,5 +1,5 @@
 const passport = require('passport');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
@@ -9,8 +9,8 @@ const GitHubStrategy = require('passport-github2').Strategy;
 const FortyTwoStrategy = require('passport-42').Strategy;
 
 const Users = require('../models/users.model');
-const keys = require('../db/config/keys');
-const tools = require('../../src/utils/tools.js');
+const keys = require('../data/config/keys');
+const tools = require('../utils/tools.js');
 
 passport.serializeUser((user, done) => {
     done(null, user.id); 

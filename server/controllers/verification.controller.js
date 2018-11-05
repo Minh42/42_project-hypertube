@@ -1,10 +1,9 @@
 const Users = require('../models/users.model');
 const Token = require('../models/token.model');
 const jwt = require('jsonwebtoken');
-const keys = require('../db/config/keys');
+const keys = require('../data/config/keys');
 const fs = require('fs');
-const sharp = require('sharp');
-const tools = require('../../src/utils/tools.js');
+const tools = require('../utils/tools.js');
 const path = require('path');
 const cloudinary = require('cloudinary');
 

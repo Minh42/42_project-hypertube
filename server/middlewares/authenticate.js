@@ -1,6 +1,6 @@
 const Cookies = require('cookies');
 const jwt = require('jsonwebtoken');
-const config = require('../db/config/keys');
+const config = require('../data/config/keys');
 
 module.exports = function verifyToken(req, res, next) {
     // retrieve xsrftoken from header's request

@@ -2,7 +2,7 @@ const Users = require('../models/users.model');
 const Token = require('../models/token.model');
 const ProfilePicture = require('../models/profilePicture.model');
 const jwt = require('jsonwebtoken');
-const keys = require('../db/config/keys');
+const keys = require('../data/config/keys');
 
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({

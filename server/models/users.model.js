@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const validate = require('mongoose-validator')
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const SALT_WORK_FACTOR = 10;
 const jwt = require('jsonwebtoken');
 const uid = require('uid-safe');
-const keys = require('../db/config/keys');
+const keys = require('../data/config/keys');
 
 var nameValidator = [
     validate({

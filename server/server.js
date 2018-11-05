@@ -2,8 +2,8 @@ const path = require('path')
 const http = require('http')
 const express = require('express')
 const routes = require('./routes/index.js')
-const db = require('./db/connection');
-const keys = require('./db/config/keys');
+const db = require('./data/db/connection.js');
+const keys = require('./data/config/keys');
 const PORT = process.env.PORT || 8080;
 
 const app = express();
@@ -12,8 +12,8 @@ const server = http.createServer(app);
 // SOCKET IO
 const socketIO = require('socket.io');
 const socketInit = require('./socket');
-const io = socketIO(server);
-socketInit(io);
+// const io = socketIO(server);
+// socketInit(io);
 
 // ELASTIC SEARCH
 // const elasticsearch = require('elasticsearch');
@@ -71,8 +71,8 @@ app.use((err, req, res, next) => {
 })
 
 server.listen(PORT, () => {
-  console.log('App running at http://localhost:8080')
+  console.log('App running at http://localhost:3000')
 })
 
-module.exports.io = io;
+// module.exports.io = io;
 // module.exports.client = client;
