@@ -1,5 +1,6 @@
 const Users = require('../models/users.model');
 const Token = require('../models/token.model');
+const ProfilePicture = require('../models/profilePicture.model');
 const jwt = require('jsonwebtoken');
 const keys = require('../db/config/keys');
 
@@ -36,39 +37,48 @@ exports.createUser = (req, res) => {
                     res.sendStatus(500);
                 }
                 if (!user) {
+                    //add info users (users model)
                     var newUser = new Users(req.body.values);
                     newUser.save(function(err) { 
                         if (err) {
                             res.sendStatus(500);
                         } else {
-                            let activationToken = jwt.sign( { username : req.body.values.username } , keys.jwtSecret)
-                            let newToken = new Token({"userID": newUser._id, "activationToken": activationToken});
-
-                            newToken.save(function(err) {
+                            // add profile picture (profilePicture model)
+                            var profilePicture = new ProfilePicture({"userID": newUser._id, "path": req.body.path});
+                            profilePicture.save(function(err) {
                                 if (err) {
                                     res.sendStatus(500);
-                                }
-                                else {
-                                    var mail = {
-                                        from: "matcha.appli@gmail.com",
-                                        to: req.body.values.email,
-                                        subject: "Welcome to Hypertube",
-                                        html: '<h3> Hello ' + req.body.values.firstname + '</h3>' +
-                                        '<p>To activate your account, please click on the link below.</p>' +
-                                        '<p>http://localhost:8080/api/verification/token?userID='+ newUser._id +'&activationToken=' + activationToken + '</p>' +
-                                        '<p> --------------- /p>' +
-                                        '<p>This is an automatic mail, Please do not reply.</p>'
-                                    }
-                                                
-                                    transporter.sendMail(mail, function (err, info) {
-                                        if (err)
+                                } else {
+                                    // add token (token model)
+                                    let activationToken = jwt.sign( { username : req.body.values.username } , keys.jwtSecret)
+                                    let newToken = new Token({"userID": newUser._id, "activationToken": activationToken});
+                                    newToken.save(function(err) {
+                                        if (err) {
                                             res.sendStatus(500);
-                                        console.log('Message sent: ' + info.response);
+                                        }
+                                        else {
+                                            var mail = {
+                                                from: "matcha.appli@gmail.com",
+                                                to: req.body.values.email,
+                                                subject: "Welcome to Hypertube",
+                                                html: '<h3> Hello ' + req.body.values.firstname + '</h3>' +
+                                                '<p>To activate your account, please click on the link below.</p>' +
+                                                '<p>http://localhost:8080/api/verification/token?userID='+ newUser._id +'&activationToken=' + activationToken + '</p>' +
+                                                '<p> --------------- /p>' +
+                                                '<p>This is an automatic mail, Please do not reply.</p>'
+                                            }
+                                                        
+                                            transporter.sendMail(mail, function (err, info) {
+                                                if (err)
+                                                    res.sendStatus(500);
+                                                console.log('Message sent: ' + info.response);
+                                            });
+        
+                                            res.status(200).json({ message: 'Please check your mailbox' });
+                                        }
                                     });
-
-                                    res.status(200).json({ message: 'Please check your mailbox' });
                                 }
-                            });
+                            })
                         }
                     });  
                 } else {

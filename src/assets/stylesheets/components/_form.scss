@@ -78,17 +78,28 @@ input[type=checkbox] {
         margin-right: 2rem;
 
         &--picture {
-            // display: flex;
-     
             margin-top: -6rem;
 
             &-block {
-                border: solid .3rem white;
+                border: solid .3rem $color-white;
                 width: 115px;
+                height: auto;
                 margin-left: 2rem;
                 margin-bottom: 2rem;
-                padding-top: 11rem;
-                background-color: white;
+                background-color: $color-white;
+                position: relative;
+                overflow: hidden;
+
+                &-img {
+                    max-width: 140%;
+                    max-height: 141%;
+                    position: absolute;
+                    object-fit: cover;
+                }
+
+                &-text {
+                    color: $color-white;
+                }
 
                 & input {
                     display: flex;

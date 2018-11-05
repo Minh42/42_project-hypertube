@@ -16,9 +16,11 @@
     "base64-img": "^1.0.4",
     "bcrypt": "^3.0.2",
     "bcrypt-nodejs": "0.0.3",
+    "bcryptjs": "^2.4.3",
     "bfj": "6.1.1",
     "case-sensitive-paths-webpack-plugin": "2.1.2",
     "chalk": "^2.4.1",
+    "cloudinary": "^1.11.0",
     "cookies": "^0.7.2",
     "cors": "^2.8.4",
     "css-loader": "1.0.0",
@@ -100,7 +102,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "postinstall": "npm rebuild node-sass"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -8,8 +8,6 @@ import validator from 'validator';
 import izitoast from 'izitoast';
 import tools from '../utils/tools.js';
 
-// import logo from '../assets/img/uploads/843819b5-1f8d-4065-9e74-7e4c0a424461.jpg';
-
 class SignUp extends Component {   
     constructor(props) {
         super(props);
@@ -34,50 +32,40 @@ class SignUp extends Component {
         data.append('file', files[0]);
         data.append('filename', files[0].name);
         axios.post('http://localhost:8080/api/verification/upload', data)
-        .catch((err) => {
-            console.log(err)
-            switch (err.response.status) {
-                case 404 :
-                    message = 'Upload file is invalid';
-                    break;
-                case 500:
-                    message = 'Oops, something went wrong!';
-                    break;
-                default: 
-                    break;
-            }
-            izitoast.error({
-                message: message,
-                position: 'topRight'
-            });
-        })
-        .then((res) => {
-            if (res) {
-                console.log(res.data.file)
-                const array = res.data.file.split('/')
-                console.log(array)
-                this.setState({
-                    files: res.data.file
-                });
-                console.log(this.state.files)
-                izitoast.success({
-                    message: 'Your picture is valid',
-                    position: 'topRight'
-                });
-            }
-        })
-    }
-    
-    
-    onCancel() {
-        this.setState({
-          files: []
-        });
+            .catch((err) => {
+                if (err) {
+                    switch (err.response.status) {
+                        case 404 :
+                            message = 'Upload file is invalid';
+                            break;
+                        case 500:
+                            message = 'Oops, something went wrong!';
+                            break;
+                        default: 
+                            break;
+                    }
+                    izitoast.error({
+                        message: message,
+                        position: 'topRight'
+                    });
+                }
+            })
+            .then((res) => {
+                if (res) {
+                    this.setState({
+                        files: res.data
+                    });
+                    izitoast.success({
+                        message: 'Your picture is valid',
+                        position: 'topRight'
+                    });
+                }
+            })
     }
 
     onSubmit(values) {
         var data = { values: values,
-                    img: this.state.file}
+                     path: this.state.files}
         let message;
         axios.post('http://localhost:8080/api/users', data)
         .catch((err) => {
@@ -109,21 +97,21 @@ class SignUp extends Component {
     render() {
         const { handleSubmit } = this.props;
         const { files } = this.state
+        var path;
+       
         const dropzoneStyle = {
             width: 110,
             height: 100,
             borderRadius: 20,
-            border: "1px solid black",
-            marginTop: -100,
+            border: "none",
+            position: "relative"
           };
-        console.log(files)
-        if (files === null) {
-            console.log('here')
-            var path = 'http://localhost:3000/src/assets/img/photo2.jpg';
-            console.log(path);
-        } else {
-            var path = 'http://localhost:3000/' + files;
-        }
+
+        if (files != null)
+            path = files;
+        else 
+            path = require('../assets/img/photo2.jpg');
+
         return (
             <div className="card__side card__side--back">
                 <FormHeader 
@@ -133,13 +121,14 @@ class SignUp extends Component {
                 <div className="card__form">
                 <div className="card__form--picture">
                     <div className="card__form--picture-block">
-                    <img src={path} alt="img"/>
-                    <Dropzone multiple={false} 
-                    accept="image/*" 
-                    onDrop={this.onDrop.bind(this)} 
-                    style={dropzoneStyle}
-                    >
-                    </Dropzone>
+                        <img className="card__form--picture-block-img" src={path} alt="img"/>
+                        <Dropzone multiple={false} 
+                        accept="image/*" 
+                        onDrop={this.onDrop.bind(this)} 
+                        style={dropzoneStyle}
+                        >
+                        <p className="card__form--picture-block-text">Please select a picture</p>
+                        </Dropzone>
                     </div>
                 </div>
                     <form className="card__form--input" onSubmit={handleSubmit(this.onSubmit.bind(this))}>

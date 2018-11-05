@@ -18,7 +18,7 @@ socketInit(io);
 // ELASTIC SEARCH
 // const elasticsearch = require('elasticsearch');
 // const client = new elasticsearch.Client({  
-//   hosts: [ 'http://localhost:9200']
+//   hosts: [ 'localhost:9200']
 // });
 
 // client.ping({
