@@ -1,13 +1,32 @@
 version: '3'
 services:
-  app:
-    container_name: app
+  server:
+    container_name: server
     restart: always
-    build: .
+    build: ./server
+    command: nodemon server/server.js
     ports:
-      - "8080:8080"
+      - "3000:3000"
+      - "9229:9229"
+    environment:
+      - NODE_ENV=local
+      - ES_HOST=elasticsearch
+      - PORT=3000 
+    volumes:
+      - ./server:/usr/src/app
     links:
       - mongo
+  client:
+    container_name: client
+    build: ./src
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src:/usr/src/app/src
+      - ./public:/usr/src/app/public
+    links:
+      - server
+    command: npm start
   mongo:
     container_name: mongo
     image: mongo
@@ -15,3 +34,18 @@ services:
       - ./data:/data/db
     ports:
       - "27017:27017"
+  elasticsearch: # Elasticsearch Instance
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
+    volumes: # Persist ES data in seperate "esdata" volume
+      - esdata:/usr/share/elasticsearch/data
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    ports: # Expose Elasticsearch ports
+      - "9300:9300"
+      - "9200:9200"
+
+volumes: # Define seperate volume for Elasticsearch data
+  esdata:
