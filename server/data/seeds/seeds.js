@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const keys = require('../config/keys');
+const keys = require('../configdb/keys');
 const mongoURI = keys.mongoURI;
 const Movies = require('../../models/movies.model');
 const async = require('async');

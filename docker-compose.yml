@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  server: 
+    container_name: server
+    build: ./server
+    ports:
+      - "8080:8080" # Expose API port
+      - "9229:9229" # Expose Node process debug port (disable in production)
+    environment: # Set ENV vars
+     - NODE_ENV=development
+     - ES_HOST=elasticsearch
+     - PORT=8080
+    volumes: # Attach to IDE
+      - ./server:/usr/src/app/server
+    command: nodemon server/server.js
+
+  client: 
+    container_name: client
+    build: ./client
+    ports:
+      - "3000:3000" # Forward site to localhost:8080
+    volumes:
+      - ./client/src:/usr/src/app/client/src
+      - ./client/public:/usr/src/app/client/public
+    links:
+      - server
+
+  elasticsearch: # Elasticsearch Instance
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
+    volumes: # Persist ES data in seperate "esdata" volume
+      - esdata:/usr/share/elasticsearch/data
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    ports: # Expose Elasticsearch ports
+      - "9300:9300"
+      - "9200:9200"
+    
+  mongo:
+    container_name: mongodb
+    image: mongo
+    volumes: 
+      - ./server/data:/data
+    ports:
+      - "27017:27017"
+
+volumes: # Define seperate volume for Elasticsearch data
+  esdata:

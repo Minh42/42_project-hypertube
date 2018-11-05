@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const chalk = require('chalk');
-const keys = require('./config/keys');
+const keys = require('../configdb/keys');
 const mongoURI = keys.mongoURI;
 
 var connected = chalk.bold.cyan;
