@@ -8,6 +8,7 @@ import validator from 'validator';
 import izitoast from 'izitoast';
 import tools from '../utils/tools.js';
 
+// import logo from '../assets/img/uploads/843819b5-1f8d-4065-9e74-7e4c0a424461.jpg';
 
 class SignUp extends Component {   
     constructor(props) {
@@ -20,34 +21,53 @@ class SignUp extends Component {
             "password": null
         };
 
-        this.state = { 
-            uploadStatus: false,
-            files: [] 
+        this.state = {
+            files: null 
         }
 
         this.props.initialize(initData);
     }
 
-    async onDrop(files) {
+    onDrop(files) {
+        let message;
         const data = new FormData();
         data.append('file', files[0]);
         data.append('filename', files[0].name);
-        const res = await axios.post('http://localhost:8080/api/users/upload', data);
-
-
-        // if (res.data.file) {
-        //   this.setState({
-        //     uploadStatus: true,
-        //     files: this.state.files.concat(`http://localhost:8080/${res.data.file}`),
-        //   });
-        // } else {
-        //   izitoast.show({
-        //     message: res.data.error,
-        //     position: 'topRight'
-        //   });
-        // }
+        axios.post('http://localhost:8080/api/verification/upload', data)
+            .catch((err) => {
+                if (err) {
+                    switch (err.response.status) {
+                        case 404 :
+                            message = 'Upload file is invalid';
+                            break;
+                        case 500:
+                            message = 'Oops, something went wrong!';
+                            break;
+                        default: 
+                            break;
+                    }
+                    izitoast.error({
+                        message: message,
+                        position: 'topRight'
+                    });
+                }
+            })
+            .then((res) => {
+                if (res) {
+                    console.log(res.data)
+                    this.setState({
+                        files: res.data
+                    });
+                    console.log(this.state.files)
+                    izitoast.success({
+                        message: 'Your picture is valid',
+                        position: 'topRight'
+                    });
+                }
+            })
     }
     
+
     onCancel() {
         this.setState({
           files: []
@@ -57,7 +77,7 @@ class SignUp extends Component {
     onSubmit(values) {
         var data = { values: values,
                     img: this.state.file}
-        var message;
+        let message;
         axios.post('http://localhost:8080/api/users', data)
         .catch((err) => {
             switch (err.response.status) {
@@ -87,6 +107,7 @@ class SignUp extends Component {
 
     render() {
         const { handleSubmit } = this.props;
+        const { files } = this.state
         const dropzoneStyle = {
             width: 110,
             height: 100,
@@ -94,6 +115,15 @@ class SignUp extends Component {
             border: "1px solid black",
             marginTop: -100,
           };
+        console.log(files)
+        if (files === null) {
+            console.log('here')
+            var path = 'http://localhost:3000/src/assets/img/uploads/photo2.jpg';
+            console.log(path);
+        } else {
+            var path = files;
+            console.log(path)
+        }
         return (
             <div className="card__side card__side--back">
                 <FormHeader 
@@ -103,11 +133,12 @@ class SignUp extends Component {
                 <div className="card__form">
                 <div className="card__form--picture">
                     <div className="card__form--picture-block">
-                    <Dropzone accept="image/*" onDrop={this.onDrop.bind(this)} style={dropzoneStyle}>
-                        <div className="is-overlay is-clipped has-text-centered">
-                            <span className="icon is-small"><i className="fas fa-plus-circle"></i></span>
-                            <p className="help">Drag &amp; drop or upload files</p>
-                        </div>
+                    <img src={path} alt="img"/>
+                    <Dropzone multiple={false} 
+                    accept="image/*" 
+                    onDrop={this.onDrop.bind(this)} 
+                    style={dropzoneStyle}
+                    >
                     </Dropzone>
                     </div>
                 </div>

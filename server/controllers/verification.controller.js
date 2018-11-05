@@ -2,6 +2,11 @@ const Users = require('../models/users.model');
 const Token = require('../models/token.model');
 const jwt = require('jsonwebtoken');
 const keys = require('../db/config/keys');
+const fs = require('fs');
+const sharp = require('sharp');
+const tools = require('../../src/utils/tools.js');
+const path = require('path');
+const cloudinary = require('cloudinary');
 
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
@@ -98,5 +103,44 @@ exports.changePassword = (req, res) => {
         })
     } else {
         res.sendStatus(403);
+    }
+}
+
+exports.verifyUpload = (req, res) => {
+    // console.log(req.file.path)
+
+    if (!req.file) {
+        res.sendStatus(500);
+    }
+
+    let buffer = fs.readFileSync(req.file.path)
+    let mimetype = req.file.mimetype;
+    let size = req.file.size;
+
+
+    if(tools.isValid(buffer, mimetype, size)) {
+
+        function UploadCloudinaryPhoto(src, basename) {
+            cloudinary.config({ 
+                cloud_name: keys.CLOUD_NAME, 
+                api_key: keys.CLOUDINARY_API_KEY,
+                api_secret: keys.CLOUDINARY_API_SECRET
+            });
+
+            cloudinary.v2.uploader.upload(src,  {public_id: "hypertube/" + basename}, function(error, result) {
+                if (error) {
+                    res.sendStatus(500);
+                } else {
+                    res.status(200).json(result.secure_url);
+                }
+            });
+        }
+
+        const src = req.file.path;
+        const ext = path.extname(req.file.path);
+        const basename = path.basename(req.file.path, ext);
+        UploadCloudinaryPhoto(src, basename)
+    } else {
+        res.sendStatus(404);   
     }
 }
