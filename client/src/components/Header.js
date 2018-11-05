@@ -8,6 +8,8 @@ import user from '../assets/img/user.jpg';
 import { ReactComponent as Glass} from '../assets/img/svg/magnifying-glass.svg';
 import { ReactComponent as Login} from '../assets/img/svg/login.svg';
 
+import { translate, Trans } from 'react-i18next';
+
 class Header extends Component {
     constructor(props) {
         super(props);
@@ -26,6 +28,8 @@ class Header extends Component {
     }
     
     render() {
+        const { t, i18n } = this.props;
+
         if (this.props.isAuthenticated) {
             return (
                 <header className="header">
@@ -40,9 +44,9 @@ class Header extends Component {
        
                     <nav className="user-nav">
                         <div className="user-nav__langage">
-                            <span className="user-nav__langage-en">EN</span> 
+                            <span className="user-nav__langage-en" onClick={() => i18n.changeLanguage('en')}>EN</span> 
                                 | 
-                            <span className="user-nav__langage-fr">FR</span>
+                            <span className="user-nav__langage-fr" onClick={() => i18n.changeLanguage('fr')}>FR</span>
                         </div>
                         <div className="user-nav__user" onClick={this.editProfile}>
                             <img src={user} alt="user" className="user-nav__user-photo"/>
@@ -53,7 +57,7 @@ class Header extends Component {
                                 <span className="btn btn-secondary__icon">
                                     <Login fill='#eb2f64'/>
                                 </span>
-                                    Signout
+                                    { t('SignOut', { framework: "react-i18next" }) }
                             </button>
                         </div>
                     </nav>
@@ -76,4 +80,4 @@ function mapDispatchToProps(dispatch) {
 	return bindActionCreators({ signOutAction : signOutAction}, dispatch);
 } 
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
+export default translate('common')(withRouter(connect(mapStateToProps, mapDispatchToProps)(Header)));

@@ -11,7 +11,7 @@ verification.post('/changePassword', verificationController.changePassword);
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, './src/assets/img/uploads');
+      cb(null, './uploads');
     },
     filename: (req, file, cb) => {
       const newFilename = `${uuidv4()}${path.extname(file.originalname)}`;

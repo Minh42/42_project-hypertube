@@ -13,6 +13,8 @@ import RenderField from './Form/RenderField';
 import FormHeader from './Form/FormHeader';
 import { ReactComponent as Chevron} from '../assets/img/svg/chevron-thin-down.svg';
 
+import { translate, Trans } from 'react-i18next';
+
 class SignIn extends Component {   
     constructor(props) {
         super(props);
@@ -34,11 +36,12 @@ class SignIn extends Component {
 
     render() {
         const { handleSubmit } = this.props;
+        const { t, i18n } = this.props;
         return (
             <div className="card__side card__side--front">
                 <FormHeader 
-                    heading1 = "Already client? choose your movie"
-                    heading2 = "sign in now"
+                    heading1 = { t('SignIn.title', { framework: "react-i18next" }) }
+                    heading2 = { t('SignIn.subtitle', { framework: "react-i18next" }) }
                 />
                 <div className="card__form">
                     <form className="card__form--input" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
@@ -102,4 +105,4 @@ const reduxFormSignIn = reduxForm({
     form: 'signin'
 })(SignIn);
 
-export default withRouter(connect(null, mapDispatchToProps)(reduxFormSignIn));
+export default translate('common')(withRouter(connect(null, mapDispatchToProps)(reduxFormSignIn)));

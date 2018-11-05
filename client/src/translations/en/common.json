@@ -1,0 +1,20 @@
+{
+    "SignIn": {
+        "title": "Already client? choose your movie",
+        "subtitle": "sign in now",
+        "button": "Sign In",
+        "forgotPassword": "Forgot password?",
+        "newClient": "New client"
+    },
+    "SignUp": {
+        "title": "You want to see our film's selection",
+        "subtitle": "sign up now",
+        "firstname": "Firstname",
+        "lastname": "Lastname",
+        "username": "Username",
+        "email": "Email",
+        "password": "Password",
+        "button": "Sign Up"
+    },
+    "SignOut": "deconnexion"
+}

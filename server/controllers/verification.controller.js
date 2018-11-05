@@ -106,6 +106,7 @@ exports.changePassword = (req, res) => {
 }
 
 exports.verifyUpload = (req, res) => {
+    console.log('here')
     if (!req.file) {
         res.sendStatus(500);
     }
