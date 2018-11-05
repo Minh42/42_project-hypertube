@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { translate, Trans } from 'react-i18next';
 import requireAuth from './utils/HOC/requireAuth';
 
 import Header from './components/Header';
@@ -32,4 +33,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default translate('common')(App);

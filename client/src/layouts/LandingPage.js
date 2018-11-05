@@ -4,6 +4,8 @@ import { ReactComponent as Cycle} from '../assets/img/svg/cycle.svg';
 import SignIn from '../components/SignIn';
 import SignUp from '../components/SignUp';
 
+import { translate, Trans } from 'react-i18next';
+
 class LandingPage extends Component {
     componentDidMount() {
         if (this.props.isAuthenticated) {
@@ -12,12 +14,13 @@ class LandingPage extends Component {
     }
 
     render() {
+        const { t, i18n } = this.props;
         return (
             <div className="landing">
                 <div className="landing__langage">
-                    <span className="landing__langage--en">EN</span> 
+                    <span className="landing__langage--en" onClick={() => i18n.changeLanguage('en')}>EN</span> 
                         | 
-                    <span className="landing__langage--fr">FR</span>
+                    <span className="landing__langage--fr" onClick={() => i18n.changeLanguage('fr')}>FR</span>
                 </div>
     
                 <div className="landing__heading">
@@ -43,4 +46,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, null)(LandingPage);
+export default translate('common')(connect(mapStateToProps, null)(LandingPage));
