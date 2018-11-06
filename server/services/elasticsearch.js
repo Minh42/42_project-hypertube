@@ -1,103 +1,91 @@
-// const client = require('../server').client;
+const index = 'hypertube';
+const type = 'movies';
 const fs = require('fs');
-const path = require('path');
 const JSONStream = require( "JSONStream" );
-const records = require('../data/seeds/others.json');
+const elasticsearch = require('elasticsearch');
 
-// client.cluster.health({},function(err,resp,status) {  
-//   console.log("-- Client Health --",resp);
-// });
+const client = new elasticsearch.Client({  
+  host: '192.168.99.100:9200',
+  log: 'trace'
+});
 
+client.ping({
+  requestTimeout: 30000,
+}, function(err) {
+  if (err) {
+      console.error('Elasticsearch cluster is down!');
+  } else {
+      console.log('Everything is ok');
+  }
+});
 
+client.cluster.health({},function(err,resp,status) {  
+  console.log("-- Client Health --",resp);
+});
 
-// async function resetIndex () {
-//   if (await client.indices.exists({ index })) {
-//     await client.indices.delete({ index })
-//   }
+function readStream(callback) {
+  let bulk = [];
 
-//   await client.indices.create({ index })
-//   await insertMovieMapping()
-// }
+  let stream = fs.createReadStream('./data/seeds/others.json');
+  let jsonStream = JSONStream.parse('*');
+  stream.pipe(jsonStream);
+  jsonStream.on('data', function(data) {
+    bulk.push({index:{
+        _index:index,
+        _type:type
+      }
+    })
+    bulk.push(data);
+  })
+  jsonStream.on('end', function() {
+    callback(bulk);
+  })
+}
 
 // async function insertMovieMapping () {
 //   const schema = {
 //     title: { type: 'keyword' },
 //     author: { type: 'keyword' },
-//     sypnosis: { type: 'text' }
+//     location: { type: 'integer' },
+//     text: { type: 'text' }
 //   }
 
-//   return client.indices.insertMapping({ index, type, body: { properties: schema } })
+//   return client.indices.putMapping({ index, type, body: { properties: schema } })
 // }
 
-// async function readAndInsertMovies () {
-//   try {
-//     // Clear previous ES index
-//     await client.resetIndex()
+async function resetIndex() {
+  if (await client.indices.exists({ index })) {
+    await client.indices.delete({ index })
+  }
 
-//     // Read books directory
-//     let files = fs.readdirSync('./books').filter(file => file.slice(-4) === '.txt')
-//     console.log(`Found ${files.length} Files`)
+  await client.indices.create({ index })
+  // await insertMovieMapping()
+}
 
-//     // Read each book file, and index each paragraph in elasticsearch
-//     for (let file of files) {
-//       console.log(`Reading File - ${file}`)
-//       const filePath = path.join('./books', file)
-//       const { title, author, paragraphs } = parseBookFile(filePath)
-//       await insertBookData(title, author, paragraphs)
-//     }
-//   } catch (err) {
-//     console.error(err)
-//   }
-// }
+resetIndex()
 
-// readAndInsertBooks()
+readStream(function(bulk) {
+  client.bulk({body:bulk}, function(err, res) { 
+    if(err) { 
+        console.log("Failed Bulk operation") ;
+    } else { 
+        console.log("Successfully imported " + bulk.length + " movies"); 
+    } 
+  }); 
+});
 
-// client.indices.create({ 
-//   index: 'hypertube'
-// }, function(error, response, status) {
-//   if (error) {
-//       console.log(error);
-//   } else {
-//       console.log("created a new index", response);
-//   }
-// });
-
-// const bulkIndex = function bulkIndex(index, type, data) {
-//   let bulkBody = [];
-
-//   data.forEach(item => {
-//     bulkBody.push({
-//       index: {
-//         _index: index,
-//         _type: type,
-//         _id: item.id
-//       }
-//     });
-
-//     bulkBody.push(item);
-//   });
-
-// client.bulk({body: bulkBody})
-//   .then(response => {
-//     let errorCount = 0;
-//     response.items.forEach(item => {
-//       if (item.index && item.index.error) {
-//         console.log(++errorCount, item.index.error);
-//       }
-//     });
-//     console.log(
-//       `Successfully indexed ${data.length - errorCount}
-//        out of ${data.length} items`
-//     );
-//   })
-//   .catch(console.err);
-// };
-
-// async function indexData() {
-//   const moviesRaw = await fs.readFileSync('../db/seeds/movies.json');
-//   const movies = JSON.parse(moviesRaw);
-//   console.log(`${movies.length} items parsed from movies file`);
-//   bulkIndex('hypertube', 'movies', movies);
-// };
-
-// indexData();
+module.exports = {
+  queryTerm (term, offset = 0) {
+    const body = {
+      from: offset,
+      query: { match: {
+        text: {
+          query: term,
+          operator: 'and',
+          fuzziness: 'auto'
+        } } },
+      highlight: { fields: { text: {} } }
+    }
+    return client.search({ index, type, body })
+  }
+}

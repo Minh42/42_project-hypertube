@@ -13,6 +13,11 @@ function isValid(buffer, mimetype, size) {
 	}
 }
 
+function getRandomArbitrary(min, max) {
+	return Math.round(Math.random() * (max - min) + min);
+}
+
 module.exports = {
-	isValid : isValid
+	isValid : isValid,
+	getRandomArbitrary : getRandomArbitrary
 }

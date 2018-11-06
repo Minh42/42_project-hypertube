@@ -15,37 +15,6 @@ const server = http.createServer(app);
 // const io = socketIO(server);
 // socketInit(io);
 
-// ELASTIC SEARCH
-const elasticsearch = require('elasticsearch');
-const client = new elasticsearch.Client({  
-  host: '192.168.99.100:9200',
-  log: 'trace'
-});
-
-client.ping({
-  requestTimeout: 30000,
-}, function(err) {
-  if (err) {
-      console.error('Elasticsearch cluster is down!');
-  } else {
-      console.log('Everything is ok');
-  }
-});
-
-/*
-var searchkitRouter = SearchkitExpress.createRouter({
-  host:process.env.ELASTIC_URL || "http://localhost:9200",
-  index:'movies',
-  queryProcessor:function(query, req, res){
-    console.log(query)
-    return query
-  }
-})
-
-app.use("/movie-search", searchkitRouter);
-*/
-
-
 // MIDDLEWARES
 const cors = require('cors');
 const bodyParser = require('body-parser')
@@ -90,4 +59,3 @@ server.listen(PORT, () => {
 })
 
 // module.exports.io = io;
-module.exports.client = client;

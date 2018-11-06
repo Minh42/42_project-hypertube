@@ -7,11 +7,13 @@ import logo from '../assets/img/logo-white.png';
 import user from '../assets/img/user.jpg';
 import { ReactComponent as Glass} from '../assets/img/svg/magnifying-glass.svg';
 import { ReactComponent as Login} from '../assets/img/svg/login.svg';
-import { SearchBox, SearchkitComponent } from "searchkit";
 
+import { SearchkitComponent, SearchkitManager, SearchkitProvider, SearchBox} from "searchkit";
 import { translate, Trans } from 'react-i18next';
 
-class Header extends Component {
+const searchkit = new SearchkitManager("http://192.168.99.100:9200/hypertube");
+
+class Header extends SearchkitComponent {
     constructor(props) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
@@ -36,18 +38,22 @@ class Header extends Component {
                 <header className="header">
                     <img src={logo} alt="Logo" className="logo" />
 
-                    <SearchBox
-                        searchOnChange={true}
-                        queryOptions={{analyzer:"standard"}}
-                        queryFields={["title^5", 'languages', "text"]}
-
-                    />
-                    <form action="#" className="search">
+                    <SearchkitProvider searchkit={searchkit}>
+                        <div>
+                            <SearchBox
+                              searchOnChange={true}
+                            
+                            />
+                            {/* <Hits/> */}
+                        </div>
+                    </SearchkitProvider>
+                  
+                    {/* <form action="#" className="search">
                         <input type="text" className="search__input" placeholder="Search movies"/>
                         <button className="search__button">
                             <Glass fill='#999'/>
                         </button>
-                    </form>
+                    </form> */}
        
                     <nav className="user-nav">
                         <div className="user-nav__langage">

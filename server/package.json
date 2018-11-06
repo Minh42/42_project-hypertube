@@ -35,6 +35,7 @@
     "socket.io": "^2.1.1",
     "thepiratebay": "^1.4.7",
     "uid-safe": "^2.1.5",
+    "underscore": "^1.9.1",
     "uuid": "^3.3.2"
   },
   "devDependencies": {},
