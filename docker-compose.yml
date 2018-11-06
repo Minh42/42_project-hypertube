@@ -35,6 +35,10 @@ services:
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - discovery.type=single-node
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+      - http.cors.allow-methods=OPTIONS, HEAD, GET, POST, PUT, DELETE
+      - http.cors.allow-headers= X-Requested-With,X-Auth-Token,Content-Type,Content-Length
     ports: # Expose Elasticsearch ports
       - "9300:9300"
       - "9200:9200"

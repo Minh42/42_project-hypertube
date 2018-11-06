@@ -7,6 +7,7 @@ import logo from '../assets/img/logo-white.png';
 import user from '../assets/img/user.jpg';
 import { ReactComponent as Glass} from '../assets/img/svg/magnifying-glass.svg';
 import { ReactComponent as Login} from '../assets/img/svg/login.svg';
+import { SearchBox, SearchkitComponent } from "searchkit";
 
 import { translate, Trans } from 'react-i18next';
 
@@ -34,7 +35,13 @@ class Header extends Component {
             return (
                 <header className="header">
                     <img src={logo} alt="Logo" className="logo" />
-       
+
+                    <SearchBox
+                        searchOnChange={true}
+                        queryOptions={{analyzer:"standard"}}
+                        queryFields={["title^5", 'languages', "text"]}
+
+                    />
                     <form action="#" className="search">
                         <input type="text" className="search__input" placeholder="Search movies"/>
                         <button className="search__button">

@@ -23,7 +23,7 @@ function getAllMoviesFromYIFY(i) {
 
 var i = 1;
 
-getAllSeriesFromYIFY(i);
+getAllMoviesFromYIFY(i);
 
 // async.series([
 //     function(callback) {

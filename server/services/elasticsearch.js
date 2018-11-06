@@ -1,8 +1,56 @@
-const client = require('../server').client;
+// const client = require('../server').client;
+const fs = require('fs');
+const path = require('path');
+const JSONStream = require( "JSONStream" );
+const records = require('../data/seeds/others.json');
 
-client.cluster.health({},function(err,resp,status) {  
-  console.log("-- Client Health --",resp);
-});
+// client.cluster.health({},function(err,resp,status) {  
+//   console.log("-- Client Health --",resp);
+// });
+
+
+
+// async function resetIndex () {
+//   if (await client.indices.exists({ index })) {
+//     await client.indices.delete({ index })
+//   }
+
+//   await client.indices.create({ index })
+//   await insertMovieMapping()
+// }
+
+// async function insertMovieMapping () {
+//   const schema = {
+//     title: { type: 'keyword' },
+//     author: { type: 'keyword' },
+//     sypnosis: { type: 'text' }
+//   }
+
+//   return client.indices.insertMapping({ index, type, body: { properties: schema } })
+// }
+
+// async function readAndInsertMovies () {
+//   try {
+//     // Clear previous ES index
+//     await client.resetIndex()
+
+//     // Read books directory
+//     let files = fs.readdirSync('./books').filter(file => file.slice(-4) === '.txt')
+//     console.log(`Found ${files.length} Files`)
+
+//     // Read each book file, and index each paragraph in elasticsearch
+//     for (let file of files) {
+//       console.log(`Reading File - ${file}`)
+//       const filePath = path.join('./books', file)
+//       const { title, author, paragraphs } = parseBookFile(filePath)
+//       await insertBookData(title, author, paragraphs)
+//     }
+//   } catch (err) {
+//     console.error(err)
+//   }
+// }
+
+// readAndInsertBooks()
 
 // client.indices.create({ 
 //   index: 'hypertube'
