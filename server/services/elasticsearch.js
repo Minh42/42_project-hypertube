@@ -26,7 +26,7 @@ client.cluster.health({},function(err,resp,status) {
 function readStream(callback) {
   let bulk = [];
 
-  let stream = fs.createReadStream('./data/seeds/others.json');
+  let stream = fs.createReadStream('./data/seeds/movies.json');
   let jsonStream = JSONStream.parse('*');
   stream.pipe(jsonStream);
   jsonStream.on('data', function(data) {
