@@ -70,6 +70,9 @@ class SignUp extends Component {
         axios.post('http://localhost:8080/api/users', data)
         .catch((err) => {
             switch (err.response.status) {
+                case 400 :
+                    message = 'Please upload a profile picture';
+                    break;
                 case 409 :
                     message = 'Invalid username or email';
                     break;
