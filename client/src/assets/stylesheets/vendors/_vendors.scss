@@ -40,16 +40,37 @@ div.filepicker {
     background-color: transparent;
 }
 
-.sk-toggle {
+// .rc-slider-mark {
+//     width: 500px;
+//     // display: flex;
+//     & span:last-child  {
+//         color: red;
+//         margin: 0;
+//         overflow: hidden;
+//     }
+// }
+
+.sk-pagination-navigation.is-numbered {
+    width: 70%;
+}
+
+.sk-layout__filters {
+    margin: 15px 0px 15px 0px;
+}
+
+.sk-filter--sort-range {
     display: flex;
     justify-content: space-around;
-    color: white;
-}
+    
+    &-1{
+        flex: 1;
+        padding-left:30rem;
+        padding-right:6rem;
+    }
 
-.rc-slider-rail{
-    color: white;
-}
-
-.rc-slider-mark{
-    color: white;
+    &-2{
+        flex: 1;
+        padding-left:6rem;
+        padding-right:30rem;
+    }
 }

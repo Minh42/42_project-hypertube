@@ -1,34 +1,55 @@
-.sk {
-    margin-top: 3rem;
+// .sk {
+//     margin-top: 3rem;
     
-    &-search-box {
-    display: flex;
-    justify-content: center;
-    color: $color-black;
+//     &-search-box {
+//     display: flex;
+//     justify-content: center;
+//     color: white;
 
-        &__text {
-            width: 100%;
-            font-family: inherit;
-            font-size: inherit;
-            color: inherit;
-            background-color: $color-grey-light-2;
-            border: none;
-            padding: 1.25rem 2rem;
-            border-radius: 10rem;
-            transition: all .2s;
-        }
+    //     &__text {
+    //         width: 100%;
+    //         font-family: inherit;
+    //         font-size: inherit;
+    //         color: inherit;
+    //         background-color: $color-grey-light-2;
+    //         border: none;
+    //         padding: 1.25rem 2rem;
+    //         border-radius: 10rem;
+    //         transition: all .2s;
+    //     }
 
-        &__action {
-            visibility: hidden;
-        }
-    }
+    //     &__action {
+    //         visibility: hidden;
+    //     }
+    // }
 
-    &-filter {
-        display: flex;
-        flex-direction: row-reverse;
-        flex-grow: 1;
-    }
-}
+    // &-filter {
+    //     display: flex;
+
+    //     &--sort {
+    //         flex: 2 1 30%;
+    //     }
+
+    //     &--hit {
+    //         flex: 8 1 100%;
+    //     }
+    // }
+
+    // &-toggle {
+    //     display:flex;
+    //     justify-content: space-around;
+    //     color: white;
+    //     font-size: 2rem;
+    //     border: solid 1px white;
+        
+    // }
+
+    // &-select {
+    //     display:flex;
+    //     justify-content: flex-end;
+    // }
+// }
+
 
 
 .movies-list {
