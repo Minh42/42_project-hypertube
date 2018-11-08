@@ -31,7 +31,7 @@ class Curtain extends Component {
                 </div>
                 
                 <div className="prize">
-                    Hello
+                
                 </div>
 
                
