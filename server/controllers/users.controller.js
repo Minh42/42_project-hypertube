@@ -28,7 +28,7 @@ exports.getAllUsers = (req, res) => {
 
 exports.createUser = (req, res) => {
     if (!req.body.path) {
-        res.sendStatus(404);
+        res.sendStatus(400);
     } else {
         Users.findOne({"username": req.body.values.username}, (err, user) => {
             if (err) 
