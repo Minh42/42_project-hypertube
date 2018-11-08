@@ -1,3 +1,36 @@
+.sk {
+    margin-top: 3rem;
+    
+    &-search-box {
+    display: flex;
+    justify-content: center;
+    color: $color-black;
+
+        &__text {
+            width: 100%;
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            background-color: $color-grey-light-2;
+            border: none;
+            padding: 1.25rem 2rem;
+            border-radius: 10rem;
+            transition: all .2s;
+        }
+
+        &__action {
+            visibility: hidden;
+        }
+    }
+
+    &-filter {
+        display: flex;
+        flex-direction: row-reverse;
+        flex-grow: 1;
+    }
+}
+
+
 .movies-list {
     display: flex;
     flex-wrap: wrap;
@@ -19,6 +52,10 @@
             padding-left: 0rem;
             padding-right: 0rem;
             padding-bottom: .5rem;
+        }
+        &--info {
+            // display: flex;
+            font-size: 1.3rem;
         }
     }
 

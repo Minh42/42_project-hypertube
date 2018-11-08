@@ -13,7 +13,7 @@ import RenderField from './Form/RenderField';
 import FormHeader from './Form/FormHeader';
 import { ReactComponent as Chevron} from '../assets/img/svg/chevron-thin-down.svg';
 
-import { translate, Trans } from 'react-i18next';
+import { translate } from 'react-i18next';
 
 class SignIn extends Component {   
     constructor(props) {

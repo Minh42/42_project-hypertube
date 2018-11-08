@@ -5,19 +5,18 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import logo from '../assets/img/logo-white.png';
 import user from '../assets/img/user.jpg';
-import { ReactComponent as Glass} from '../assets/img/svg/magnifying-glass.svg';
+// import { ReactComponent as Glass} from '../assets/img/svg/magnifying-glass.svg';
 import { ReactComponent as Login} from '../assets/img/svg/login.svg';
 
-import { SearchkitComponent, SearchkitManager, SearchkitProvider, SearchBox} from "searchkit";
 import { translate, Trans } from 'react-i18next';
 
-const searchkit = new SearchkitManager("http://192.168.99.100:9200/hypertube");
 
-class Header extends SearchkitComponent {
+class Header extends Component {
     constructor(props) {
         super(props);
+
         this.onSubmit = this.onSubmit.bind(this);
-        this.editProfile = this.editProfile.bind(this);     
+        this.editProfile = this.editProfile.bind(this); 
     }
 
     editProfile() {
@@ -37,16 +36,6 @@ class Header extends SearchkitComponent {
             return (
                 <header className="header">
                     <img src={logo} alt="Logo" className="logo" />
-
-                    <SearchkitProvider searchkit={searchkit}>
-                        <div>
-                            <SearchBox
-                              searchOnChange={true}
-                            
-                            />
-                            {/* <Hits/> */}
-                        </div>
-                    </SearchkitProvider>
                   
                     {/* <form action="#" className="search">
                         <input type="text" className="search__input" placeholder="Search movies"/>
