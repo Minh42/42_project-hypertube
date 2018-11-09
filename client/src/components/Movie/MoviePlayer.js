@@ -64,43 +64,43 @@ class MoviePlayer extends Component {
         }
     }
 
-    playPause = () => { 
-        if (this.refs.video.paused) 
-            this.refs.video.play(); 
-        else 
-            this.refs.video.pause(); 
-    } 
-    
-    makeBig = () => { 
-        this.refs.video.width = 560; 
-    } 
-    
-    makeSmall = () => { 
-        this.refs.video.width = 320; 
-    } 
-    
-    makeNormal = () => { 
-        this.refs.video.width = 420; 
-    }
-    
-    render () {
-        return (
-            <div>
-                <video ref="video" controls>
-                    
-                </video>
-                <button onClick={this.playPause}>Play/Pause</button> 
-                <button onClick={this.makeBig}>Big</button>
-                <button onClick={this.makeNormal}>Normal</button>
-                <button onClick={this.makeSmall}>Small</button>
-            </div>        
-        )
-    }
-}
+     playPause = () => { 
+         if (this.refs.video.paused) 
+             this.refs.video.play(); 
+         else 
+             this.refs.video.pause(); 
+     } 
+  
+     makeBig = () => { 
+         this.refs.video.width = 560; 
+     } 
+  
+     makeSmall = () => { 
+         this.refs.video.width = 320; 
+     } 
+  
+     makeNormal = () => { 
+         this.refs.video.width = 420; 
+     }
+  
+     render () {
+         return (
+             <div>
+                 <video ref="video" controls>
+                  
+                 </video>
+                 <button onClick={this.playPause}>Play/Pause</button> 
+                 <button onClick={this.makeBig}>Big</button>
+                 <button onClick={this.makeNormal}>Normal</button>
+                 <button onClick={this.makeSmall}>Small</button>
+             </div>        
+         )
+     }
+ }
 
 const mapStateToProps = state => {
     return {
-      //  stream_link: state.download.stream_link
+      // stream_link: state.download.stream_link
     }
 };
 

@@ -6,7 +6,7 @@ import axios from 'axios';
 import * as reducerDownload from '../reducers/reducer_download';
 import { connect } from 'react-redux';
 
-class Curtain extends Component {    
+ class Curtain extends Component {    
 
     state = {
         open: false,
@@ -37,9 +37,9 @@ class Curtain extends Component {
         console.log("Chaneg")
     }
 
-    render() {
-        return (
-            <div className="curtain">    
+     render() {
+         return (
+             <div className="curtain">    
          
                 <input ref="openCurtain" type="checkbox" id="toggle-2"/>
                 <div className="left-panel">
@@ -61,7 +61,7 @@ class Curtain extends Component {
                     </div>
                 </div>
                 
-                <div className="right-panel">
+                 <div className="right-panel">
                     <img src={movie} alt="Logo" className="right-panel__movie-poster"/> 
                 </div>
                 
@@ -71,10 +71,10 @@ class Curtain extends Component {
 
                
 
-            </div>
-        );
+             </div>
+        );     
     }
-}
+ }
 
 const mapStateToProps = null;
 

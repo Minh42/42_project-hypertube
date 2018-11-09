@@ -14,7 +14,8 @@
 @import "components/header";
 @import "components/button";
 @import "components/form";
-@import "components/movies-list";
+@import "components/movies-search";
 @import "components/curtain-player";
 
-@import "vendors/vendors";
+@import "vendors/dropzone";
+@import "vendors/input-range";

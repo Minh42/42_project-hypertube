@@ -26,22 +26,22 @@ services:
   #   links:
   #     - server
 
-  # elasticsearch: # Elasticsearch Instance
-  #   container_name: elasticsearch
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
-  #   volumes: # Persist ES data in seperate "esdata" volume
-  #     - esdata:/usr/share/elasticsearch/data
-  #   environment:
-  #     - bootstrap.memory_lock=true
-  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-  #     - discovery.type=single-node
-  #     - http.cors.enabled=true
-  #     - http.cors.allow-origin=*
-  #     - http.cors.allow-methods=OPTIONS, HEAD, GET, POST, PUT, DELETE
-  #     - http.cors.allow-headers= X-Requested-With,X-Auth-Token,Content-Type,Content-Length
-  #   ports: # Expose Elasticsearch ports
-  #     - "9300:9300"
-  #     - "9200:9200"
+  elasticsearch: # Elasticsearch Instance
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+    volumes: # Persist ES data in seperate "esdata" volume
+      - esdata:/usr/share/elasticsearch/data
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+      - http.cors.allow-methods=OPTIONS, HEAD, GET, POST, PUT, DELETE
+      - http.cors.allow-headers= X-Requested-With,X-Auth-Token,Content-Type,Content-Length
+    ports: # Expose Elasticsearch ports
+      - "9300:9300"
+      - "9200:9200"
     
   mongo:
     container_name: mongodb
