@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { signOutAction } from '../reducers/reducer_auth';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
+import SearchBar from './Header/SearchBar';
 import logo from '../assets/img/logo-white.png';
 import user from '../assets/img/user.jpg';
-// import { ReactComponent as Glass} from '../assets/img/svg/magnifying-glass.svg';
 import { ReactComponent as Login} from '../assets/img/svg/login.svg';
 
 import { translate, Trans } from 'react-i18next';
@@ -36,14 +36,9 @@ class Header extends Component {
             return (
                 <header className="header">
                     <img src={logo} alt="Logo" className="logo" />
+
+                    <SearchBar />
                   
-                    {/* <form action="#" className="search">
-                        <input type="text" className="search__input" placeholder="Search movies"/>
-                        <button className="search__button">
-                            <Glass fill='#999'/>
-                        </button>
-                    </form> */}
-       
                     <nav className="user-nav">
                         <div className="user-nav__langage">
                             <span className="user-nav__langage-en" onClick={() => i18n.changeLanguage('en')}>EN</span> 
