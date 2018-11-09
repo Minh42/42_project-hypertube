@@ -3,6 +3,7 @@ const router = express.Router();
 const usersRouter = require('./usersRoutes');
 const verificationRouter = require('./verificationRoutes');
 const authRouter = require('./authRoutes');
+const searchRouter = require('./searchRoutes');
 const downloadRouter = require('./downloadRoute');
 
 router.get('/', (req, res) => {

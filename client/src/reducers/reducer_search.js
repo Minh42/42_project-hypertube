@@ -22,6 +22,31 @@ export default function(state = INITIAL_STATE, action) {
     }
 }
 
+export function initMoviesAction() {
+	return (dispatch) => {
+        dispatch({
+            type: SEARCH_REQUEST
+        });
+        axios.post('http://localhost:8080/api/search/movies')
+            .catch((err) => {
+                if(err) {
+                    dispatch({
+                        type: SEARCH_ERROR
+                    });
+                }
+            })
+            .then(res => {
+                if(res) {
+                    console.log(res.data.movies)
+                    dispatch({ 
+                        type: SEARCH_SUCCESS,
+                        payload: res.data.movies
+                    });
+                } 
+            })
+	};
+}
+
 export function searchAction(input) {
 	return (dispatch) => {
         dispatch({

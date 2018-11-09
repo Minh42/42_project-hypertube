@@ -1,0 +1,105 @@
+// .formRange {
+//     margin: 0 auto;
+//     padding: 30px 0px 0;
+  
+//     // @media (min-width: 800px) {
+//     //   max-width: 60%;
+//     // }
+//   }
+  
+.input-range {
+    margin-bottom: 50px;
+}
+
+.input-range__slider {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: rgb(216, 3, 81);
+    border: 1px solid rgb(216, 3, 81);
+    border-radius: 100%;
+    cursor: pointer;
+    display: block;
+    height: 1rem;
+    margin-left: -0.5rem;
+    margin-top: -0.65rem;
+    outline: none;
+    position: absolute;
+    top: 50%;
+    -webkit-transition: box-shadow 0.3s ease-out, -webkit-transform 0.3s ease-out;
+    transition: box-shadow 0.3s ease-out, -webkit-transform 0.3s ease-out;
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, -webkit-transform 0.3s ease-out;
+    width: 1rem;
+}
+    
+  
+.input-range__slider-container {
+    -webkit-transition: left 0.3s ease-out;
+    transition: left 0.3s ease-out; 
+}
+  
+.input-range__label {
+    font-family: "Helvetica Neue", san-serif;
+    font-size: 0.7rem;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    white-space: nowrap;
+}
+  
+.input-range__label--min,
+.input-range__label--max {
+    bottom: -2.8rem;
+    position: absolute;
+}
+  
+.input-range__label--min {
+    left: 0;
+}
+  
+.input-range__label--max {
+    right: 0; 
+}
+  
+.input-range__label--value {
+    position: absolute;
+    top: -1.8rem; 
+}
+    
+.input-range__track {
+    background: rgb(216, 3, 81);
+    border-radius: 0.3rem;
+    display: block;
+    height: 0.3rem;
+    position: relative;
+    -webkit-transition: left 0.3s ease-out, width 0.3s ease-out;
+    transition: left 0.3s ease-out, width 0.3s ease-out;
+}
+
+.input-range--disabled .input-range__track {
+    background: rgb(216, 3, 81); 
+}
+  
+.input-range__track--background {
+    left: 0;
+    margin-top: 1rem;
+    position: absolute;
+    right: 0;
+    top: 90%;
+}
+  
+.input-range__track--active {
+    background: white; 
+}
+  
+.input-range {
+    height: 1rem;
+    position: relative;
+    width: 100%; 
+}
+
+.labelRange {
+    font-family: 'Lato', sans-serif;
+    font-size: 1em;
+    margin-bottom: 15%;
+}

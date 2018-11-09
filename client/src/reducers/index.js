@@ -3,14 +3,16 @@ import { reducer as formReducer } from 'redux-form';
 import authReducer from './reducer_auth';
 import socketReducer from './reducer_socket';
 import searchReducer from './reducer_search';
+import filtersReducer from './reducer_filters';
 import { UNAUTHENTICATED } from './reducer_auth';
 
 // mapping of our state
 const appReducer = combineReducers({
     form: formReducer,
     auth: authReducer,
-    socket : socketReducer,
-    search: searchReducer
+    socket: socketReducer,
+    search: searchReducer,
+    filters: filtersReducer
 });
 
 const rootReducer = (state, action) => {
