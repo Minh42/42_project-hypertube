@@ -3,25 +3,45 @@ import movie from '../assets/img/movie-poster.jpg';
 import { ReactComponent as Play} from '../assets/img/svg/controller-play.svg';
 import MoviePlayer from './Movie/MoviePlayer';
 import axios from 'axios';
+import * as reducerDownload from '../reducers/reducer_download';
+import { connect } from 'react-redux';
 
 class Curtain extends Component {    
 
-    handleDownload = () => {
+    state = {
+        open: false,
+        stream_link: ""
+    }
+
+    handleDownload = async () => {
         console.log("dl")
-        axios.post("http://localhost:8080/api/download/", {
-            title: "Final Fantasy VII: Advent Children",
-            imdbid: "tt0385700",
+        const response = await axios.post("http://localhost:8080/api/download/torrent", {
+            title: "Deadpool 2",
+            imdbid: "tt5463162",
             langue: "eng",
-            link: "https://yts.am/torrent/download/38DE5EFB131A480B5F82D918AEEBFEE8E18F78AF",
+            link: "https://yts.am/torrent/download/18F05A35A335909B384D1D40D79EFEC3E71BCEE0",
             magnet: ""
         })
+        console.log("response", response)
+        if (response && response.status === 200) {
+            console.log("ok")
+            this.refs.openCurtain.checked = true;
+            const stream_link = response.data.stream_link;
+            this.setState({stream_link: stream_link})
+            //this.props.onStartStreaming({stream_link: stream_link}, this.props.history);
+        }
+        this.setState({open: true})
+    }
+
+    handleChange = () => {
+        console.log("Chaneg")
     }
 
     render() {
         return (
             <div className="curtain">    
          
-                {/*<input type="checkbox" id="toggle-2"/>*/}
+                <input ref="openCurtain" type="checkbox" id="toggle-2"/>
                 <div className="left-panel">
                     <img src={movie} alt="Logo" className="left-panel__movie-poster"/> 
                     <div className="left-panel__movie-information">
@@ -46,7 +66,7 @@ class Curtain extends Component {
                 </div>
                 
                 <div className="prize">
-                    <MoviePlayer />
+                    <MoviePlayer stream_link={this.state.stream_link} />
                 </div>
 
                
@@ -56,4 +76,12 @@ class Curtain extends Component {
     }
 }
 
-export default Curtain;
+const mapStateToProps = null;
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onStartStreaming: ({stream_link}, history) => dispatch(reducerDownload.startStreaming({stream_link}, history))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Curtain);

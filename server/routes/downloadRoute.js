@@ -13,6 +13,6 @@ const downloadController = require('../controllers/download.controller');
             link: "https://yts.am/torrent/download/38DE5EFB131A480B5F82D918AEEBFEE8E18F78AF",
             magnet: ""*/
 
-download.post('/', downloadController.start)
-
+download.post('/torrent', downloadController.torrent)
+download.post('/stream', downloadController.stream)
 module.exports = download;
