@@ -9,7 +9,7 @@ function getDataFromIMDB(movie, imdb_id) {
             movie['writer'] = res.data.Writer;  
             movie['actors'] = res.data.Actors;
             movie['imdb_rating'] = res.data.imdbRating;
-            fs.appendFileSync("eztv.json", JSON.stringify(movie), 'utf8');
+            fs.appendFileSync("movies.json", JSON.stringify(movie), 'utf8');
         })
         .catch(error => {
             console.log(error.response)
