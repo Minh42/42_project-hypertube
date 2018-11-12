@@ -11,7 +11,7 @@ const INITIAL_STATE = {
     currentUser: null
   };
   
-  export default function(state = INITIAL_STATE, action) {
+export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
     //   case 'REHYDRATE':
     //     return {...state, currentUser: action.payload.currentUser
@@ -25,7 +25,7 @@ const INITIAL_STATE = {
       default:
         return state;
     }
-  }
+}
 
 export function signInAction({username, password}, history) {
 	return (dispatch) => {
