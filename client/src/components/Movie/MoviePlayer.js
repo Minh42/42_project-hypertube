@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Hls from 'hls.js';
 import { connect } from 'react-redux';
 import * as reducerDownload from '../../reducers/reducer_download';
+import Loader from '../Loader/Loader';
+import axios from 'axios';
 
 class MoviePlayer extends Component {
 
@@ -31,19 +33,31 @@ class MoviePlayer extends Component {
         } */
     }
 
-    componentDidUpdate() {
+
+
+    async componentDidUpdate() {
         console.log('enter in didupdate');
         if (this.state.started === false && this.props.stream_link !== "") {
-            
+            await this.setState({started: true});
             console.log('in didupdate ');
+            
             if(Hls.isSupported()) {
                 console.log('here');
-                var hls = new Hls();
+                var config = { 
+                    xhrSetup: function (xhr,url) { 
+                //    xhr.withCredentials = true; // do send cookie 
+                    //xhr.setRequestHeader("Access-Control-Allow-Headers","Content-Type, Accept, X-Requested-With");
+                     //xhr.setRequestHeader("Access-Control-Allow-Origin","http://localhost:3000"); 
+                //     xhr.setRequestHeader("Access-Control-Allow-Credentials","true"); 
+                    } 
+                }; 
+                     var hls = new Hls(config);
                 console.log(this.props.stream_link);
                 hls.loadSource(this.props.stream_link);
                 hls.attachMedia(this.refs.video);
                 hls.on(Hls.Events.MANIFEST_PARSED,function() {
-                    this.refs.video.play();
+                    console.log("HLS VIDEO")
+                    
               });
 
              }
@@ -57,43 +71,56 @@ class MoviePlayer extends Component {
                 this.refs.video.src = this.props.stream_link;
                 console.log(this.refs.video.src);
                 this.refs.video.addEventListener('loadedmetadata',function() {
-                    this.refs.video.play();
+                    console.log("PAS HLS")
+                    //this.refs.video.play();
                 });
             } 
+            
+            this.refs.video.currentTime = 1;
+           /* const t = await axios.get('http://localhost:8080/my-files/d.vtt');
+            console.log("GET", t)
+            this.refs.track1.src=t.data.data;*/
+
+            this.refs.video.play();
+            
             //this.setState({started: true});
         }
     }
 
-     playPause = () => { 
-         if (this.refs.video.paused) 
-             this.refs.video.play(); 
-         else 
-             this.refs.video.pause(); 
-     } 
-  
-     makeBig = () => { 
-         this.refs.video.width = 560; 
-     } 
-  
-     makeSmall = () => { 
-         this.refs.video.width = 320; 
-     } 
-  
-     makeNormal = () => { 
-         this.refs.video.width = 420; 
-     }
+
   
      render () {
          return (
-             <div>
-                 <video ref="video" controls>
-                  
+            <div>
+
+            {this.state.started
+            ?
+            <div>
+            <div>
+                 <video ref="video" crossOrigin="anomymous" controls>
+                 <track ref="track1" label="English" kind="subtitles" src="http://localhost:8080/my-files/torrent-stream/18f05a35a335909b384d1d40d79efec3e71bcee0/fr.vtt" default /> 
+                 
                  </video>
-                 <button onClick={this.playPause}>Play/Pause</button> 
-                 <button onClick={this.makeBig}>Big</button>
-                 <button onClick={this.makeNormal}>Normal</button>
-                 <button onClick={this.makeSmall}>Small</button>
-             </div>        
+                
+             </div>
+             <div>
+             List of torrents
+                 <ul>
+                     <li>1080</li>
+                     <li>720</li>
+                 </ul>
+             
+
+            </div>
+             </div>
+             :
+            <div>
+                <Loader />
+             
+
+             </div>
+            }
+             </div>       
          )
      }
  }

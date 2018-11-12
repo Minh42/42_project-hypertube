@@ -4,9 +4,13 @@ const request = require('request')
 const Download = require('../models/download.model');
 const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
+const OS = require('opensubtitles-api');
+const srt2vtt = require('srt-to-vtt');
+const stringSimilarity = require('string-similarity');
+const axios = require('axios');
 /*
     initiated = on a commence a telecharge
-    stream = on a assew pour streamer
+    stream = on a assez pour streamer
     downloaded = telechargement termine
     sliced = sliced completed
 */
@@ -36,6 +40,101 @@ async function asyncForEach(array, callback) {
 let movie = null;
 let httpRes = null;
 
+const getBestSub = async (name, subtitles) => {
+    let sub = await subtitles.map(s => {
+        return s.filename ;
+    })
+    var matches = stringSimilarity.findBestMatch(name, sub);
+    
+    let best = await subtitles.filter(s => {
+        if (s.filename === matches.bestMatch.target)
+            return s ;
+    })
+
+    console.log("SUB BEST MATCHES", best)
+    return best ;
+}
+
+const addSubtitles = (movieFile, res, folder_path) => {
+    const OpenSubtitles = new OS({
+        useragent:'v1',
+        username: 'hyper42',
+        password: 'Test123*',
+        ssl: true
+    });
+    console.log("FIND SUBTITLES ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''", movie.imdbid)
+    OpenSubtitles.login()
+        .then(response => {
+            OpenSubtitles.search({
+                sublanguageid: ['eng', 'fre'].join(),       // Can be an array.join, 'all', or be omitted.
+              
+                extensions: ['srt', 'vtt'], // Accepted extensions, defaults to 'srt'.
+                limit: '3',                 // Can be 'best', 'all' or an
+                                           
+                imdbid: movie.imdbid,           // 'tt528809' is fine too.
+                fps: '23.96',               // Number of frames per sec in the video.
+               
+            }).then(async subtitles => {
+                console.log("GET SUBTITLES ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
+                // an array of objects, no duplicates (ordered by
+                // matching + uploader, with total downloads as fallback)
+                
+
+
+
+                const fr = await getBestSub(movieFile.name, subtitles.fr);
+                const en = await getBestSub(movieFile.name, subtitles.en);
+
+                if (fr.length > 0) { 
+                    const conf = {
+                        headers: {
+                            'Content-Type': 'application/json;charset=UTF-8',
+                        }
+                    }
+                    
+                    const frFile = await axios.get(fr[0].url, conf)
+                    //const srtFr = await fs.readFileSync(fr[0].url);
+                   // console.log("SRTTTTTTTTttttttt", frFile.data);
+
+                    await fs.writeFileSync(`${folder_path}/fr.srt`, frFile.data, 'utf8');
+                    fs.createReadStream(`${folder_path}/fr.srt`)
+                    .pipe(srt2vtt())
+                    .pipe(fs.createWriteStream(`${folder_path}/fr.vtt`))
+
+
+
+
+
+
+
+                  /*  srt2vtt(frFile.data, async (err, vttData) => {
+                        console.log('ooooooooooooooooooooooooooooooooooooo');
+                        
+                        console.log("WRIIIIIIiiiiiiiiinnnnnggggggggg////////////////////////////////////////////////////////////////////////////")
+                        await fs.writeFileSync(`${folder_path}/fr.vtt`, vttData);
+                    });*/
+                }
+
+                /*const srtEn = await fs.readFileSync(en[0].url);
+                srt2vtt(srtEn, (err, vttData) => {
+                    if (err) throw new Error(err);
+                    fs.writeFileSync(`${folder_path}/en.vtt`, vttData);
+                });
+*/
+                res.status(200).json({
+                    message: "can start streaming",
+                    stream_link: `http://localhost:8080${folder_path.substring(1)}/out.m3u8`,
+                    fr: `http://localhost:8080${folder_path.substring(1)}/fr.vtt`,
+                    en: `http://localhost:8080${folder_path.substring(1)}/en.vtt`
+                });
+            });
+        })
+        .catch(err => {
+            console.log('CTACHHHHHHHHHH')
+            console.log(err);
+        });
+}
+
 const slicing = (path, to, res, folder_path, movieFile) => {
     let sent = -1;
     console.log("##########################    SLICING", path, to, sent)
@@ -63,14 +162,14 @@ const slicing = (path, to, res, folder_path, movieFile) => {
             fs.stat(`${folder_path}/out.m3u8`, function(err, stat) {
                     
                 if(err == null) {
-                    console.log('////////////////////////// File exists can send 200 ///////////////////////////', sent);
+                    
                     if (sent === -1) {
                         sent = 1;
                         console.log(' STREAM LINK SENT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-                        res.status(200).json({
-                            message: "can start streaming",
-                            stream_link: `http://localhost:8080${folder_path.substring(1)}/out.m3u8`
-                        });
+
+                        addSubtitles(movieFile, res, folder_path);
+
+                        
                     }
                 } else {
                     console.log('Some other error: ', err.code);
@@ -120,14 +219,15 @@ const dl = (magnet, res) => {
             console.log('filename:', file.name);
             console.log('filepath:', file.path);
             console.log('filelength:', file.length);
-            var stream = file.createReadStream({start: 5000, end: file.length});
+            var stream = file.createReadStream({start: 0, end: 15});
+            file.createReadStream({start: 16, end: file.length});
             // stream is readable stream to containing the file content
         });
         //engine.files[0].select()
     });
 
     engine.on('download', (pieceindex, d) => {
-        console.log('Enter download', d);
+       // console.log('Enter download', d);
         if (pieceindex <= 15) {
             status = status | Math.pow(2, pieceindex);
             console.log("STATUS", status, pieceindex)
@@ -215,16 +315,39 @@ const dl = (magnet, res) => {
     })
 }
 
-exports.torrent = async (req, res) => {
-    console.log(req.body)
-   // httpRes = res
-    movie = JSON.parse(JSON.stringify(req.body));
-    let magnet = "";
+manageTorrentMagnet = (req, res) => {
     if (req.body.link !== "") {
         convertToMagnet(req.body.link, res);
     } else {
         //magnet = req.body.magnet;
         dl(req.body.magnet, res);
+    }
+}
+
+exports.torrent = async (req, res) => {
+    console.log(req.body)
+   // httpRes = res
+    movie = JSON.parse(JSON.stringify(req.body));
+    let magnet = "";
+    const inMongo = await Download.findOne({imdbid: req.body.imdbid})
+    console.log("RET", inMongo)
+    if (inMongo === null) {
+        manageTorrentMagnet(req, res);
+    } else {
+        fs.stat(`${inMongo.folder_path}/out.m3u8`, function(err, stat) {
+            if(err == null) {
+                res.status(200).json({
+                    message: "can start streaming",
+                    stream_link: `http://localhost:8080${inMongo.folder_path.substring(1)}/out.m3u8`
+                });
+                // return ;
+            } else {
+                manageTorrentMagnet(req, res);
+                console.log('Some other error: ', err.code);
+            }
+        });
+        
+        
     }
 }
 
