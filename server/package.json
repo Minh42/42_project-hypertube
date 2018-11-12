@@ -37,7 +37,6 @@
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
     "request": "^2.88.0",
-    "searchkit-express": "^0.2.1",
     "socket.io": "^2.1.1",
     "thepiratebay": "^1.4.7",
     "torrent-stream": "^1.1.0",
