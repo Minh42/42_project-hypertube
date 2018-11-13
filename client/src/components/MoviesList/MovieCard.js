@@ -6,13 +6,13 @@ class MovieCard extends Component {
     render() {
         const { movie, showMovieDetails } = this.props;
         return (
-            <div key={movie._id} className="movies-list-container">
-                <img src={movie._source.large_cover_image} alt={movie._source.title} className="movies-list-container__item" onClick={() => showMovieDetails(movie)}/>
+            <div key={movie.id} className="movies-list-container">
+                <img src={movie._source.image} alt={movie._source.title} className="movies-list-container__item" onClick={() => showMovieDetails(movie)}/>
                 <div className="movies-list-container__info">
                     <div>{movie._source.title} ({movie._source.year})</div>
-                    <Rating
+                    {/* <Rating
                         rating={movie._source.rating} 
-                    />
+                    /> */}
                 </div>
             </div>
         );
