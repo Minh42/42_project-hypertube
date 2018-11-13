@@ -11,6 +11,7 @@ exports.getAllMovies = (req, res) => {
         }
     }, function (error, response, status) {
         if (error) {
+            console.log(error);
             res.sendStatus(500);
         } else {
             res.json({movies: response.hits.hits})

@@ -13,14 +13,19 @@ import Rating from './MoviesList/Rating';
         open: false,
         stream_link: ""
     }
+
+    componentDidMount() {
+        console.log(this.props.selectedMovie)
+    }
  
     handleDownload = async () => {
         console.log("dl")
+        this.setState({open: true})
         const response = await axios.post("http://localhost:8080/api/download/torrent", {
-            title: "Deadpool 2",
-            imdbid: "tt5463162",
-            langue: "eng",
-            link: "https://yts.am/torrent/download/18F05A35A335909B384D1D40D79EFEC3E71BCEE0",
+            title: this.props.selectedMovie._source.title,
+            imdbid: this.props.selectedMovie._source.imdbid,
+            langue: this.props.selectedMovie._source.language,
+            link: this.props.selectedMovie._source.torrents[0].url,
             magnet: ""
         })
         console.log("response", response)
@@ -31,7 +36,7 @@ import Rating from './MoviesList/Rating';
             this.setState({stream_link: stream_link})
             //this.props.onStartStreaming({stream_link: stream_link}, this.props.history);
         }
-        this.setState({open: true})
+        //this.setState({open: true})
     }
 
     handleChange = () => {
@@ -59,9 +64,9 @@ import Rating from './MoviesList/Rating';
                             {movie._source.title} ({movie._source.year})
                         </div>
                         <div className="left-panel__movie-rating">
-                            <Rating
+                            {/* <Rating
                                 rating={movie._source.rating} 
-                            />
+                            /> */}
                         </div>
                         <div className="left-panel__movie-genres">
                             {this.movieGenres(movie._source.genres)}
@@ -91,7 +96,7 @@ import Rating from './MoviesList/Rating';
     }
  }
 
- function mapStateToProps(state) {
+function mapStateToProps(state) {
     return {
         selectedMovie: state.movies.selectedMovie
     };
