@@ -15,6 +15,7 @@ import Rating from './MoviesList/Rating';
     }
 
     componentDidMount() {
+        console.log('dduifehiudsiauhfisdhfiosdj');
         console.log(this.props.selectedMovie)
     }
  
@@ -23,7 +24,7 @@ import Rating from './MoviesList/Rating';
         this.setState({open: true})
         const response = await axios.post("http://localhost:8080/api/download/torrent", {
             title: this.props.selectedMovie._source.title,
-            imdbid: this.props.selectedMovie._source.imdbid,
+            imdbid: this.props.selectedMovie._source.imdb,
             langue: this.props.selectedMovie._source.language,
             link: this.props.selectedMovie._source.torrents[0].url,
             magnet: ""
