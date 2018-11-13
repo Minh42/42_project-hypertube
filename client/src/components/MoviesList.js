@@ -9,6 +9,7 @@ import { initMoviesAction } from '../reducers/reducer_search';
 class MoviesList extends Component {
 
     componentDidMount() {
+        console.log('here')
         this.props.initMoviesAction();
     }
 
@@ -18,13 +19,13 @@ class MoviesList extends Component {
                 <div className="movies-list">
                     {this.props.movies.map(movie => (
                         <div key={movie._id} className="movies-list__container">
-                        <img src={movie._source.large_cover_image} alt="Logo" className="movies-list__item" />
-                        <div className="movies-list__container--info">
-                            <div>{movie._source.title}</div>
-                            <div>{movie._source.year}</div>
-                            <div>{movie._source.rating}</div>
+                            <img src={movie._source.large_cover_image} alt="Logo" className="movies-list__item" />
+                            <div className="movies-list__container--info">
+                                <div>{movie._source.title}</div>
+                                <div>{movie._source.year}</div>
+                                <div>{movie._source.rating}</div>
                             </div>
-                        </div>
+                         </div>
                     ))}
                 </div>
             )
