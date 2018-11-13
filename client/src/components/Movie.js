@@ -5,6 +5,7 @@ import MoviePlayer from './Movie/MoviePlayer';
 import axios from 'axios';
 import * as reducerDownload from '../reducers/reducer_download';
 import { connect } from 'react-redux';
+import Rating from './MoviesList/Rating';
 
  class Curtain extends Component {    
 
@@ -12,7 +13,7 @@ import { connect } from 'react-redux';
         open: false,
         stream_link: ""
     }
-
+ 
     handleDownload = async () => {
         console.log("dl")
         const response = await axios.post("http://localhost:8080/api/download/torrent", {
@@ -37,46 +38,59 @@ import { connect } from 'react-redux';
         console.log("Chaneg")
     }
 
+    movieGenres(genres) {
+        return genres.map(genre => {
+            return(
+                <div className="left-panel__movie-genres-item">[{genre}]</div>
+            )
+        })
+    }
+
      render() {
-         return (
-             <div className="curtain">    
-         
+        const movie = this.props.selectedMovie;
+        console.log(movie)
+        return (
+            <div className="curtain">    
                 <input ref="openCurtain" type="checkbox" id="toggle-2"/>
+
                 <div className="left-panel">
-                    <img src={movie} alt="Logo" className="left-panel__movie-poster"/> 
+                    <img src={movie._source.large_cover_image} alt="Logo" className="left-panel__movie-poster"/> 
                     <div className="left-panel__movie-information">
                         <div className="left-panel__movie-title">
-                            Venom (2018)
+                            {movie._source.title} ({movie._source.year})
+                        </div>
+                        <div className="left-panel__movie-rating">
+                            <Rating
+                                rating={movie._source.rating} 
+                            />
+                        </div>
+                        <div className="left-panel__movie-genres">
+                            {this.movieGenres(movie._source.genres)}
                         </div>
                         <div className="left-panel__movie-description">
-                            Des symbiotes débarquent sur la Terre, parmi eux, Venom, qui va s'allier avec Eddie Brock. De son côté, un puissant scientifique tente de faire évoluer l'humanité avec mes symbiotes, le duo d'anti-héros va devoir tout faire pour l'arrêter !
+                            {movie._source.synopsis}
                         </div>
-                        <button className="btn btn-secondary btn-secondary--red">
-                            <span className="btn btn-secondary__icon">
-                                <Play fill="#fff" />
-                            </span>
-                                Play
-                        </button>
-                        <button onClick={this.handleDownload}> Download </button>
                     </div>
                 </div>
                 
                  <div className="right-panel">
-                    <img src={movie} alt="Logo" className="right-panel__movie-poster"/> 
+                    <img src={movie._source.large_cover_image} alt="Logo" className="right-panel__movie-poster"/> 
                 </div>
                 
                 <div className="prize">
                     <MoviePlayer stream_link={this.state.stream_link} />
                 </div>
 
-               
-
              </div>
         );     
     }
  }
 
-const mapStateToProps = null;
+ function mapStateToProps(state) {
+    return {
+        selectedMovie: state.movies.selectedMovie
+    };
+}
 
 const mapDispatchToProps = (dispatch) => {
     return {

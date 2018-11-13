@@ -40,27 +40,57 @@
         align-items: center;
     }
 
-    &__container {
+    &-container {
         flex: 0 1 20%;
         padding-left: .25rem;
         padding-right: .25rem;
         padding-bottom: .05rem;
+        position: relative;
+    
       
         @include respond(phone) {
             padding-left: 0rem;
             padding-right: 0rem;
             padding-bottom: .5rem;
         }
-        &--info {
-            // display: flex;
-            font-size: 1.3rem;
+
+        &__item {
+            width: 100%;
+            height: auto;
+
+            &:hover {
+                opacity: .4;
+            }
+
+            &:hover + .movies-list-container__info {
+                z-index: 1;
+            }
+
+            &:not(:hover) + .movies-list-container__info {
+                opacity: .4;
+                z-index: -1;
+            }
+        }
+
+        &__info {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            background-color: black;
+            opacity: 0.8;
+            padding: 2rem;
+            pointer-events: none;
+
+            &-icon {
+                width: 1.5rem;
+            }
         }
     }
 
-    &__item {
-        width: 100%;
-        height: auto;
-    }
+
 }
+
 
 
