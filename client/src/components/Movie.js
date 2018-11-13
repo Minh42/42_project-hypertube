@@ -7,6 +7,12 @@ import * as reducerDownload from '../reducers/reducer_download';
 import { connect } from 'react-redux';
 import Rating from './MoviesList/Rating';
 
+function convertMinsToHrsMins(mins) {
+    let h = Math.floor(mins / 60);
+    let m = mins % 60;
+    return (h + "h" + m).toString();
+  }
+
  class Curtain extends Component {    
 
     state = {
@@ -48,19 +54,23 @@ import Rating from './MoviesList/Rating';
 
      render() {
         const movie = this.props.selectedMovie;
-        console.log(movie)
+        const duration = convertMinsToHrsMins(movie._source.runtime)
         return (
             <div className="curtain">    
-                <input ref="openCurtain" type="checkbox" onChange={this.handleChange} checked={this.state.open} id="toggle-2"/>
+                <input ref="openCurtain" type="checkbox" id="toggle-2"/>
+
                 <div className="left-panel">
                     <img src={movie._source.large_cover_image} alt="Logo" className="left-panel__movie-poster"/> 
                     <div className="left-panel__movie-information">
                         <div className="left-panel__movie-title">
                             {movie._source.title} ({movie._source.year})
                         </div>
+                        <div className="left-panel__movie-runtime">
+                            {duration}
+                        </div>
                         <div className="left-panel__movie-rating">
                             <Rating
-                                rating={movie._source.rating} 
+                            rating={movie._source.rating} 
                             />
                         </div>
                         <div className="left-panel__movie-genres">
@@ -69,12 +79,6 @@ import Rating from './MoviesList/Rating';
                         <div className="left-panel__movie-description">
                             {movie._source.synopsis}
                         </div>
-                        <button disabled={this.state.open} onClick={this.handleDownload} className="btn btn-secondary btn-secondary--red">
-                            <span className="btn btn-secondary__icon">
-                                <Play fill="#fff" />
-                            </span>
-                                Play
-                        </button>
                     </div>
                 </div>
                 
@@ -83,7 +87,7 @@ import Rating from './MoviesList/Rating';
                 </div>
                 
                 <div className="prize">
-                    <MoviePlayer stream_link={this.state.stream_link} en={this.state.en} fr={this.state.fr} />
+                    <MoviePlayer stream_link={this.state.stream_link} />
                 </div>
 
              </div>
