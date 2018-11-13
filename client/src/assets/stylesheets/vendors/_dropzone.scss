@@ -39,38 +39,3 @@ div.filepicker {
 .dropzone .dz-preview.dz-image-preview {
     background-color: transparent;
 }
-
-// .rc-slider-mark {
-//     width: 500px;
-//     // display: flex;
-//     & span:last-child  {
-//         color: red;
-//         margin: 0;
-//         overflow: hidden;
-//     }
-// }
-
-.sk-pagination-navigation.is-numbered {
-    width: 70%;
-}
-
-.sk-layout__filters {
-    margin: 15px 0px 15px 0px;
-}
-
-.sk-filter--sort-range {
-    display: flex;
-    justify-content: space-around;
-    
-    &-1{
-        flex: 1;
-        padding-left:30rem;
-        padding-right:6rem;
-    }
-
-    &-2{
-        flex: 1;
-        padding-left:6rem;
-        padding-right:30rem;
-    }
-}
