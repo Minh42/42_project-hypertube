@@ -9,12 +9,6 @@ const app = express();
 const server = http.createServer(app);
 const {task} = require('./utils/crontask');
 
-// SOCKET IO
-// const socketIO = require('socket.io');
-// const socketInit = require('./socket');
-// const io = socketIO(server);
-// socketInit(io);
-
 // MIDDLEWARES
 const cors = require('cors');
 const bodyParser = require('body-parser')

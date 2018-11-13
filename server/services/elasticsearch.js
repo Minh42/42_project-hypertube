@@ -65,10 +65,8 @@ async function resetIndex() {
 
 
   readStream(function(bulk) {
-    console.log('iciiiii');
     client.bulk({body:bulk}, function(err, res) { 
       if(err) { 
-         console.log(err);
           console.log("Failed Bulk operation") ;
       } else { 
           console.log("Successfully imported " + bulk.length + " movies"); 

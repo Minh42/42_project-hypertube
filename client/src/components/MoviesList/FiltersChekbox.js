@@ -70,6 +70,7 @@ class FiltersCheckbox extends Component {
   mapGenders() {
     const genresFilters = genres.map((genre, i) => (
         <Checkbox
+          key={i}
           label={genre}
           onClick={() => this.handleClick(genre)}
           checked={this.props.genreFilter}

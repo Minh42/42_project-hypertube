@@ -7,7 +7,7 @@ class HomePage extends Component {
         if (!this.props.isAuthenticated) {
             this.props.history.push('/');
         } else {
-            // this.props.joinSocket(this.props.currentUser[0].user_id);
+            console.log('do something')
         }
     }
 
