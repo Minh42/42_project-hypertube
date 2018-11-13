@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 
     handleDownload = async () => {
         console.log("dl")
+        this.setState({open: true})
         const response = await axios.post("http://localhost:8080/api/download/torrent", {
             title: "Deadpool 2",
             imdbid: "tt5463162",
@@ -23,14 +24,16 @@ import { connect } from 'react-redux';
             magnet: ""
         })
         console.log("response", response)
+        
+        //this.setState({open: true})
         if (response && response.status === 200) {
             console.log("ok")
-            this.refs.openCurtain.checked = true;
+            
             const stream_link = response.data.stream_link;
             this.setState({stream_link: stream_link})
             //this.props.onStartStreaming({stream_link: stream_link}, this.props.history);
         }
-        this.setState({open: true})
+        //this.setState({open: true})
     }
 
     handleChange = () => {
@@ -41,7 +44,7 @@ import { connect } from 'react-redux';
          return (
              <div className="curtain">    
          
-                <input ref="openCurtain" type="checkbox" id="toggle-2"/>
+                <input ref="openCurtain" type="checkbox" onChange={this.handleChange} checked={this.state.open} id="toggle-2"/>
                 <div className="left-panel">
                     <img src={movie} alt="Logo" className="left-panel__movie-poster"/> 
                     <div className="left-panel__movie-information">
@@ -51,13 +54,13 @@ import { connect } from 'react-redux';
                         <div className="left-panel__movie-description">
                             Des symbiotes débarquent sur la Terre, parmi eux, Venom, qui va s'allier avec Eddie Brock. De son côté, un puissant scientifique tente de faire évoluer l'humanité avec mes symbiotes, le duo d'anti-héros va devoir tout faire pour l'arrêter !
                         </div>
-                        <button className="btn btn-secondary btn-secondary--red">
+                        <button onClick={this.handleDownload} className="btn btn-secondary btn-secondary--red">
                             <span className="btn btn-secondary__icon">
                                 <Play fill="#fff" />
                             </span>
                                 Play
                         </button>
-                        <button onClick={this.handleDownload}> Download </button>
+
                     </div>
                 </div>
                 

@@ -7,10 +7,7 @@ exports.getAllMovies = (req, res) => {
         type: 'movies',
         body: {
             from : 0, 
-            size : 10000
-        },
-        "collapse" : {
-            "field" : "imdb"
+            size : 100
         }
     }, function (error, response, status) {
         if (error) {
@@ -30,6 +27,9 @@ exports.getMovies = (req, res) => {
             size : 10000,
             query: {
                 match: { "title": req.body.input }
+            },
+            "collapse" : {
+                "field" : "imdb_code"
             }
         },
         "collapse" : {

@@ -100,6 +100,7 @@
     "url-loader": "1.1.1",
     "uuid": "^3.3.2",
     "validator": "^10.8.0",
+    "video-react": "^0.13.1",
     "webpack": "4.19.1",
     "webpack-dev-server": "3.1.9",
     "webpack-manifest-plugin": "2.0.4",
