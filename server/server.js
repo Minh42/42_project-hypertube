@@ -5,9 +5,9 @@ const routes = require('./routes/index.js')
 const db = require('./data/db/connection.js');
 const keys = require('./data/config/keys');
 const PORT = process.env.PORT || 8080;
-
 const app = express();
 const server = http.createServer(app);
+const {task} = require('./utils/crontask');
 
 // SOCKET IO
 // const socketIO = require('socket.io');
@@ -21,8 +21,10 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const passport = require('passport')
 
+task();
+
 const middlewares = [
-  cors(),
+  //cors(),
   bodyParser.json(),
   bodyParser.urlencoded({ extended: true }),
   passport.initialize(),
@@ -34,21 +36,38 @@ const middlewares = [
   })
 ]
 
-app.use(middlewares)
-app.use('/', routes)
-app.use('/static', express.static(path.join(__dirname, 'assets')));
-app.use('/my-files', express.static(path.join(__dirname, 'my-files')));
-
-app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.header('Access-Control-Allow-Credentials', true);
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,PROPFIND');
+  res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
   next();
 });
 
-app.use((req, res, next) => {
-  res.status(404).send("Sorry can't find that!")
-})
+
+//app.use(cors({origin: 'http://localhost:3000'}));
+
+app.use(middlewares)
+
+app.use('/static', express.static(path.join(__dirname, 'assets')));
+//app.use('/vtt', cors({origin: 'http://localhost:3000'}), express.static(path.join(__dirname, 'my-files')))
+
+app.use('/my-files', express.static(path.join(__dirname, 'my-files')));
+
+/*app.use(express.static(path.join(__dirname, './build')));
+
+app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, './build/index.html'));
+});
+
+app.get('*', (req,res) => {
+  res.sendFile(path.join(__dirname, './build/index.html'));
+});
+*/
+app.use('/', routes);
+
+////app.use((req, res, next) => {
+ // res.status(404).send("Sorry can't find that!")
+//})
 
 app.use((err, req, res, next) => {
   console.error(err.stack)

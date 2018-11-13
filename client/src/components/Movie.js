@@ -51,8 +51,7 @@ import Rating from './MoviesList/Rating';
         console.log(movie)
         return (
             <div className="curtain">    
-                <input ref="openCurtain" type="checkbox" id="toggle-2"/>
-
+                <input ref="openCurtain" type="checkbox" onChange={this.handleChange} checked={this.state.open} id="toggle-2"/>
                 <div className="left-panel">
                     <img src={movie._source.large_cover_image} alt="Logo" className="left-panel__movie-poster"/> 
                     <div className="left-panel__movie-information">
@@ -70,6 +69,12 @@ import Rating from './MoviesList/Rating';
                         <div className="left-panel__movie-description">
                             {movie._source.synopsis}
                         </div>
+                        <button disabled={this.state.open} onClick={this.handleDownload} className="btn btn-secondary btn-secondary--red">
+                            <span className="btn btn-secondary__icon">
+                                <Play fill="#fff" />
+                            </span>
+                                Play
+                        </button>
                     </div>
                 </div>
                 
@@ -78,7 +83,7 @@ import Rating from './MoviesList/Rating';
                 </div>
                 
                 <div className="prize">
-                    <MoviePlayer stream_link={this.state.stream_link} />
+                    <MoviePlayer stream_link={this.state.stream_link} en={this.state.en} fr={this.state.fr} />
                 </div>
 
              </div>

@@ -1,6 +1,7 @@
 const client = require('../services/elasticsearch');
 
 exports.getAllMovies = (req, res) => {
+    console.log(req);
     client.search({  
         index: 'hypertube',
         type: 'movies',
@@ -30,6 +31,9 @@ exports.getMovies = (req, res) => {
             "collapse" : {
                 "field" : "imdb_code"
             }
+        },
+        "collapse" : {
+            "field" : "imdb"
         }
     }, function (error, response, status) {
         if (error) {

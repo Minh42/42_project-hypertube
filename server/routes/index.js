@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 router.use('/api/users', usersRouter);
 router.use('/api/verification', verificationRouter);
 router.use('/api/auth', authRouter);
-router.use('/api/search', searchRouter);
+// router.use('/api/search', searchRouter);
 router.use('/api/download', downloadRouter);
 
 module.exports = router;

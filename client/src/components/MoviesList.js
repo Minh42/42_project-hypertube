@@ -13,11 +13,10 @@ import { selectMovie } from '../reducers/reducer_movies';
 class MoviesList extends Component {
 	constructor(props) {
         super(props);
-        
-		this.showMovieDetails = this.showMovieDetails.bind(this);
 	}
 
     componentDidMount() {
+        console.log('here')
         this.props.initMoviesAction();
     }
 
