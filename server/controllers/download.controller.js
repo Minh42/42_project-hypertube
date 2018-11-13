@@ -7,7 +7,7 @@ const fs = require('fs');
 const OS = require('opensubtitles-api');
 const srt2vtt = require('srt-to-vtt');
 const stringSimilarity = require('string-similarity');
-const axios = require('axios');
+const https = require('https');
 /*
     initiated = on a commence a telecharge
     stream = on a assez pour streamer
@@ -37,10 +37,18 @@ async function asyncForEach(array, callback) {
   }
 
 
+updateDb = (updated) => {
+    Download.findOneAndUpdate({imdbid: movie.imdbid}, updated, {upsert:true}, function(err, doc){
+        if (err) console.log("error");
+        else console.log("succesfully updated");
+    });
+}
+
 let movie = null;
-let httpRes = null;
+let hostname = null;
 
 const getBestSub = async (name, subtitles) => {
+    if (subtitles === null || subtitles === undefined) { return [];}
     let sub = await subtitles.map(s => {
         return s.filename ;
     })
@@ -49,9 +57,7 @@ const getBestSub = async (name, subtitles) => {
     let best = await subtitles.filter(s => {
         if (s.filename === matches.bestMatch.target)
             return s ;
-    })
-
-    console.log("SUB BEST MATCHES", best)
+    });
     return best ;
 }
 
@@ -76,61 +82,59 @@ const addSubtitles = (movieFile, res, folder_path) => {
                
             }).then(async subtitles => {
                 console.log("GET SUBTITLES ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
-                // an array of objects, no duplicates (ordered by
-                // matching + uploader, with total downloads as fallback)
-                
-
-
 
                 const fr = await getBestSub(movieFile.name, subtitles.fr);
                 const en = await getBestSub(movieFile.name, subtitles.en);
-
-                if (fr.length > 0) { 
-                    const conf = {
-                        headers: {
-                            'Content-Type': 'application/json;charset=UTF-8',
-                        }
-                    }
-                    
-                    const frFile = await axios.get(fr[0].url, conf)
-                    //const srtFr = await fs.readFileSync(fr[0].url);
-                   // console.log("SRTTTTTTTTttttttt", frFile.data);
-
-                    await fs.writeFileSync(`${folder_path}/fr.srt`, frFile.data, 'utf8');
-                    fs.createReadStream(`${folder_path}/fr.srt`)
+                const frLink = `${folder_path.substring(1)}/fr.vtt`;
+                const enLink = `${folder_path.substring(1)}/en.vtt`;
+                const streamLink = `http://${hostname}:8080${folder_path.substring(1)}/out.m3u8`;
+                if (en.length > 0) { 
+                    const fileen = fs.createWriteStream(`${folder_path}/en.srt`);
+                    https.get(en[0].url, function(response) {
+                    response.pipe(fileen);
+                    fs.createReadStream(`${folder_path}/en.srt`)
                     .pipe(srt2vtt())
-                    .pipe(fs.createWriteStream(`${folder_path}/fr.vtt`))
-
-
-
-
-
-
-
-                  /*  srt2vtt(frFile.data, async (err, vttData) => {
-                        console.log('ooooooooooooooooooooooooooooooooooooo');
-                        
-                        console.log("WRIIIIIIiiiiiiiiinnnnnggggggggg////////////////////////////////////////////////////////////////////////////")
-                        await fs.writeFileSync(`${folder_path}/fr.vtt`, vttData);
-                    });*/
+                    .pipe(fs.createWriteStream(`${folder_path}/en.vtt`))
+                    
+                    if (fr.length > 0) {
+                        const filefr = fs.createWriteStream(`${folder_path}/fr.srt`);
+                        https.get(fr[0].url, function(response) {
+                            response.pipe(filefr);
+                            fs.createReadStream(`${folder_path}/fr.srt`)
+                            .pipe(srt2vtt())
+                            .pipe(fs.createWriteStream(`${folder_path}/fr.vtt`))
+                            updateDb({$set:{en: enLink, fr: frLink}})
+                            res.status(200).json({
+                                message: "can start streaming",
+                                stream_link: streamLink,
+                                fr: `http://${hostname}:8080${frLink}`,
+                                en: `http://${hostname}:8080${enLink}`
+                            });
+                        });
+                    } else {
+                        updateDb({$set:{en: enLink, fr: ""}})
+                        res.status(200).json({
+                            message: "can start streaming",
+                            stream_link: streamLink,
+                            fr: ``,
+                            en: `http://${hostname}:8080${enLink}`
+                        });
+                        return ;
+                    }
+                    });
+                } else {
+                    updateDb({$set:{en: "", fr: ""}})
+                    res.status(200).json({
+                        message: "can start streaming",
+                        stream_link: streamLink,
+                        fr: ``,
+                        en: ``
+                    });
+                    return ;
                 }
-
-                /*const srtEn = await fs.readFileSync(en[0].url);
-                srt2vtt(srtEn, (err, vttData) => {
-                    if (err) throw new Error(err);
-                    fs.writeFileSync(`${folder_path}/en.vtt`, vttData);
-                });
-*/
-                res.status(200).json({
-                    message: "can start streaming",
-                    stream_link: `http://localhost:8080${folder_path.substring(1)}/out.m3u8`,
-                    fr: `http://localhost:8080${folder_path.substring(1)}/fr.vtt`,
-                    en: `http://localhost:8080${folder_path.substring(1)}/en.vtt`
-                });
             });
         })
         .catch(err => {
-            console.log('CTACHHHHHHHHHH')
             console.log(err);
         });
 }
@@ -139,43 +143,31 @@ const slicing = (path, to, res, folder_path, movieFile) => {
     let sent = -1;
     console.log("##########################    SLICING", path, to, sent)
     ffmpeg(path, { timeout: 432000 }).addOptions([
-        //  '-profile:v baseline', // baseline profile (level 3.0) for H264 video codec
-        //  '-level 3.0', 
        //   '-s 640x360',          // 640px width, 360px height output video dimensions
           '-start_number 0',     // start the first .ts segment at index 0
           '-hls_time 2',        // 10 second segment duration
           '-hls_list_size 0',    // Maxmimum number of playlist entries (0 means all entries/infinite)
-       //   '-f hls'               // HLS format
         ]).output(to).on('end', () => {
             console.log("slicing completed")
-            const updated = {imdbid: movie.imdbid, folder_path: folder_path,
-                complete_path: `${folder_path}/${movieFile.path}`, title: movieFile.name, langue: movie.langue,
-                status: 'sliced'
+            const updated = {
+                $set: {status: 'sliced'}
             }
-            Download.findOneAndUpdate({imdbid: movie.imdbid}, updated, {upsert:true}, function(err, doc){
-                if (err) console.log("error");
-                else console.log("succesfully updated");
-            });
+            updateDb(updated);
         })
         .on('progress', function(progress) {
             console.log('Processing: ' + progress.percent + '% done', `${folder_path}/out.m3u8`);
-            fs.stat(`${folder_path}/out.m3u8`, function(err, stat) {
-                    
-                if(err == null) {
-                    
-                    if (sent === -1) {
+            if (sent === -1) {
+                fs.stat(`${folder_path}/out.m3u8`, function(err, stat) {
+                        
+                    if(err == null) {
                         sent = 1;
                         console.log(' STREAM LINK SENT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-
                         addSubtitles(movieFile, res, folder_path);
-
-                        
+                    } else {
+                        console.log('Some other error: ', err.code);
                     }
-                } else {
-                    console.log('Some other error: ', err.code);
-                }
-            });
-
+                });
+            }
         })
         .run()
 }
@@ -194,13 +186,14 @@ const convertToMagnet = async (url, res) => {
             try {
                 const result = parseTorrent(response.body);
                 const uri = parseTorrent.toMagnetURI(result);
-                console.log(uri);
                 dl(uri, res);
-            } catch (err) { console.log("error while to magnet")}
+            } catch (err) { 
+                console.log("error while to magnet") 
+            }
         }
     }
     const onResponse = onRes(res);
-   await request({ url: url, encoding: null }, onResponse);
+    await request({ url: url, encoding: null }, onResponse);
 }
 
 const dl = (magnet, res) => {
@@ -210,40 +203,29 @@ const dl = (magnet, res) => {
     let movieFile = null;
     let folder_path = "";
 
-    
     const engine = torrentStream(magnet, options);
 
     engine.on('ready', () => {
         console.log("engine is ready");
         engine.files.forEach(function(file) {
-            console.log('filename:', file.name);
-            console.log('filepath:', file.path);
-            console.log('filelength:', file.length);
             var stream = file.createReadStream({start: 0, end: 15});
             file.createReadStream({start: 16, end: file.length});
-            // stream is readable stream to containing the file content
         });
-        //engine.files[0].select()
     });
 
     engine.on('download', (pieceindex, d) => {
-       // console.log('Enter download', d);
         if (pieceindex <= 15) {
             status = status | Math.pow(2, pieceindex);
             console.log("STATUS", status, pieceindex)
-            const updated = {imdbid: movie.imdbid, folder_path: folder_path,
-                complete_path: `${folder_path}/${movieFile.path}`, title: movieFile.name, langue: movie.langue,
-                status: 'stream'
+            const updated = { 
+                $set: {
+                    status: 'stream' }
             }
-            Download.findOneAndUpdate({imdbid: movie.imdbid}, updated, {upsert:true}, function(err, doc){
-                if (err) console.log("error");
-                else console.log("succesfully updated");
-            });
+            updateDb(updated);
             
             if (status === 0b1111111111111111) {
                 console.log("First parts dl --------------------------------")
                 fs.stat(`${folder_path}/${movieFile.path}`, function(err, stat) {
-                    
                     if(err == null) {
                         console.log('*************************************************************************************************** SLICING', d);
                         slicing(`${folder_path}/${movieFile.path}`, `${folder_path}/out.m3u8`, res, folder_path, movieFile);
@@ -252,10 +234,8 @@ const dl = (magnet, res) => {
                         console.log('Some other error: ', err.code);
                     }
                 });
-                
             }
         }
-    
         console.log(pieceindex);
         console.log(`${engine.swarm.downloaded/1000/1000}mb`)
     }) 
@@ -264,17 +244,10 @@ const dl = (magnet, res) => {
         nbFileSaved++;
         console.log("downloaded completed", `${nbFileSaved}/${nbFile}`)
         if (nbFileSaved === nbFile) {
-            const toAddInDb = new Download({imdbid: movie.imdbid, folder_path: folder_path,
-                complete_path: `${folder_path}/${movieFile.path}`, title: movieFile.name, langue: movie.langue,
-                status: 'downloaded'
-            });
-            toAddInDb.save(err => {
-                if (err) {
-                    console.log("error not added in db")
-                } else {
-                    console.log("added in db")
-                }
-            })
+            const updated = { $set: {
+                status: 'downloaded'}
+            }
+            updateDb(updated)
         }
     })
 
@@ -292,26 +265,20 @@ const dl = (magnet, res) => {
         nbFile = meta.files.length;
         console.log("NB FILES", nbFile);
         movieFile = JSON.parse(JSON.stringify(ff));
-        console.log("MOVIE", movieFile);
-        const updated = {imdbid: movie.imdbid, folder_path: folder_path,
-            complete_path: `${folder_path}/${movieFile.path}`, title: movieFile.name, langue: movie.langue,
-            status: 'initiated'
-        }
-        Download.findOneAndUpdate({imdbid: movie.imdbid}, updated, {upsert:true}, function(err, doc){
-            if (err) console.log("error");
-            else console.log("succesfully updated");
-        });/*
+        console.log("MOVIEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", movieFile);
         const toAddInDb = new Download({imdbid: movie.imdbid, folder_path: folder_path,
             complete_path: `${folder_path}/${movieFile.path}`, title: movieFile.name, langue: movie.langue,
-            status: 'initiated'
+            en: '', fr: '',
+            status: 'initiated',
+            date_created: Date.now(), date_last_seen: Date.now()
         });
         toAddInDb.save(err => {
             if (err) {
-                console.log("error not added in db")
+                console.log("error not added in db", err)
             } else {
                 console.log("added in db")
             }
-        })*/
+        })
     })
 }
 
@@ -319,28 +286,28 @@ manageTorrentMagnet = (req, res) => {
     if (req.body.link !== "") {
         convertToMagnet(req.body.link, res);
     } else {
-        //magnet = req.body.magnet;
         dl(req.body.magnet, res);
     }
 }
 
 exports.torrent = async (req, res) => {
-    console.log(req.body)
-   // httpRes = res
+    console.log("HOSTNAME", req.hostname)
+    hostname = req.hostname;
     movie = JSON.parse(JSON.stringify(req.body));
-    let magnet = "";
     const inMongo = await Download.findOne({imdbid: req.body.imdbid})
     console.log("RET", inMongo)
     if (inMongo === null) {
         manageTorrentMagnet(req, res);
     } else {
+        updateDb({$set: {date_last_seen: Date.now()}})
         fs.stat(`${inMongo.folder_path}/out.m3u8`, function(err, stat) {
-            if(err == null) {
+            if(err === null) {
                 res.status(200).json({
                     message: "can start streaming",
-                    stream_link: `http://localhost:8080${inMongo.folder_path.substring(1)}/out.m3u8`
+                    stream_link: `http://${hostname}:8080${inMongo.folder_path.substring(1)}/out.m3u8`,
+                    en: inMongo.en,
+                    fr: inMongo.fr
                 });
-                // return ;
             } else {
                 manageTorrentMagnet(req, res);
                 console.log('Some other error: ', err.code);

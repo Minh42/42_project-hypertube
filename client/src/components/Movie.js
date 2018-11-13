@@ -10,30 +10,28 @@ import { connect } from 'react-redux';
 
     state = {
         open: false,
-        stream_link: ""
+        stream_link: "",
+        en: "",
+        fr: ""
     }
 
     handleDownload = async () => {
         console.log("dl")
         this.setState({open: true})
         const response = await axios.post("http://localhost:8080/api/download/torrent", {
-            title: "Deadpool 2",
-            imdbid: "tt5463162",
+            title: "The kool kid",
+            imdbid: "7725538",
             langue: "eng",
-            link: "https://yts.am/torrent/download/18F05A35A335909B384D1D40D79EFEC3E71BCEE0",
-            magnet: ""
+            link: "",
+            magnet: "magnet:?xt=urn:btih:18aa3e283f07418cb98a50ce9020e54fa118d7c7&dn=The.Cool.Kids.S01E06.720p.HDTV.x265-MiNX%5Beztv%5D&tr=udp://tracker.coppersurfer.tk:80&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://exodus.desync.com:6969"
         })
         console.log("response", response)
-        
-        //this.setState({open: true})
-        if (response && response.status === 200) {
-            console.log("ok")
-            
+        if (response && response.status === 200) {            
             const stream_link = response.data.stream_link;
-            this.setState({stream_link: stream_link})
-            //this.props.onStartStreaming({stream_link: stream_link}, this.props.history);
+            const en = response.data.en;
+            const fr = response.data.fr;
+            this.setState({stream_link: stream_link, en: en, fr: fr})
         }
-        //this.setState({open: true})
     }
 
     handleChange = () => {
@@ -54,7 +52,7 @@ import { connect } from 'react-redux';
                         <div className="left-panel__movie-description">
                             Des symbiotes débarquent sur la Terre, parmi eux, Venom, qui va s'allier avec Eddie Brock. De son côté, un puissant scientifique tente de faire évoluer l'humanité avec mes symbiotes, le duo d'anti-héros va devoir tout faire pour l'arrêter !
                         </div>
-                        <button onClick={this.handleDownload} className="btn btn-secondary btn-secondary--red">
+                        <button disabled={this.state.open} onClick={this.handleDownload} className="btn btn-secondary btn-secondary--red">
                             <span className="btn btn-secondary__icon">
                                 <Play fill="#fff" />
                             </span>
@@ -69,7 +67,7 @@ import { connect } from 'react-redux';
                 </div>
                 
                 <div className="prize">
-                    <MoviePlayer stream_link={this.state.stream_link} />
+                    <MoviePlayer stream_link={this.state.stream_link} en={this.state.en} fr={this.state.fr} />
                 </div>
 
                

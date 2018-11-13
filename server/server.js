@@ -5,9 +5,9 @@ const routes = require('./routes/index.js')
 const db = require('./data/db/connection.js');
 const keys = require('./data/config/keys');
 const PORT = process.env.PORT || 8080;
-
 const app = express();
 const server = http.createServer(app);
+const {task} = require('./utils/crontask');
 
 // SOCKET IO
 // const socketIO = require('socket.io');
@@ -20,6 +20,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const passport = require('passport')
+
+task();
 
 const middlewares = [
   //cors(),
