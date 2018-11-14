@@ -36,7 +36,8 @@ const middlewares = [
 
 app.use(middlewares)
 app.use('/', routes)
-app.use('/static', express.static(path.join(__dirname, 'assets')))
+app.use('/static', express.static(path.join(__dirname, 'assets')));
+app.use('/my-files', express.static(path.join(__dirname, 'my-files')));
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
