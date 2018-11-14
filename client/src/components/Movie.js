@@ -12,13 +12,21 @@ class Curtain extends Component {
         open: false,
         stream_link: ""
     }
+<<<<<<< HEAD
+=======
+
+    componentDidMount() {
+        console.log('dduifehiudsiauhfisdhfiosdj');
+        console.log(this.props.selectedMovie)
+    }
+>>>>>>> dd852d446927160e72eb30248d5ec08d896a655b
  
     handleDownload = async () => {
         console.log("dl")
         this.setState({open: true})
         const response = await axios.post("http://localhost:8080/api/download/torrent", {
             title: this.props.selectedMovie._source.title,
-            imdbid: this.props.selectedMovie._source.imdbid,
+            imdbid: this.props.selectedMovie._source.imdb,
             langue: this.props.selectedMovie._source.language,
             link: this.props.selectedMovie._source.torrents[0].url,
             magnet: ""

@@ -14,5 +14,4 @@ const downloadController = require('../controllers/download.controller');
             magnet: ""*/
 
 download.post('/torrent', downloadController.torrent)
-download.post('/stream', downloadController.stream)
 module.exports = download;
