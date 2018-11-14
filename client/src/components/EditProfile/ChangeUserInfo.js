@@ -4,9 +4,12 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import RenderField from '../Form/RenderField';
 import FormHeader from '../Form/FormHeader';
+import { signOutAction } from '../../reducers/reducer_auth';
+import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import izitoast from 'izitoast';
 import validator from 'validator';
+
 
 class ChangeUserInfo extends Component {
     componentDidMount() {
@@ -21,23 +24,40 @@ class ChangeUserInfo extends Component {
         }
     }
     
-    changeUserInformation(values) {
+    async changeUserInformation(values) {
+        let message;
         let userID = this.props.user._id;
-        axios.put('http://localhost:8080/api/users/' + userID, values)
-            .catch((err) => {
-                if (err) {
+
+        try {
+            const res = await axios.put('http://localhost:8080/api/users/' + userID, values);
+            izitoast.success({
+                message: res.data.message,
+                position: 'topRight'
+            });
+        } catch (err) {
+            switch (err.response.status) {
+                case 401 :
                     izitoast.error({
-                        message: "Oops, something went wrong!",
+                        message: 'Please retry to login',
                         position: 'topRight'
                     });
-                }
-            })
-            .then((res) => {
-                izitoast.success({
-                    message: res.data.message,
-                    position: 'topRight'
-                });
-            })
+                    this.props.signOutAction(this.props.history);
+                    break;
+                case 403:
+                    izitoast.error({
+                        message: 'Please retry to login',
+                        position: 'topRight'
+                    });
+                    this.props.signOutAction(this.props.history);
+                    break;
+                default: 
+                    izitoast.error({
+                        message: 'Oops, something went wrong!',
+                        position: 'topRight'
+                    });
+                    break;
+            }
+        }
     }
 
 
@@ -127,10 +147,13 @@ function mapStateToProps(state) {
     };
 }
 
+function mapDispatchToProps(dispatch) { 
+	return bindActionCreators({ signOutAction : signOutAction}, dispatch);
+} 
+
 const reduxFormChangeUserInfo = reduxForm({
     validate,
     form: 'editProfile'
 })(ChangeUserInfo);
 
-
-export default withRouter(connect(mapStateToProps, null)(reduxFormChangeUserInfo));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(reduxFormChangeUserInfo));

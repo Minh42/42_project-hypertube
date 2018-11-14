@@ -3,11 +3,12 @@ const fs = require('fs');
 const axios = require('axios');
 
 const throttledQueue = require('throttled-queue');
-const throttle = throttledQueue(39, 20000);
+const throttle = throttledQueue(39, 10000);
 
 function getAllMoviesFromEZTV(i) {
     axios.get('https://eztv.ag/api/get-torrents?page=' + i)
         .then((res) => {
+            let k = 0;
             if (res.status === 200) {
                 for (var j = 0; j < res.data.torrents.length; j++) {
                     let data = new Object();
@@ -16,7 +17,6 @@ function getAllMoviesFromEZTV(i) {
                         throttle(function () {
                             axios.get('http://www.omdbapi.com/?i=tt' + movie.imdb_id + '&apikey=' + keys.OMDB_API_KEY)
                                 .then((res) => {
-                                    console.log(res.data)
                                     data['id'] = movie.id;
                                     data['title'] = res.data.Title;
                                     data['sypnosis'] = res.data.Plot;
@@ -26,22 +26,10 @@ function getAllMoviesFromEZTV(i) {
                                     data['type'] = res.data.Type;
                                     data['imdb_rating'] = res.data.imdbRating;
                                     data['imdb_id'] = 'tt' + movie.imdb_id;
-
-                                    axios.get('https://api.themoviedb.org/3/find/tt2406468?api_key=###&external_source=imdb_id')
-                                        .then((res) => { 
-                                            console.log(res.data)
-
-                                        })
-
-
-
-
                                     data['image'] = res.data.Poster;
-                                    data['large_cover_image'] = movie.large_screenshot;
                                     data['director'] = res.data.Director;  
                                     data['writer'] = res.data.Writer;  
                                     data['actors'] = res.data.Actors;
-
                                     let torrents = new Array();
                                     torrents.push({
                                         "url" : movie.torrent_url,
@@ -53,6 +41,7 @@ function getAllMoviesFromEZTV(i) {
                                         "size_bytes": movie.size_bytes
                                     })
                                     data['torrents'] = torrents;
+                                    // console.log(data);
                                     fs.appendFileSync("movies.json", JSON.stringify(data), 'utf8');
                                 })
                                 .catch(error => {

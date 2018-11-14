@@ -54,7 +54,6 @@ class Oauth extends Component {
     }
 
     onSubmit(OauthStrategy) {
-        console.log('http://localhost:8080/api/auth/' + OauthStrategy)
         window.location.href = 'http://localhost:8080/api/auth/' + OauthStrategy;
     }
 
