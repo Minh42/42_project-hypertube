@@ -29,9 +29,16 @@ function isValid(buffer, mimetype, size) {
 	}
 }
 
+function convertMinsToHrsMins(mins) {
+    let h = Math.floor(mins / 60);
+    let m = mins % 60;
+    return (h + "h" + m).toString();
+}
+
 module.exports = {
 	isEmail : isEmail,
 	isPassword : isPassword,
 	getRandomArbitrary : getRandomArbitrary,
-	isValid : isValid
+	isValid : isValid,
+	convertMinsToHrsMins : convertMinsToHrsMins
 }

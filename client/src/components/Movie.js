@@ -1,27 +1,16 @@
 import React, { Component } from 'react';
-import movie from '../assets/img/movie-poster.jpg';
-import { ReactComponent as Play} from '../assets/img/svg/controller-play.svg';
-import MoviePlayer from './Movie/MoviePlayer';
 import axios from 'axios';
-import * as reducerDownload from '../reducers/reducer_download';
 import { connect } from 'react-redux';
-import Rating from './MoviesList/Rating';
+import MoviePlayer from './Movie/MoviePlayer';
+import LeftPanel from './Movie/LeftPanel';
+import RightPanel from './Movie/RightPanel';
+import * as reducerDownload from '../reducers/reducer_download';
 
-function convertMinsToHrsMins(mins) {
-    let h = Math.floor(mins / 60);
-    let m = mins % 60;
-    return (h + "h" + m).toString();
-  }
-
- class Curtain extends Component {    
+class Curtain extends Component {    
 
     state = {
         open: false,
         stream_link: ""
-    }
-
-    componentDidMount() {
-        console.log(this.props.selectedMovie)
     }
  
     handleDownload = async () => {
@@ -45,66 +34,19 @@ function convertMinsToHrsMins(mins) {
         //this.setState({open: true})
     }
 
-    handleChange = () => {
-        console.log("Chaneg")
-    }
-
-    movieGenres(genres) {
-        return genres.map(genre => {
-            return(
-                <div className="left-panel__movie-genres-item">[{genre}]</div>
-            )
-        })
-    }
-
-     render() {
-        const movie = this.props.selectedMovie;
-        const duration = convertMinsToHrsMins(movie._source.runtime)
+    render() {
         return (
             <div className="curtain">    
                 <input ref="openCurtain" type="checkbox" id="toggle-2"/>
-
-                <div className="left-panel">
-                    <img src={movie._source.large_cover_image} alt="Logo" className="left-panel__movie-poster"/> 
-                    <div className="left-panel__movie-information">
-                        <div className="left-panel__movie-title">
-                            {movie._source.title} ({movie._source.year})
-                        </div>
-                        <div className="left-panel__movie-runtime">
-                            {duration}
-                        </div>
-                        <div className="left-panel__movie-rating">
-                            {/* <Rating
-                                rating={movie._source.rating} 
-                            /> */}
-                        </div>
-                        <div className="left-panel__movie-genres">
-                            {this.movieGenres(movie._source.genres)}
-                        </div>
-                        <div className="left-panel__movie-description">
-                            {movie._source.synopsis}
-                        </div>
-                    </div>
-                </div>
-                
-                 <div className="right-panel">
-                    <img src={movie._source.large_cover_image} alt="Logo" className="right-panel__movie-poster"/> 
-                </div>
-                
+                <LeftPanel />
+                <RightPanel />
                 <div className="prize">
                     <MoviePlayer stream_link={this.state.stream_link} />
                 </div>
-
              </div>
         );     
     }
  }
-
-function mapStateToProps(state) {
-    return {
-        selectedMovie: state.movies.selectedMovie
-    };
-}
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -112,4 +54,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Curtain);
+export default connect(null, mapDispatchToProps)(Curtain);

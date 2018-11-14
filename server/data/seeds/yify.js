@@ -12,7 +12,7 @@ function getAllMoviesFromYIFY(i) {
                 for (var j = 0; j < res.data.data.movies.length; j++) {
                     let data = new Object();
                     let movie = res.data.data.movies[j];
-                    console.log(movie)
+                    // console.log(movie)
                     if (movie.torrents && movie.imdb_code) {
                         throttle(function() {
                             axios.get('http://www.omdbapi.com/?i=' + movie.imdb_code + '&apikey=' + keys.OMDB_API_KEY)
