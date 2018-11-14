@@ -23,13 +23,16 @@ function getAllMoviesFromYIFY(i) {
                                     data['runtime'] = res.data.Runtime;
                                     data['year'] = res.data.Year;
                                     data['genres'] = res.data.Genre;
+                                    data['type'] = res.data.Type;
                                     data['imdb_rating'] = res.data.imdbRating;
                                     data['imdb_id'] = movie.imdb_code;
                                     data['image'] = res.data.Poster;
+                                    data['large_cover_image'] = movie.large_cover_image;
                                     data['director'] = res.data.Director;  
                                     data['writer'] = res.data.Writer;  
                                     data['actors'] = res.data.Actors;
                                     data['torrents'] = movie.torrents;
+                                    // console.log(data)
                                     fs.appendFileSync("movies.json", JSON.stringify(data), 'utf8');
                                 })
                                 .catch(error => {

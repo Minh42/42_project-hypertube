@@ -78,6 +78,11 @@
         }
     }
 
+    &__movie-director {
+        display: flex;
+        align-self: flex-start;
+    }
+
     &__movie-runtime {
         display: flex;
         align-self: flex-start;

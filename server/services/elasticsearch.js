@@ -56,7 +56,6 @@ function readStream(callback) {
 async function resetIndex() {
 
   if (await client.indices.exists({ index })) {
-    console.log('im here')
     await client.indices.delete({ index })
   }
 
@@ -73,13 +72,8 @@ async function resetIndex() {
       } 
     }); 
  });
-
-
 }
 
-
 resetIndex();
-
- 
 
 module.exports = client;
