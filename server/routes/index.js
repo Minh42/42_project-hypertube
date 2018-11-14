@@ -5,6 +5,7 @@ const verificationRouter = require('./verificationRoutes');
 const authRouter = require('./authRoutes');
 const searchRouter = require('./searchRoutes');
 const downloadRouter = require('./downloadRoute');
+const commentRouter = require('./commentRouter');
 
 router.get('/', (req, res) => {
   res.render('index');
@@ -15,5 +16,6 @@ router.use('/api/verification', verificationRouter);
 router.use('/api/auth', authRouter);
 // router.use('/api/search', searchRouter);
 router.use('/api/download', downloadRouter);
+router.use('/api/comment', commentRouter);
 
 module.exports = router;
