@@ -10,19 +10,50 @@ function getAllMoviesFromEZTV(i) {
         .then((res) => {
             if (res.status === 200) {
                 for (var j = 0; j < res.data.torrents.length; j++) {
+                    let data = new Object();
                     let movie = res.data.torrents[j];
-                    if (res.data.torrents[j].imdb_id) {
-                        movie['imdb'] = 'tt' + res.data.torrents[j].imdb_id
-                        let imdb_id = res.data.torrents[j].imdb_id;
+                    if (movie.torrents_url || movie.magnet_url && movie.imdb_id) {
                         throttle(function () {
-                            axios.get('http://www.omdbapi.com/?i=tt' + imdb_id + '&apikey=' + keys.OMDB_API_KEY)
+                            axios.get('http://www.omdbapi.com/?i=tt' + movie.imdb_id + '&apikey=' + keys.OMDB_API_KEY)
                                 .then((res) => {
-                                    movie['imdb_rating'] = res.data.imdbRating;
-                                    movie['director'] = res.data.Director;  
-                                    movie['writer'] = res.data.Writer;  
-                                    movie['actors'] = res.data.Actors;
-                                    console.log(movie)
-                                    fs.appendFileSync("movies.json", JSON.stringify(movie), 'utf8');
+                                    console.log(res.data)
+                                    data['id'] = movie.id;
+                                    data['title'] = res.data.Title;
+                                    data['sypnosis'] = res.data.Plot;
+                                    data['runtime'] = res.data.Runtime;
+                                    data['year'] = res.data.Year;
+                                    data['genres'] = res.data.Genre;
+                                    data['type'] = res.data.Type;
+                                    data['imdb_rating'] = res.data.imdbRating;
+                                    data['imdb_id'] = 'tt' + movie.imdb_id;
+
+                                    axios.get('https://api.themoviedb.org/3/find/tt2406468?api_key=###&external_source=imdb_id')
+                                        .then((res) => { 
+                                            console.log(res.data)
+
+                                        })
+
+
+
+
+                                    data['image'] = res.data.Poster;
+                                    data['large_cover_image'] = movie.large_screenshot;
+                                    data['director'] = res.data.Director;  
+                                    data['writer'] = res.data.Writer;  
+                                    data['actors'] = res.data.Actors;
+
+                                    let torrents = new Array();
+                                    torrents.push({
+                                        "url" : movie.torrent_url,
+                                        "magnet" : movie.magnet_url,
+                                        "hash" : movie.hash,
+                                        "quality" : movie.filename,
+                                        "seeds" : movie.seeds,
+                                        "peers" : movie.peers,
+                                        "size_bytes": movie.size_bytes
+                                    })
+                                    data['torrents'] = torrents;
+                                    fs.appendFileSync("movies.json", JSON.stringify(data), 'utf8');
                                 })
                                 .catch(error => {
                                     console.log(error.response)

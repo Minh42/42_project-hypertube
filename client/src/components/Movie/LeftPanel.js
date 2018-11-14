@@ -6,14 +6,6 @@ import { convertMinsToHrsMins } from '../../utils/tools';
 
 class LeftPanel extends Component {
 
-    // movieGenres(genres) {
-    //     return genres.map(genre => {
-    //         return(
-    //             <div className="left-panel__movie-genres-item">[{genre}]</div>
-    //         )
-    //     })
-    // }
-
     renderImage(movie) {
         if (movie._source.image !== "N/A") {
             return (
@@ -65,10 +57,7 @@ class LeftPanel extends Component {
     }
 
     renderGenres(movie) {
-        console.log(typeof(movie._source.genres))
         if (movie._source.genres !== 'N/A') {
-
-
             return (
                 <div className="left-panel__movie-genres">
                     {movie._source.genres}
@@ -87,7 +76,7 @@ class LeftPanel extends Component {
         if (movie._source.sypnosis !== 'N/A') {
             return (
                 <div className="left-panel__movie-description">
-                    {movie._source.synopsis}
+                    {movie._source.sypnosis}
                 </div>
             )
         } else {

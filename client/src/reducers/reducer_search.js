@@ -37,6 +37,7 @@ export function initMoviesAction() {
             })
             .then(res => {
                 if(res) {
+                    console.log(res.data.movies)
                     dispatch({ 
                         type: SEARCH_SUCCESS,
                         payload: res.data.movies

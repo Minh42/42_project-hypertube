@@ -13,13 +13,7 @@ class Curtain extends Component {
         stream_link: "",
         quality: ""
     }
-
-    componentDidMount() {
-        console.log('dduifehiudsiauhfisdhfiosdj');
-        console.log(this.props.selectedMovie)
-    }
-
- 
+    
     handleDownload = async (url = "", magnet = "", quality = "") => {
         this.setState({open: true})
     }
