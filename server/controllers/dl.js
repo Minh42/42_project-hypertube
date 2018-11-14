@@ -18,7 +18,14 @@ const https = require('https');
 
 
 process.on('message', async (message) => {
-    torrentdl(message.req);
+    switch(message.msg) {
+        case "START":
+            torrentdl(message.req);        
+        break ;
+        default:
+        break ;
+    }
+    
     //process.send({msg:'je suis dans le fork'});
 });
 
@@ -46,7 +53,7 @@ async function asyncForEach(array, callback) {
 
 
 updateDb = (updated) => {
-    Download.findOneAndUpdate({imdbid: movie.imdbid}, updated, {upsert:true}, function(err, doc){
+    Download.findOneAndUpdate({imdbid: movie.imdbid, quality: movie.quality}, updated, {upsert:true}, function(err, doc){
         if (err) console.log("error");
         else console.log("succesfully updated");
     });
@@ -179,6 +186,7 @@ const slicing = (path, to, res, folder_path, movieFile) => {
                 $set: {status: 'sliced'}
             }
             updateDb(updated);
+            process.send({msg:'COMPLETED'});
         })
         .on('progress', function(progress) {
             console.log('Processing: ' + progress.percent + '% done', `${folder_path}/out.m3u8`);
@@ -296,7 +304,7 @@ const dl = (magnet, res) => {
 
 
         process.send({msg:'ADD_IN_MONGO', data: {imdbid: movie.imdbid, folder_path: folder_path,
-            complete_path: `${folder_path}/${movieFile.path}`, title: movieFile.name, langue: movie.langue,
+            complete_path: `${folder_path}/${movieFile.path}`, title: movieFile.name,
             en: '', fr: '',
             status: 'initiated',
             date_created: Date.now(), date_last_seen: Date.now()
