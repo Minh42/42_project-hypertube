@@ -10,19 +10,27 @@ function getAllMoviesFromYIFY(i) {
         .then((res) => {
             if (res.data.status === "ok") {
                 for (var j = 0; j < res.data.data.movies.length; j++) {
+                    let data = new Object();
                     let movie = res.data.data.movies[j];
-                    if (res.data.data.movies[j].imdb_code) {
-                        movie['imdb'] = res.data.data.movies[j].imdb_code;
-                        let imdb_code = res.data.data.movies[j].imdb_code;
+                    console.log(movie)
+                    if (movie.torrents && movie.imdb_code) {
                         throttle(function() {
-                            axios.get('http://www.omdbapi.com/?i=' + imdb_code + '&apikey=' + keys.OMDB_API_KEY)
+                            axios.get('http://www.omdbapi.com/?i=' + movie.imdb_code + '&apikey=' + keys.OMDB_API_KEY)
                                 .then((res) => {
-                                    movie['imdb_rating'] = res.data.imdbRating;
-                                    movie['director'] = res.data.Director;  
-                                    movie['writer'] = res.data.Writer;  
-                                    movie['actors'] = res.data.Actors;
-                                    console.log(movie)
-                                    fs.appendFileSync("movies.json", JSON.stringify(movie), 'utf8');
+                                    data['id'] = movie.id;
+                                    data['title'] = res.data.Title;
+                                    data['sypnosis'] = res.data.Plot;
+                                    data['runtime'] = res.data.Runtime;
+                                    data['year'] = res.data.Year;
+                                    data['genres'] = res.data.Genre;
+                                    data['imdb_rating'] = res.data.imdbRating;
+                                    data['imdb_id'] = movie.imdb_code;
+                                    data['image'] = res.data.Poster;
+                                    data['director'] = res.data.Director;  
+                                    data['writer'] = res.data.Writer;  
+                                    data['actors'] = res.data.Actors;
+                                    data['torrents'] = movie.torrents;
+                                    fs.appendFileSync("movies.json", JSON.stringify(data), 'utf8');
                                 })
                                 .catch(error => {
                                     console.log(error.response)

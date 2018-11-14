@@ -5,6 +5,13 @@ import MoviePlayer from './Movie/MoviePlayer';
 import axios from 'axios';
 import * as reducerDownload from '../reducers/reducer_download';
 import { connect } from 'react-redux';
+import Rating from './MoviesList/Rating';
+
+function convertMinsToHrsMins(mins) {
+    let h = Math.floor(mins / 60);
+    let m = mins % 60;
+    return (h + "h" + m).toString();
+  }
 
  class Curtain extends Component {    
 
@@ -13,22 +20,25 @@ import { connect } from 'react-redux';
         stream_link: ""
     }
 
+    componentDidMount() {
+        console.log('dduifehiudsiauhfisdhfiosdj');
+        console.log(this.props.selectedMovie)
+    }
+ 
     handleDownload = async () => {
         console.log("dl")
         this.setState({open: true})
         const response = await axios.post("http://localhost:8080/api/download/torrent", {
-            title: "Deadpool 2",
-            imdbid: "tt5463162",
-            langue: "eng",
-            link: "https://yts.am/torrent/download/18F05A35A335909B384D1D40D79EFEC3E71BCEE0",
+            title: this.props.selectedMovie._source.title,
+            imdbid: this.props.selectedMovie._source.imdb,
+            langue: this.props.selectedMovie._source.language,
+            link: this.props.selectedMovie._source.torrents[0].url,
             magnet: ""
         })
         console.log("response", response)
-        
-        //this.setState({open: true})
         if (response && response.status === 200) {
             console.log("ok")
-            
+            this.refs.openCurtain.checked = true;
             const stream_link = response.data.stream_link;
             this.setState({stream_link: stream_link})
             //this.props.onStartStreaming({stream_link: stream_link}, this.props.history);
@@ -40,46 +50,62 @@ import { connect } from 'react-redux';
         console.log("Chaneg")
     }
 
+    movieGenres(genres) {
+        return genres.map(genre => {
+            return(
+                <div className="left-panel__movie-genres-item">[{genre}]</div>
+            )
+        })
+    }
+
      render() {
-         return (
-             <div className="curtain">    
-         
-                <input ref="openCurtain" type="checkbox" onChange={this.handleChange} checked={this.state.open} id="toggle-2"/>
+        const movie = this.props.selectedMovie;
+        const duration = convertMinsToHrsMins(movie._source.runtime)
+        return (
+            <div className="curtain">    
+                <input ref="openCurtain" type="checkbox" id="toggle-2"/>
+
                 <div className="left-panel">
-                    <img src={movie} alt="Logo" className="left-panel__movie-poster"/> 
+                    <img src={movie._source.large_cover_image} alt="Logo" className="left-panel__movie-poster"/> 
                     <div className="left-panel__movie-information">
                         <div className="left-panel__movie-title">
-                            Venom (2018)
+                            {movie._source.title} ({movie._source.year})
+                        </div>
+                        <div className="left-panel__movie-runtime">
+                            {duration}
+                        </div>
+                        <div className="left-panel__movie-rating">
+                            {/* <Rating
+                                rating={movie._source.rating} 
+                            /> */}
+                        </div>
+                        <div className="left-panel__movie-genres">
+                            {this.movieGenres(movie._source.genres)}
                         </div>
                         <div className="left-panel__movie-description">
-                            Des symbiotes débarquent sur la Terre, parmi eux, Venom, qui va s'allier avec Eddie Brock. De son côté, un puissant scientifique tente de faire évoluer l'humanité avec mes symbiotes, le duo d'anti-héros va devoir tout faire pour l'arrêter !
+                            {movie._source.synopsis}
                         </div>
-                        <button onClick={this.handleDownload} className="btn btn-secondary btn-secondary--red">
-                            <span className="btn btn-secondary__icon">
-                                <Play fill="#fff" />
-                            </span>
-                                Play
-                        </button>
-
                     </div>
                 </div>
                 
                  <div className="right-panel">
-                    <img src={movie} alt="Logo" className="right-panel__movie-poster"/> 
+                    <img src={movie._source.large_cover_image} alt="Logo" className="right-panel__movie-poster"/> 
                 </div>
                 
                 <div className="prize">
                     <MoviePlayer stream_link={this.state.stream_link} />
                 </div>
 
-               
-
              </div>
         );     
     }
  }
 
-const mapStateToProps = null;
+function mapStateToProps(state) {
+    return {
+        selectedMovie: state.movies.selectedMovie
+    };
+}
 
 const mapDispatchToProps = (dispatch) => {
     return {

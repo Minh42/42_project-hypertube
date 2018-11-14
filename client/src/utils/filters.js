@@ -29,7 +29,28 @@ function sortByProperty(array, prop, option) {
     return filtered;
 }
 
+function filterByGenres(array, prop, genre) {
+    var filtered = new Array();
+    
+    for (var i = 0; i < array.length; i++) {
+        var tab = array[i]._source.genres;
+        var bool = 0;
+        for (var k = 0; k < genre.length; k++) {
+            for (var j = 0; j < tab.length; j++) {
+                if (genre[k] === tab[j]) {
+                    bool++;
+                } if (bool === genre.length) {
+                    filtered.push(array[i]);
+                    break;
+                }
+            }
+        }
+    } 
+    return filtered;
+}
+
 module.exports = {
     filterByProperty : filterByProperty,
-    sortByProperty : sortByProperty
+    sortByProperty : sortByProperty,
+    filterByGenres : filterByGenres
 }

@@ -7,6 +7,8 @@ export const YEARS_NOTCHANGE = 'YEARS_NOTCHANGE';
 export const SORTBY_CHANGE = 'SORTBY_CHANGE';
 export const SORTBY_NOTCHANGE = 'SORTBY_NOTCHANGE';
 
+export const GENRE_FILTER = 'GENRE_FILTER';
+
 const initialState = {
     ratingChange: false,
     yearsChange: false,
@@ -48,6 +50,11 @@ export default function (state = initialState, action) {
             ...state,
 			sortbyChange: false
 		};
+		case GENRE_FILTER:
+        return {
+            ...state,
+			genreFilter: action.payload
+		};
 		default:
       	return state;
 	}
@@ -88,6 +95,21 @@ export function SortByAction(values) {
 		if (values != null) {
 			dispatch({ 
 				type: SORTBY_CHANGE,
+				payload: values
+			});
+		} else {
+			dispatch({ 
+				type: SORTBY_NOTCHANGE
+			});
+		}
+	}
+}
+
+export function gendersAction(values) {
+	return (dispatch) => {
+		if (values != null) {
+			dispatch({ 
+				type: GENRE_FILTER,
 				payload: values
 			});
 		} else {
