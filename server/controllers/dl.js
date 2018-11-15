@@ -206,10 +206,11 @@ const dl = (magnet, res) => {
 }
 
 manageTorrentMagnet = (req, res) => {
-    if (req.body.link !== "") {
-        convertToMagnet(req.body.link, res);
+    const magnet = req.body.link;
+    if (magnet.includes('magnet:')) {
+        dl(magnet, res);
     } else {
-        dl(req.body.magnet, res);
+        convertToMagnet(magnet, res);
     }
 }
 

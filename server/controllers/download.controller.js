@@ -100,7 +100,7 @@ const getSubtitles = async (imdbid, quality, filename, meta) => {
 
     if (fr.length > 0) {
         createSubFile(fr, 'fr', folder_path);
-        f = `${folder_path}/en.vtt`;
+        f = `${folder_path}/fr.vtt`;
         frLink = `http://${host}:8080${folder_path.substring(1)}/fr.vtt`;
     }
 
