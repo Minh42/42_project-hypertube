@@ -1,23 +1,40 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class Checkbox extends Component {
     render(){
-        const { label, onClick, checked } = this.props;
-        if (checked) {
-            return (
-                <div className='checkbox'>
-                    <label>
-                        <input
-                            type='checkbox'
-                            value={label}
-                            onClick={onClick}
-                            checked
-                        />
-                        {label}
-                    </label>
-                </div>
-            )
-        } else {
+        const { label, onClick, checked, genreFilter } = this.props;
+        if (genreFilter && genreFilter.length > 0) {
+            console.log(genreFilter)
+            if (genreFilter.includes(label)) {
+                    return (
+                        <div className='checkbox'>
+                            <label>
+                                <input
+                                    type='checkbox'
+                                    value={label}
+                                    onClick={onClick}
+                                    defaultChecked
+                                />
+                                {label}
+                            </label>
+                        </div>
+                    )
+                } else {
+                    return (
+                        <div className='checkbox'>
+                            <label>
+                                <input
+                                    type='checkbox'
+                                    value={label}
+                                    onClick={onClick}
+                                />
+                                {label}
+                            </label>
+                        </div>
+                    )
+                }
+    } else {
             return (
                 <div className='checkbox'>
                     <label>
@@ -31,9 +48,14 @@ class Checkbox extends Component {
                 </div>
             )
         }
-        
-    }
+    } 
 }
 
-export default Checkbox;
+function mapStateToProps(state) {
+    return {
+        genreFilter: state.filters.genreFilter
+    }
+  }
+
+export default connect(mapStateToProps, null)(Checkbox);
 

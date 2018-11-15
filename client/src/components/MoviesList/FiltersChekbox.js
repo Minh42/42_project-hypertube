@@ -12,59 +12,46 @@ class FiltersCheckbox extends Component {
     super(props)
 
     this.state = {
-      drama: false,
-      comedy: false,
       items: []
     }
   }
 
-  // componentDidMount() {
-  //   var arrayGenre = this.props.genreFilter;
-  //   if (arrayGenre) {
-  //     for (var i = 0; i < arrayGenre.length; i++) {
-  //       console.log(arrayGenre[i])
-  //       if (arrayGenre[i] === "Drama") {
-  //         this.setState ({
-  //           drama: true
-  //         })
-  //       } 
-  //       if (arrayGenre[i] === "Comedy") {
-  //         this.setState ({
-  //           comedy: true
-  //         })
-  //       }   
-  //     }
-  //   }
-  //   console.log(this.props.genreFilter);
-  // }
+  componentDidMount() {
+    if (this.props.genreFilter != undefined) {
+      this.setState({
+        items: this.props.Filter
+      })
+    } else {
+      this.setState({
+        items: []
+      })
+    }
+  }
 
   handleClick(genre) {
-    console.log(genre)
-
-    if (this.state.items.length > 0) {
-      for (var i = 0; i < this.state.items.length; i++) {
-        if (genre === this.state.items[i]) {
-          this.state.items.splice(i, 1);
+    if (this.props.genreFilter.length > 0) {
+      for (var i = 0; i < this.props.genreFilter.length; i++) {
+        if (genre === this.props.genreFilter[i]) {
+          this.props.genreFilter.splice(i, 1);
           this.setState({
-            items: this.state.items
+            items: this.props.genreFilter
           })
           break;
-        } if (i + 1 === this.state.items.length) {
-          this.state.items.push(genre)
+        } if (i + 1 === this.props.genreFilter.length) {
+          this.props.genreFilter.push(genre)
           this.setState({
-            items: this.state.items
+            items: this.props.genreFilter
           })
           break;
         }
       }
     } else {
-      this.state.items.push(genre)
+      this.props.genreFilter.push(genre)
       this.setState({
-        items: this.state.items
+        items: this.props.genreFilter
       })
     }
-
-    this.props.gendersAction(this.state.items, this.props.history);
+    this.props.gendersAction(this.props.genreFilter, this.props.history);
   }
 
   mapGenders() {
@@ -73,7 +60,6 @@ class FiltersCheckbox extends Component {
           key={i}
           label={genre}
           onClick={() => this.handleClick(genre)}
-          checked={this.props.genreFilter}
         />
     ))
     return (
@@ -84,6 +70,7 @@ class FiltersCheckbox extends Component {
   }
 
     render(){
+      // console.log(this.props.genreFilter)
       return (
         <div className="movies-filters__genders">
             <label>Movie's genders</label><br></br>

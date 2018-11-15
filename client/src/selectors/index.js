@@ -6,12 +6,11 @@ const getFilters = (state) => state.filters
 
 export const getFilterMovies = createSelector([getMovies, getFilters], (movies, filters) => {
     if (movies !== null) {
-        console.log(filters)
         if (filters.ratingChange) {
             var movies = filterByProperty(movies, "imdb_rating", filters.ratingFilter.min, filters.ratingFilter.max);
         }
         if (filters.yearsChange) {
-            var movies = filterByYear(movies, "year", filters.yearsFilter.min, filters.yearsFilter.max);
+            var movies = filterByProperty(movies, "year", filters.yearsFilter.min, filters.yearsFilter.max);
         }
         if (filters.sortbyChange) {
             if (filters.sortby === "relevance") {
@@ -24,9 +23,8 @@ export const getFilterMovies = createSelector([getMovies, getFilters], (movies, 
                 var movies = sortByProperty(movies, "year", "earliest") 
             }
         }
-        if (filters.genreFilter)
-        {
-            if (filters.genreFilter.length > 0) {
+        if (filters.genreFilter) {
+            if (filters.genreFilter.length > 0) {  
                 var movies = filterByGenres(movies, "genres", filters.genreFilter);
             } else {
                 return movies;

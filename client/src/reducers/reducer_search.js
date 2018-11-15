@@ -64,7 +64,6 @@ export function searchAction(input) {
             })
             .then(res => {
                 if(res) {
-                    console.log(res)
                     dispatch({ 
                         type: SEARCH_SUCCESS,
                         payload: res.data.movies

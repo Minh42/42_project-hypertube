@@ -13,7 +13,6 @@ import { selectMovie } from '../reducers/reducer_movies';
 class MoviesList extends Component {
 
     componentDidMount() {
-        console.log('here1')
         this.props.initMoviesAction();
     }
 
@@ -22,8 +21,8 @@ class MoviesList extends Component {
     }
 
     renderMovies() {
-        console.log(this.props)
-        if (this.props.movies != null) {
+        if (this.props.movies) {
+            console.log(this.props.movies)
             const allMovies = this.props.movies.map((movie, i) => (
                 <MovieCard
                     key={i}
@@ -55,7 +54,6 @@ class MoviesList extends Component {
     }
 
     render() {
-        console.log(this.props.movies)
         return (
             <div className="movies-search">
                 <div className="movies-filters">
