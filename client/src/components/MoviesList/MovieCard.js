@@ -55,7 +55,7 @@ class MovieCard extends Component {
                 {this.renderImage(movie, showMovieDetails)}
                 <div className="movies-list-container__info">
                     {this.renderBasicInfo(movie)}
-                    {this.renderRating(movie)}
+                    {/* {this.renderRating(movie)} */}
                 </div>
             </div>
         );

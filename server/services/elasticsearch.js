@@ -19,9 +19,9 @@ client.ping({
   }
 });
 
-client.cluster.health({},function(err,resp,status) {  
-  console.log("-- Client Health --",resp);
-});
+// client.cluster.health({},function(err,resp,status) {  
+//   console.log("-- Client Health --",resp);
+// });
 
 function readStream(callback) {
   let bulk = [];
@@ -36,7 +36,6 @@ function readStream(callback) {
       }
     })
     bulk.push(data);
-    console.log("BULKKKKKKKKKK", bulk)
   })
   jsonStream.on('end', function() {
     callback(bulk);

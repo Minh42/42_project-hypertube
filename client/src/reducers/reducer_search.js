@@ -29,6 +29,7 @@ export function initMoviesAction() {
         });
         axios.post('http://localhost:8080/api/search/movies')
             .catch((err) => {
+                console.log(err)
                 if(err) {
                     dispatch({
                         type: SEARCH_ERROR
