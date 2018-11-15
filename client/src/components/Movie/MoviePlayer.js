@@ -83,34 +83,36 @@ class MoviePlayer extends Component {
     }
 
     handleKeyPress = (e) => {
-        switch(e.key) {
-            case " ":
-                const playing = this.state.playing; 
-                if (playing)
-                    this.refs.video.pause();
-                else
-                    this.refs.video.play();
-                this.setState({playing: !playing})
+        if (this.state.started) {
+            switch(e.key) {
+                case " ":
+                    const playing = this.state.playing; 
+                    if (playing)
+                        this.refs.video.pause();
+                    else
+                        this.refs.video.play();
+                    this.setState({playing: !playing})
+                    break ;
+                case "Enter":
+                if (this.refs.video) {
+                    if(this.refs.video.requestFullScreen){
+                        this.refs.video.requestFullScreen();
+                    } else if(this.refs.video.webkitRequestFullScreen){
+                        this.refs.video.webkitRequestFullScreen();
+                    } else if(this.refs.video.mozRequestFullScreen){
+                        this.refs.video.mozRequestFullScreen();
+                    }}
                 break ;
-            case "Enter":
-            if (this.refs.video) {
-                if(this.refs.video.requestFullScreen){
-                    this.refs.video.requestFullScreen();
-                } else if(this.refs.video.webkitRequestFullScreen){
-                    this.refs.video.webkitRequestFullScreen();
-                } else if(this.refs.video.mozRequestFullScreen){
-                    this.refs.video.mozRequestFullScreen();
-                }}
-            break ;
-            case "m":
-                if (this.refs.video.muted){
-                    this.refs.video.muted = false;
-                } else {
-                    this.refs.video.muted = true;
-                }
-            break ;
-            default:
-            break ;
+                case "m":
+                    if (this.refs.video.muted){
+                        this.refs.video.muted = false;
+                    } else {
+                        this.refs.video.muted = true;
+                    }
+                break ;
+                default:
+                break ;
+            }
         }
     }
   
