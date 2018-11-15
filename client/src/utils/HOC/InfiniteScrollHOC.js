@@ -9,9 +9,9 @@ const withInfiniteScroll = (WrappedComponent) => {
         constructor(props) {
             super(props);
             this.state = {
-                error: false,
-                hasMore: true,
                 isLoading: false,
+                hasMore: true,
+                offset: 20,
                 movies: []
             };
             this.onScroll = throttle(this.onScroll.bind(this), 50);
@@ -33,15 +33,24 @@ const withInfiniteScroll = (WrappedComponent) => {
         }
 
         loadMovies = () => {
+            console.log(this.props.movies)
             if (this.props.movies) {
                 console.log(this.props.movies)
+                if (this.state.offset <= this.props.movies.length) {
+                    this.setState({ isLoading: true })
+                    this.setState({ movies: this.props.movies.slice(0, this.state.offset)})
+                    this.setState({ offset: this.state.offset + 20 });
+                    this.setState({ isLoading: false })
+                }
             }
         }
     
         render() {
         return (
             <WrappedComponent 
-            {...this.props}
+                {...this.props}
+                movies={this.state.movies}
+                loading={this.state.isLoading}
             />
         ); 
         }
@@ -53,7 +62,7 @@ const withInfiniteScroll = (WrappedComponent) => {
         };
     }
 
-  return connect(mapStateToProps, null)(HOC);
+    return connect(mapStateToProps, null)(HOC);
 }
 
 export default withInfiniteScroll;

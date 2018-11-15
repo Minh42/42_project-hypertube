@@ -2,7 +2,7 @@ const keys = require('../config/keys');
 const fs = require('fs');
 const axios = require('axios');
 const throttledQueue = require('throttled-queue');
-const throttle = throttledQueue(20, 10000);
+const throttle = throttledQueue(1, 1000);
 
 async function getAllMoviesFromPopCorn(i) {
     try {
@@ -49,8 +49,8 @@ async function getAllMoviesFromPopCorn(i) {
                                     data['image'] = 'N/A';
                                 }
                             }
+                            console.log(data)
                             fs.appendFileSync("movies.json", JSON.stringify(data), 'utf8');
-
                         } catch (err) { 
                             console.log(err.response)
                         }  
