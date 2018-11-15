@@ -20,7 +20,8 @@ class MoviePlayer extends Component {
         quality: "",
         en: "",
         fr: "",
-        watching: false
+        watching: false,
+        isTyping: false
     }
 
     componentDidMount() {
@@ -83,34 +84,36 @@ class MoviePlayer extends Component {
     }
 
     handleKeyPress = (e) => {
-        switch(e.key) {
-            case " ":
-                const playing = this.state.playing; 
-                if (playing)
-                    this.refs.video.pause();
-                else
-                    this.refs.video.play();
-                this.setState({playing: !playing})
+        if (this.state.started && !this.state.isTyping) {
+            switch(e.key) {
+                case " ":
+                    const playing = this.state.playing; 
+                    if (playing)
+                        this.refs.video.pause();
+                    else
+                        this.refs.video.play();
+                    this.setState({playing: !playing})
+                    break ;
+                case "Enter":
+                if (this.refs.video) {
+                    if(this.refs.video.requestFullScreen){
+                        this.refs.video.requestFullScreen();
+                    } else if(this.refs.video.webkitRequestFullScreen){
+                        this.refs.video.webkitRequestFullScreen();
+                    } else if(this.refs.video.mozRequestFullScreen){
+                        this.refs.video.mozRequestFullScreen();
+                    }}
                 break ;
-            case "Enter":
-            if (this.refs.video) {
-                if(this.refs.video.requestFullScreen){
-                    this.refs.video.requestFullScreen();
-                } else if(this.refs.video.webkitRequestFullScreen){
-                    this.refs.video.webkitRequestFullScreen();
-                } else if(this.refs.video.mozRequestFullScreen){
-                    this.refs.video.mozRequestFullScreen();
-                }}
-            break ;
-            case "m":
-                if (this.refs.video.muted){
-                    this.refs.video.muted = false;
-                } else {
-                    this.refs.video.muted = true;
-                }
-            break ;
-            default:
-            break ;
+                case "m":
+                    if (this.refs.video.muted){
+                        this.refs.video.muted = false;
+                    } else {
+                        this.refs.video.muted = true;
+                    }
+                break ;
+                default:
+                break ;
+            }
         }
     }
   
@@ -120,6 +123,11 @@ class MoviePlayer extends Component {
         magnet = magnet !== undefined ? magnet : "";
         await this.setState({started: false, watching: false, quality: quality});
         this.handleDownload(url, magnet, quality);
+    }
+
+    handleTyping = (isTyping) => {
+        if (isTyping !== this.state.isTyping)
+            this.setState({isTyping: isTyping})
     }
 
      render () {
@@ -149,7 +157,7 @@ class MoviePlayer extends Component {
                         }
                     </ul>
                 </div>
-                <Comment imdbid={this.props.movie._source.imdb_id}/>
+                <Comment imdbid={this.props.movie._source.imdb_id} isTyping={this.handleTyping}/>
             </div>      
          )
      }
