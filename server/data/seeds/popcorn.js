@@ -28,7 +28,14 @@ async function getAllMoviesFromPopCorn(i) {
                             data['director'] = res.data.Director;  
                             data['writer'] = res.data.Writer;  
                             data['actors'] = res.data.Actors;
-                            data['torrents'] = movie.torrents;
+                            let torrents = new Array();
+                            if (movie.torrents.en['720p'] && movie.torrents.en['1080p']) {
+                                torrents.push(movie.torrents.en['720p']);
+                                torrents[0]['quality'] = "720p";
+                                torrents.push(movie.torrents.en['1080p']);
+                                torrents[1]['quality'] = "1080p";
+                            }
+                            data['torrents'] = torrents;
                             if (res2.data.movie_results.length > 0) {
                                 if (res2.data.movie_results[0].poster_path !== null) {
                                     data['image'] = 'https://image.tmdb.org/t/p/w780' + res2.data.movie_results[0].poster_path;
@@ -42,7 +49,6 @@ async function getAllMoviesFromPopCorn(i) {
                                     data['image'] = 'N/A';
                                 }
                             }
-                            console.log(data['torrents']);
                             fs.appendFileSync("movies.json", JSON.stringify(data), 'utf8');
 
                         } catch (err) { 

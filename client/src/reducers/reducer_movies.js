@@ -1,3 +1,5 @@
+const slug = require('slug')
+
 export const MOVIE_SELECTED = 'MOVIE_SELECTED';
 
 export default function(state = null, action) {
@@ -10,10 +12,11 @@ export default function(state = null, action) {
 
 export function selectMovie(movie, history) {
     return (dispatch) => {
+        let title = slug(movie._source.title);
         dispatch({
             type: MOVIE_SELECTED,
             payload: movie
         });
-        history.push('/movie/' + movie._id);
+        history.push('/movie/' + title);
     }
 }
