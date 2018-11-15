@@ -1,6 +1,7 @@
 import axios from 'axios';
 import izitoast from 'izitoast';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
+import { withCredentials } from '../utils/headers';
 
 export const AUTHENTICATED = 'AUTHENTICATED';
 export const UNAUTHENTICATED = 'UNAUTHENTICATED';
@@ -29,9 +30,7 @@ export default function(state = INITIAL_STATE, action) {
 
 export function signInAction({username, password}, history) {
 	return (dispatch) => {
-        axios.post('http://localhost:8080/api/auth/signin', {username, password}, {
-                withCredentials: true
-        }
+        axios.post('http://localhost:8080/api/auth/signin', {username, password}, withCredentials()
     )
             .catch((err) => {
                 if(err) {
