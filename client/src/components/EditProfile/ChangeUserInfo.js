@@ -4,9 +4,13 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import RenderField from '../Form/RenderField';
 import FormHeader from '../Form/FormHeader';
+import { signOutAction } from '../../reducers/reducer_auth';
+import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import izitoast from 'izitoast';
 import validator from 'validator';
+import { translate } from 'react-i18next';
+
 
 class ChangeUserInfo extends Component {
     componentDidMount() {
@@ -21,63 +25,81 @@ class ChangeUserInfo extends Component {
         }
     }
     
-    changeUserInformation(values) {
+    async changeUserInformation(values) {
+        let message;
         let userID = this.props.user._id;
-        axios.put('http://localhost:8080/api/users/' + userID, values)
-            .catch((err) => {
-                if (err) {
+
+        try {
+            const res = await axios.put('http://localhost:8080/api/users/' + userID, values);
+            izitoast.success({
+                message: res.data.message,
+                position: 'topRight'
+            });
+        } catch (err) {
+            switch (err.response.status) {
+                case 401 :
                     izitoast.error({
-                        message: "Oops, something went wrong!",
+                        message: 'Please retry to login',
                         position: 'topRight'
                     });
-                }
-            })
-            .then((res) => {
-                izitoast.success({
-                    message: res.data.message,
-                    position: 'topRight'
-                });
-            })
+                    this.props.signOutAction(this.props.history);
+                    break;
+                case 403:
+                    izitoast.error({
+                        message: 'Please retry to login',
+                        position: 'topRight'
+                    });
+                    this.props.signOutAction(this.props.history);
+                    break;
+                default: 
+                    izitoast.error({
+                        message: 'Oops, something went wrong!',
+                        position: 'topRight'
+                    });
+                    break;
+            }
+        }
     }
 
 
     render() {
         const { handleSubmit } = this.props;
+        const { t, i18n } = this.props; 
         return (
             <div className="form">
                 <div className="card">
                     <div className="card__side card__side--front">
                         <FormHeader 
-                            heading1 = "Need to change your personal information?"
-                            heading2 = "edit profile"
+                            heading1 = { t('EditInfo.title', { framework: "react-i18next" }) }
+                            heading2 = { t('EditInfo.subtitle', { framework: "react-i18next" }) }
                         />
                         <div className="card__form">
                             <form className="card__form--input" onSubmit={handleSubmit(this.changeUserInformation.bind(this))}>
                                 <Field
-                                    label="Firstname"
+                                    label={ t('EditInfo.firstname', { framework: "react-i18next" }) }
                                     name="firstname"
                                     type="text"
                                     component= {RenderField}
                                 />
                                 <Field
-                                    label="Lastname"
+                                    label={ t('EditInfo.lastname', { framework: "react-i18next" }) }
                                     name="lastname"
                                     type="text"
                                     component= {RenderField}
                                 />
                                 <Field
-                                    label="Username"
+                                    label={ t('EditInfo.username', { framework: "react-i18next" }) }
                                     name="username"
                                     type="text"
                                     component= {RenderField}
                                 />
                                 <Field
-                                    label="Email"
+                                    label={ t('EditInfo.email', { framework: "react-i18next" }) }
                                     name="email"
                                     type="email"
                                     component= {RenderField}
                                 />
-                                <button type="submit" className="btn btn-primary btn-primary--pink">Submit</button>
+                                <button type="submit" className="btn btn-primary btn-primary--pink">{ t('EditInfo.button', { framework: "react-i18next" }) }</button>
                             </form>
                         </div>
                     </div>
@@ -127,10 +149,13 @@ function mapStateToProps(state) {
     };
 }
 
+function mapDispatchToProps(dispatch) { 
+	return bindActionCreators({ signOutAction : signOutAction}, dispatch);
+} 
+
 const reduxFormChangeUserInfo = reduxForm({
     validate,
     form: 'editProfile'
 })(ChangeUserInfo);
 
-
-export default withRouter(connect(mapStateToProps, null)(reduxFormChangeUserInfo));
+export default translate('common')(withRouter(connect(mapStateToProps, mapDispatchToProps)(reduxFormChangeUserInfo)));

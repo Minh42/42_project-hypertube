@@ -111,6 +111,7 @@ exports.getUser = (req, res) => {
 }
 
 exports.updateUser = (req, res) => {
+    console.log('i came here')
     var update = {
         firstname: req.body.firstname,
         lastname: req.body.lastname,

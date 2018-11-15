@@ -10,43 +10,43 @@ class Curtain extends Component {
 
     state = {
         open: false,
-        stream_link: ""
+        stream_link: "",
+        quality: ""
     }
- 
-    handleDownload = async () => {
-        console.log("dl")
+    
+    handleDownload = async (url = "", magnet = "", quality = "") => {
         this.setState({open: true})
-        const response = await axios.post("http://localhost:8080/api/download/torrent", {
-            title: this.props.selectedMovie._source.title,
-            imdbid: this.props.selectedMovie._source.imdb,
-            langue: this.props.selectedMovie._source.language,
-            link: this.props.selectedMovie._source.torrents[0].url,
-            magnet: ""
-        })
-        console.log("response", response)
-        if (response && response.status === 200) {
-            console.log("ok")
-            this.refs.openCurtain.checked = true;
-            const stream_link = response.data.stream_link;
-            this.setState({stream_link: stream_link})
-            //this.props.onStartStreaming({stream_link: stream_link}, this.props.history);
-        }
-        //this.setState({open: true})
+    }
+
+    handleChange = () => {
+        console.log("Chaneg")
     }
 
     render() {
         return (
             <div className="curtain">    
-                <input ref="openCurtain" type="checkbox" id="toggle-2"/>
+                <input ref="openCurtain" type="checkbox" onChange={this.handleChange} checked={this.state.open} id="toggle-2"/>
+                <button disabled={this.state.open} onClick={() => this.handleDownload()} className="btn btn-secondary btn-secondary--red">
+                            <span className="btn btn-secondary__icon">
+                                
+                            </span>
+                                Play
+                        </button>
                 <LeftPanel />
                 <RightPanel />
                 <div className="prize">
-                    <MoviePlayer stream_link={this.state.stream_link} />
+                    <MoviePlayer stream_link={this.state.stream_link} movie={this.props.selectedMovie} quality={this.state.quality} handleDownload={this.handleDownload} />
                 </div>
              </div>
         );     
     }
  }
+
+ function mapStateToProps(state) {
+    return {
+        selectedMovie: state.movies.selectedMovie
+    };
+}
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -54,4 +54,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Curtain);
+export default connect(mapStateToProps, mapDispatchToProps)(Curtain);

@@ -11,19 +11,26 @@ const https = require('https');
 const {torrentdl} = require('./dl');
 const { fork } = require('child_process');
 
+updateDb = (imdbid, updated) => {
+    Download.findOneAndUpdate({imdbid: imdbid}, updated, {upsert:true}, function(err, doc){
+        if (err) console.log("error");
+        else console.log("succesfully updated");
+    });
+}
+
 exports.torrent = async (req, res) => {
     console.log("REQ", req.body)
-    const inMongo = await Download.findOne({imdbid: req.body.imdbid});
+    const inMongo = await Download.findOne({imdbid: req.body.imdbid, quality: req.body.quality});
     if (inMongo === null) {
         const process = fork(`./controllers/dl.js`)
-        process.send({ req: {hostname: req.hostname, body: req.body} });
+        process.send({ msg: "START", req: {hostname: req.hostname, body: req.body} });
 
         process.on('message', (message) => {
             console.log("MSG", message.msg)
             console.log("MSG", message)
             switch (message.msg) {
                 case "ADD_IN_MONGO":
-                    const toAddInDb = new Download({...message.data, imdbid: req.body.imdbid});
+                    const toAddInDb = new Download({...message.data, imdbid: req.body.imdbid, quality: req.body.quality});
                     toAddInDb.save(err => {
                         if (err) {
                             console.log("error not added in db", err)
@@ -33,7 +40,12 @@ exports.torrent = async (req, res) => {
                     })
                 break ;
                 case "RESPONSE":
+                    console.log("GOT RESPONSE")
                     res.status(200).json(message.data)
+                break ;
+                case "COMPLETED":
+                    console.log("COMPLETETETETETETETETETETTETETTETTETETTETETTETETTETETTEETTETETTETETETTE")
+                    process.kill(process.pid)
                 break ;
                 default:
                 break ;
@@ -41,12 +53,12 @@ exports.torrent = async (req, res) => {
             console.log(`${message.msg}`);
         });
     } else {
-        updateDb({$set: {date_last_seen: Date.now()}})
+        updateDb(req.body.imdbid, {$set: {date_last_seen: Date.now()}})
         fs.stat(`${inMongo.folder_path}/out.m3u8`, function(err, stat) {
             if(err === null) {
                 res.status(200).json({
                     message: "can start streaming",
-                    stream_link: `http://${hostname}:8080${inMongo.folder_path.substring(1)}/out.m3u8`,
+                    stream_link: `http://${req.hostname}:8080${inMongo.folder_path.substring(1)}/out.m3u8`,
                     en: inMongo.en,
                     fr: inMongo.fr
                 });

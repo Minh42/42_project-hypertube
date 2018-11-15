@@ -18,7 +18,7 @@ const passport = require('passport')
 task();
 
 const middlewares = [
-  //cors(),
+  cors(),
   bodyParser.json(),
   bodyParser.urlencoded({ extended: true }),
   passport.initialize(),
@@ -31,7 +31,7 @@ const middlewares = [
 ]
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,PROPFIND');
   res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
   next();

@@ -36,6 +36,7 @@ function readStream(callback) {
       }
     })
     bulk.push(data);
+    console.log("BULKKKKKKKKKK", bulk)
   })
   jsonStream.on('end', function() {
     callback(bulk);
@@ -54,14 +55,12 @@ function readStream(callback) {
 // }
 
 async function resetIndex() {
-
   if (await client.indices.exists({ index })) {
     await client.indices.delete({ index })
   }
 
   await client.indices.create({ index });
   // await insertMovieMapping()
-
 
   readStream(function(bulk) {
     client.bulk({body:bulk}, function(err, res) { 
@@ -71,7 +70,7 @@ async function resetIndex() {
           console.log("Successfully imported " + bulk.length + " movies"); 
       } 
     }); 
- });
+  });
 }
 
 resetIndex();

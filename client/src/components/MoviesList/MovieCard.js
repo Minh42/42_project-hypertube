@@ -42,7 +42,7 @@ class MovieCard extends Component {
     }
 
     renderRating(movie) {
-        if (movie._source.imdb_rating !== "N/A") {
+        if (movie._source.imdb_rating !== "N/A" && movie._source.imdb_rating) {
             return (
                 <Rating
                     rating={movie._source.imdb_rating} 
