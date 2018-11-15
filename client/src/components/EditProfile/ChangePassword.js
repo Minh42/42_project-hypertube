@@ -5,7 +5,8 @@ import RenderField from '../Form/RenderField';
 import FormHeader from '../Form/FormHeader';
 import axios from 'axios';
 import izitoast from 'izitoast';
-import tools from '../../utils/tools.js';  
+import tools from '../../utils/tools.js';
+import { translate } from 'react-i18next';
 
 class ChangePassword extends Component {   
     constructor(props) {
@@ -53,33 +54,41 @@ class ChangePassword extends Component {
     }
 
     render() {
-        const { handleSubmit } = this.props;  
+        const { handleSubmit } = this.props;
+        const { t, i18n } = this.props; 
         return (
-            <div className="form">
-                <div className="card">
-                    <div className="card__side card__side--front">
-                        <FormHeader 
-                            heading1 = "Please enter you new password and submit."
-                            heading2 = "New Password"
-                        />
-                        <div className="card__form">
-                            <form className="card__form--input" onSubmit={handleSubmit(this.submitNewPassword.bind(this))}>  
-                                <Field
-                                    label="New password"
-                                    name="password"
-                                    type="password"
-                                    placeholder=""
-                                    component={RenderField}
-                                />
-                                <Field
-                                    label="Confirm password"
-                                    name="confirmPassword"
-                                    type="password"
-                                    placeholder=""
-                                    component={RenderField}
-                                /> 
-                                <button className="btn btn-primary btn-primary--pink" type="submit">Submit</button>
-                            </form>
+            <div className="forgot-password">
+                <div className="landing__langage">
+                    <span className="landing__langage--en" onClick={() => i18n.changeLanguage('en')}>EN</span> 
+                            | 
+                    <span className="landing__langage--fr" onClick={() => i18n.changeLanguage('fr')}>FR</span>
+                </div>
+                <div className="form">
+                    <div className="card">
+                        <div className="card__side card__side--front">
+                            <FormHeader 
+                                heading1 = { t('ChangePassword.title', { framework: "react-i18next" }) }
+                                heading2 = { t('ChangePassword.subtitle', { framework: "react-i18next" }) }
+                            />
+                            <div className="card__form">
+                                <form className="card__form--input" onSubmit={handleSubmit(this.submitNewPassword.bind(this))}>  
+                                    <Field
+                                        label={ t('ChangePassword.new', { framework: "react-i18next" }) }
+                                        name="password"
+                                        type="password"
+                                        placeholder=""
+                                        component={RenderField}
+                                    />
+                                    <Field
+                                        label={ t('ChangePassword.confirm', { framework: "react-i18next" }) }
+                                        name="confirmPassword"
+                                        type="password"
+                                        placeholder=""
+                                        component={RenderField}
+                                    /> 
+                                    <button className="btn btn-primary btn-primary--pink" type="submit">{ t('ChangePassword.button', { framework: "react-i18next" }) }</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -109,4 +118,4 @@ const reduxFormChangePassword = reduxForm({
     form: 'changePassword'
 })(ChangePassword);
 
-export default withRouter(reduxFormChangePassword);
+export default translate('common')(withRouter(reduxFormChangePassword));

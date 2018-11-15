@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 class Checkbox extends Component {
     render(){
-        console.log(this.props)
         const { label, onClick, checked } = this.props;
         if (checked) {
             return (
