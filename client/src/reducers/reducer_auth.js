@@ -70,7 +70,8 @@ export function signInActionOauth(xsrfToken, user, history) {
 
 export function signOutAction(history) {
 	return (dispatch) => {
-		setAuthorizationToken(false);
+        setAuthorizationToken(false);
+        localStorage.clear();
 		dispatch({ 
 			type: UNAUTHENTICATED,
 			payload: null
