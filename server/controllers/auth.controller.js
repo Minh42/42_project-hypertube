@@ -5,15 +5,16 @@ const Users = require('../models/users.model');
 
 exports.local = (req, res) => {
     passport.authenticate('local', (err, user, info) => {
+        
         if (err || !user) {
             return res.status(401).json({
                 message: info.message
             });
         } else {
-            // Double security auth with jwt and http only cookies
             const token = user.createJwtToken(user);
-            new Cookies(req, res).set('accessToken', token['jwtToken'], { httpOnly: true });
-            res.status(200).json({ 
+
+            res.cookie('accessToken', token['jwtToken'], { httpOnly: true })
+            .status(200).send({ 
                 xsrfToken : token['xsrfToken'],
                 user: user._id
             });

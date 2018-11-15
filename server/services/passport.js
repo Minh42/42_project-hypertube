@@ -22,8 +22,8 @@ passport.deserializeUser((id, done) => {
     });
 });
 
-passport.use(new LocalStrategy(
-    function(username, password, done) {
+passport.use(new LocalStrategy({passReqToCallback: true},
+    function(req, username, password, done) {
       Users.findOne({ username: username }, function (err, user) {
         if (err) { 
             return done(err); 

@@ -13,7 +13,10 @@ class Comment extends Component {
         console.log("IN DID MOUNT")
         const response = await axios.post("http://localhost:8080/api/comment/all", {
             imdbid: this.props.imdbid
-        })
+        },{
+                withCredentials: true
+        }
+    )
 
         console.log("COMMENTS", response.data)
         this.setState({comments: response.data})
@@ -22,12 +25,12 @@ class Comment extends Component {
     handleSubmit = async (e) => {
         e.preventDefault();
         console.log("test")
-        this.setState({comments: [...this.state.comments, {_id: "new", imdbid: this.props.imdbid, username: "test", message: this.state.comment, date: Date.now()}]})
+        this.setState({comments: [...this.state.comments, {_id: "new", imdbid: this.props.imdbid, username: "Just added by me", message: this.state.comment, date: Date.now()}]})
         const response = await axios.post("http://localhost:8080/api/comment/add", {
             imdbid: this.props.imdbid,
             username: "test",
             message: this.state.comment
-        })
+        }, {withCredentials: true})
 
         this.setState({comment: ""})
         console.log(response)
