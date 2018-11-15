@@ -43,12 +43,11 @@ class MoviePlayer extends Component {
         this.refs.video.height = this.state.height * 0.6;
     }
 
-    handleDownload = async (url, magnet, quality) => {
+    handleDownload = async (url, quality) => {
         const response = await axios.post("http://localhost:8080/api/download/torrent", {
             title: this.props.movie._source.title,
             imdbid: this.props.movie._source.imdb_id,
             link: url,
-            magnet: magnet,
             quality: quality
         })
         console.log("response", response)
@@ -117,12 +116,11 @@ class MoviePlayer extends Component {
         }
     }
   
-    handleClick = async (url, magnet, quality) => {
-        console.log(url, magnet)
+    handleClick = async (url, quality) => {
+        console.log(url)
         url = url !== undefined ? url : "";
-        magnet = magnet !== undefined ? magnet : "";
         await this.setState({started: false, watching: false, quality: quality});
-        this.handleDownload(url, magnet, quality);
+        this.handleDownload(url, quality);
     }
 
     handleTyping = (isTyping) => {
@@ -131,6 +129,7 @@ class MoviePlayer extends Component {
     }
 
      render () {
+         console.log('loool');
          return (
             <div>
                 <h2> {`${this.props.movie._source.title} ${this.state.quality}`} </h2>
@@ -150,8 +149,9 @@ class MoviePlayer extends Component {
                     <ul className='ul-video'>
                         {
                         this.props.movie._source.torrents.map(m => {
+                            console.log('ddd', m);
                                 return (
-                                    <li className='li-video' key={m.url} onClick={() => this.handleClick(m.url, m.magnet, m.quality)}> {m.quality} {this.state.quality === m.quality && !this.state.watching && <Loader />} </li>
+                                    <li className='li-video' key={m.url} onClick={() => this.handleClick(m.url, m.quality)}> {m.quality} {this.state.quality === m.quality && !this.state.watching && <Loader />} </li>
                                 )
                             })
                         }

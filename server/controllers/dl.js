@@ -68,9 +68,6 @@ const slicing = (path, to, res, folder_path, movieFile) => {
 
     ffmpeg(path, { timeout: 432000 }).addOptions([
        //   '-s 640x360',          // 640px width, 360px height output video dimensions
-          '-f hls',
-          '-crf 20',
-          '-hls_flags split_by_time',
           '-start_number 0',     // start the first .ts segment at index 0
           '-hls_time 2',        // 10 second segment duration
           '-hls_list_size 0',    // Maxmimum number of playlist entries (0 means all entries/infinite)
@@ -206,10 +203,11 @@ const dl = (magnet, res) => {
 }
 
 manageTorrentMagnet = (req, res) => {
-    if (req.body.link !== "") {
-        convertToMagnet(req.body.link, res);
+    const magnet = req.body.link;
+    if (magnet.includes('magnet:')) {
+        dl(magnet, res);
     } else {
-        dl(req.body.magnet, res);
+        convertToMagnet(magnet, res);
     }
 }
 

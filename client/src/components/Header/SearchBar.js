@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { searchAction } from '../../reducers/reducer_search';
+import { initMoviesAction } from '../../reducers/reducer_search';
 import { ReactComponent as Glass} from '../../assets/img/svg/magnifying-glass.svg';
   
 class SearchBar extends Component {
@@ -22,8 +23,11 @@ class SearchBar extends Component {
     
     handleSubmit(e) {
         e.preventDefault();
+        console.log(this.state.input)
         if (this.state.input) {
             this.props.searchAction(this.state.input);
+        } else {
+            this.props.initMoviesAction();
         }
     }
 
@@ -46,7 +50,10 @@ class SearchBar extends Component {
 }
 
 function mapDispatchToProps(dispatch) { 
-	return bindActionCreators({ searchAction : searchAction }, dispatch);
+    return bindActionCreators({ 
+        searchAction : searchAction,
+        initMoviesAction : initMoviesAction
+    }, dispatch);
 } 
 
 export default connect(null , mapDispatchToProps)(SearchBar);

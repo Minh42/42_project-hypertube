@@ -19,7 +19,7 @@
         "password": "Password",
         "button": "Sign Up"
     },
-    "SignOut": "deconnexion",
+    "SignOut": "Signout",
     "Reset": {
         "title": "Please enter your email to reset your password.",
         "subtitle": "Your email",
@@ -40,5 +40,36 @@
         "username": "Username",
         "email": "Email",
         "button": "Submit"
-    }
+    },
+    "Results": "results found",
+    "SortBy": {
+        "relevance": "Relevance",
+        "latest": "Latest Releases",
+        "earliest": "Earliest Releases"
+    },
+    "Range": {
+        "rating": "Rating",
+        "years": "Years"
+    },
+   "titleGenres": "Movie's genres",
+    "Drama": "Drama",
+    "Comedy": "Comedy",
+    "Crime": "Crime",
+    "Romance": "Romance",
+    "Action": "Action",
+    "Thriller": "Thriller",
+    "Adventure": "Adventure",
+    "Mystery": "Mystery",
+    "Fantasy": "Fantasy",
+    "Horror": "Horror",
+    "Sci-Fi": "Sci-Fi",
+    "Biography": "Biography",
+    "Animation": "Animation",
+    "Family": "Family",
+    "War": "War",
+    "History": "History",
+    "Documentary": "Documentary",
+    "Music": "Music",
+    "Musical": "Musical",
+    "Sport": "Sport"
 }
