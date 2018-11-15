@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import MoviePlayer from './Movie/MoviePlayer';
 import LeftPanel from './Movie/LeftPanel';
 import RightPanel from './Movie/RightPanel';
 import * as reducerDownload from '../reducers/reducer_download';
+import slug from 'slug';
+import { signOutAction } from '../reducers/reducer_auth';
 
 class Curtain extends Component {    
 
@@ -12,6 +15,18 @@ class Curtain extends Component {
         open: false,
         stream_link: "",
         quality: ""
+    }
+
+    componentDidMount() {
+        if (this.props.movies) {
+            let titles = new Array();
+            for (var i = 0; i < this.props.movies.length; i++) {
+                titles.push(slug(this.props.movies[i]._source.title));
+            }
+            if (!titles.includes(this.props.match.params.id)) {
+                this.props.signOutAction(this.props.history);
+            } 
+        }
     }
     
     handleDownload = async (url = "", magnet = "", quality = "") => {
@@ -44,14 +59,16 @@ class Curtain extends Component {
 
  function mapStateToProps(state) {
     return {
+        movies: state.search.results,
         selectedMovie: state.movies.selectedMovie
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        signOutAction: (history) => dispatch(signOutAction(history)),
         onStartStreaming: ({stream_link}, history) => dispatch(reducerDownload.startStreaming({stream_link}, history))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Curtain);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Curtain));

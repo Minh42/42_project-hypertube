@@ -5,10 +5,10 @@ import FilterRange from './MoviesList/FilterRange';
 import SortBy from './MoviesList/SortBy';
 import FiltersGenders from './MoviesList/FiltersChekbox';
 import MovieCard from './MoviesList/MovieCard';
-import { getFilterMovies } from '../selectors/index';
 import { bindActionCreators } from 'redux';
 import { initMoviesAction } from '../reducers/reducer_search';
 import { selectMovie } from '../reducers/reducer_movies';
+import withInfiniteScroll from '../utils/HOC/InfiniteScrollHOC';
   
 class MoviesList extends Component {
     componentDidMount() {
@@ -22,9 +22,7 @@ class MoviesList extends Component {
     renderMovies = () => {
         if (this.props.movies) {
             console.log(this.props.movies)
-
             const allMovies = this.props.movies.map((movie, i) => ( 
-  
                 <MovieCard
                     key={i}
                     movie={movie}
@@ -69,17 +67,13 @@ class MoviesList extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        movies: getFilterMovies(state)
-    };
-}
-
 function mapDispatchToProps(dispatch) { 
 	return bindActionCreators({ 
         initMoviesAction : initMoviesAction,
         selectMovie: selectMovie
     }, dispatch);
-} 
+}
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MoviesList));
+const WrappedComponent = withInfiniteScroll(MoviesList);
+
+export default withRouter(connect(null, mapDispatchToProps)(WrappedComponent));

@@ -155,7 +155,6 @@ class LeftPanel extends Component {
     render() {
         if (this.props.selectedMovie) {
             const movie = this.props.selectedMovie;
-            console.log(movie)
             return (
                 <div className="left-panel">
                     {this.renderImage(movie)}

@@ -9,6 +9,7 @@
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.11.0",
+    "cookie-parser": "^1.4.3",
     "cookies": "^0.7.3",
     "cors": "^2.8.5",
     "elasticsearch": "^15.2.0",
