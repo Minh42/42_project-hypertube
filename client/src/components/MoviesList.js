@@ -11,24 +11,26 @@ import { initMoviesAction } from '../reducers/reducer_search';
 import { selectMovie } from '../reducers/reducer_movies';
   
 class MoviesList extends Component {
-
     componentDidMount() {
         this.props.initMoviesAction();
     }
 
     showMovieDetails(movie) {
-        this.props.selectMovie(movie, this.props.history);
+       this.props.selectMovie(movie, this.props.history);
     }
 
-    renderMovies() {
+    renderMovies = () => {
         if (this.props.movies) {
             console.log(this.props.movies)
-            const allMovies = this.props.movies.map((movie, i) => (
+
+            const allMovies = this.props.movies.map((movie, i) => ( 
+  
                 <MovieCard
                     key={i}
                     movie={movie}
                     showMovieDetails={this.showMovieDetails.bind(this)}
                 />
+
             ));
             return (
                 <div className="movies-list">
