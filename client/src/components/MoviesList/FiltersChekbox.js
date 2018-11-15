@@ -3,8 +3,28 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { gendersAction } from '../../reducers/reducer_filters';
 import Checkbox from './Checkbox';
+import { translate } from 'react-i18next';
 
-const genres = ['Drama', 'Comedy', 'Crime', 'Romance', 'Action', 'Thriller', 'Adventure', 'Mystery', 'Fantasy', 'Horror', 'Sci-Fi', 'Biography', 'Animation', 'Family', 'War', 'History', 'Documentary', 'Music', 'Musical', 'Sport']
+const genres = ['Drama', 
+              'Comedy', 
+              'Crime', 
+              'Romance', 
+              'Action', 
+              'Thriller', 
+              'Adventure', 
+              'Mystery', 
+              'Fantasy', 
+              'Horror', 
+              'Sci-Fi', 
+              'Biography', 
+              'Animation', 
+              'Family', 
+              'War', 
+              'History', 
+              'Documentary', 
+              'Music', 
+              'Musical', 
+              'Sport']
 
 class FiltersCheckbox extends Component {
 
@@ -64,10 +84,11 @@ class FiltersCheckbox extends Component {
   }
 
   mapGenders() {
+    const { t, i18n } = this.props;
     const genresFilters = genres.map((genre, i) => (
         <Checkbox
           key={i}
-          label={genre}
+          label={ t(genre, { framework: "react-i18next" }) }
           onClick={() => this.handleClick(genre)}
         />
     ))
@@ -79,10 +100,10 @@ class FiltersCheckbox extends Component {
   }
 
     render(){
-      // console.log(this.props.genreFilter)
+      const { t, i18n } = this.props;
       return (
         <div className="movies-filters__genders">
-            <label>Movie's genders</label><br></br>
+            <label>{ t('titleGenres', { framework: "react-i18next" }) }</label><br></br>
             {this.mapGenders()}
         </div>
       )
@@ -99,4 +120,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ gendersAction : gendersAction }, dispatch);
 } 
 
-export default connect(mapStateToProps, mapDispatchToProps)(FiltersCheckbox);
+export default translate('common')(connect(mapStateToProps, mapDispatchToProps)(FiltersCheckbox));

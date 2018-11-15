@@ -19,7 +19,7 @@
         "password": "Mot de passe",
         "button": "S'inscrire"
     },
-    "SignOut": "Signout",
+    "SignOut": "Déconnexion",
     "Reset": {
         "title": "Entrer votre email pour changer de mot de passe.",
         "subtitle": "Votre Email",
@@ -40,5 +40,36 @@
         "username": "Login",
         "email": "Email",
         "button": "Valider"
-    }
+    },
+    "Results": "resultats trouvés",
+    "SortBy": {
+        "relevance": "Les mieux notés",
+        "latest": "les plus récents",
+        "earliest": "Les plus anciens"
+    },
+    "Range": {
+        "rating": "Notes",
+        "years": "Années de production"
+    },
+    "titleGenres": "Par genres",
+    "Drama": "Drame",
+    "Comedy": "Comedie",
+    "Crime": "Policier",
+    "Romance": "Romantique",
+    "Action": "Action",
+    "Thriller": "Suspens",
+    "Adventure": "Aventure",
+    "Mystery": "Mystère",
+    "Fantasy": "Fantastique",
+    "Horror": "Horreur",
+    "Sci-Fi": "Sience-Fiction",
+    "Biography": "Biographie",
+    "Animation": "Animation",
+    "Family": "Famille",
+    "War": "Guerre",
+    "History": "Histoire",
+    "Documentary": "Documentaire",
+    "Music": "Musique",
+    "Musical": "Comedie musicale",
+    "Sport": "Sport"
 }

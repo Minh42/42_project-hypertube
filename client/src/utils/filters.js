@@ -26,7 +26,6 @@ function sortByProperty(array, prop, option) {
             return obj2._source[prop] - obj1._source[prop]
         }
     })
-    console.log(filtered)
     return filtered;
 }
 

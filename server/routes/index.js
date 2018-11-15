@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const usersRouter = require('./usersRoutes');
+const pictureRouter = require('./pictureRoutes');
 const verificationRouter = require('./verificationRoutes');
 const authRouter = require('./authRoutes');
 const searchRouter = require('./searchRoutes');
@@ -12,6 +13,7 @@ router.get('/', (req, res) => {
 })
 
 router.use('/api/users', usersRouter);
+router.use('/api/picture', pictureRouter);
 router.use('/api/verification', verificationRouter);
 router.use('/api/auth', authRouter);
 router.use('/api/search', searchRouter);

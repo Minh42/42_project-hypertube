@@ -9,6 +9,8 @@ import { bindActionCreators } from 'redux';
 import { initMoviesAction } from '../reducers/reducer_search';
 import { selectMovie } from '../reducers/reducer_movies';
 import withInfiniteScroll from '../utils/HOC/InfiniteScrollHOC';
+
+import { translate } from 'react-i18next';
   
 class MoviesList extends Component {
     componentDidMount() {
@@ -39,11 +41,12 @@ class MoviesList extends Component {
     }
 
     renderSortContainer() {
+        const { t, i18n } = this.props;
         if (this.props.movies) {
             if (this.props.movies.length !== null) {
                 return (
                     <div className="movies-filters__container">
-                        <span>{this.props.movies.length} results found</span>
+                        <span>{this.props.movies.length} { t('Results', { framework: "react-i18next" }) }</span>
                         <SortBy />
                     </div>
                 )
@@ -76,4 +79,4 @@ function mapDispatchToProps(dispatch) {
 
 const WrappedComponent = withInfiniteScroll(MoviesList);
 
-export default withRouter(connect(null, mapDispatchToProps)(WrappedComponent));
+export default translate('common')(withRouter(connect(null, mapDispatchToProps)(WrappedComponent)));
