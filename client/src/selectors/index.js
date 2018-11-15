@@ -24,7 +24,7 @@ export const getFilterMovies = createSelector([getMovies, getFilters], (movies, 
             }
         }
         if (filters.genreFilter) {
-            if (filters.genreFilter.length > 0) {
+            if (filters.genreFilter.length > 0) {  
                 var movies = filterByGenres(movies, "genres", filters.genreFilter);
             } else {
                 return movies;

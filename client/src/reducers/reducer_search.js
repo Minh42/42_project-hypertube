@@ -9,6 +9,7 @@ const INITIAL_STATE = {
     results: null
   };
   
+  
 export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
       case SEARCH_REQUEST:
