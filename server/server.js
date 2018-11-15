@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 8080;
 const app = express();
 const server = http.createServer(app);
 const {task} = require('./utils/crontask');
-
+const cookieParser = require('cookie-parser');
 // MIDDLEWARES
 const cors = require('cors');
 const bodyParser = require('body-parser')
@@ -16,9 +16,9 @@ const session = require('express-session')
 const passport = require('passport')
 
 task();
-
+app.use(cookieParser());
 const middlewares = [
-  cors(),
+  cors({credentials: true, origin: 'http://localhost:3000'}),
   bodyParser.json(),
   bodyParser.urlencoded({ extended: true }),
   passport.initialize(),
@@ -31,7 +31,10 @@ const middlewares = [
 ]
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  
+  req.test = "Test";
+  req.res = res;
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,PROPFIND');
   res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
   next();

@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { filterByProperty, filterByYear, sortByProperty, filterByGenres } from '../utils/filters';
+import { filterByProperty, sortByProperty, filterByGenres } from '../utils/filters';
 
 const getMovies = (state) => state.search.results
 const getFilters = (state) => state.filters

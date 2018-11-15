@@ -14,8 +14,8 @@ function filterByProperty(array, prop, min, max) {
 }
 
 function sortByProperty(array, prop, option) {
-    var filtered = new Array();
-    filtered = array.sort(function(obj1, obj2) {
+    var filtered = array.concat();
+    filtered.sort(function(obj1, obj2) {
         if (option) {
             if (option === "latest") {
                 return obj2._source[prop] - obj1._source[prop]

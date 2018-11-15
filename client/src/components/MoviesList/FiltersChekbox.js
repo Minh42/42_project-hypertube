@@ -29,29 +29,38 @@ class FiltersCheckbox extends Component {
   }
 
   handleClick(genre) {
-    if (this.props.genreFilter.length > 0) {
-      for (var i = 0; i < this.props.genreFilter.length; i++) {
-        if (genre === this.props.genreFilter[i]) {
-          this.props.genreFilter.splice(i, 1);
-          this.setState({
-            items: this.props.genreFilter
-          })
-          break;
-        } if (i + 1 === this.props.genreFilter.length) {
-          this.props.genreFilter.push(genre)
-          this.setState({
-            items: this.props.genreFilter
-          })
-          break;
+    if (this.props.genreFilter != undefined) {
+      if (this.props.genreFilter.length > 0) {
+        for (var i = 0; i < this.props.genreFilter.length; i++) {
+          if (genre === this.props.genreFilter[i]) {
+            this.props.genreFilter.splice(i, 1);
+            this.setState({
+              items: this.props.genreFilter
+            })
+            break;
+          } if (i + 1 === this.props.genreFilter.length) {
+            this.props.genreFilter.push(genre)
+            this.setState({
+              items: this.props.genreFilter
+            })
+            break;
+          }
         }
+      } else {
+        this.props.genreFilter.push(genre)
+        this.setState({
+          items: this.props.genreFilter
+        })
       }
-    } else {
-      this.props.genreFilter.push(genre)
+      this.props.gendersAction(this.props.genreFilter, this.props.history);
+    }
+    else {
+      this.state.items.push(genre)
       this.setState({
-        items: this.props.genreFilter
+        items: this.state.items
       })
     }
-    this.props.gendersAction(this.props.genreFilter, this.props.history);
+    this.props.gendersAction(this.state.items, this.props.history);
   }
 
   mapGenders() {

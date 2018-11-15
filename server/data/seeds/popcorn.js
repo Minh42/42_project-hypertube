@@ -42,7 +42,7 @@ async function getAllMoviesFromPopCorn(i) {
                                     data['image'] = 'N/A';
                                 }
                             }
-                            console.log(data);
+                            console.log(data['torrents']);
                             fs.appendFileSync("movies.json", JSON.stringify(data), 'utf8');
 
                         } catch (err) { 
