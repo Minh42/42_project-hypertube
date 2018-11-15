@@ -11,29 +11,32 @@ import { initMoviesAction } from '../reducers/reducer_search';
 import { selectMovie } from '../reducers/reducer_movies';
   
 class MoviesList extends Component {
-
     componentDidMount() {
         this.props.initMoviesAction();
     }
 
     showMovieDetails(movie) {
-        this.props.selectMovie(movie, this.props.history);
+       this.props.selectMovie(movie, this.props.history);
     }
 
-    renderMovies() {
+    renderMovies = () => {
         if (this.props.movies) {
             console.log(this.props.movies)
-            return this.props.movies.map((movie) => {
-                return (
-                    <MovieCard
-                        key={movie._source.imdb_id}
-                        movie={movie}
-                        showMovieDetails={this.showMovieDetails.bind(this)}
-                    />
-                );
-            })
-        } else {
-            return null;
+
+            const allMovies = this.props.movies.map((movie, i) => ( 
+  
+                <MovieCard
+                    key={i}
+                    movie={movie}
+                    showMovieDetails={this.showMovieDetails.bind(this)}
+                />
+
+            ));
+            return (
+                <div className="movies-list">
+                    {allMovies} 
+                </div>
+            );     
         }
     }
 
@@ -60,9 +63,7 @@ class MoviesList extends Component {
                     <FilterRange />
                     <FiltersGenders />
                 </div>
-                <div className="movies-list">
-                    {this.renderMovies()}
-                </div>
+                {this.renderMovies()}
             </div>
         );
     }

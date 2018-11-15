@@ -14,8 +14,8 @@ function filterByProperty(array, prop, min, max) {
 }
 
 function sortByProperty(array, prop, option) {
-    var filtered = new Array();
-    filtered = array.sort(function(obj1, obj2) {
+    var filtered = array.concat();
+    filtered.sort(function(obj1, obj2) {
         if (option) {
             if (option === "latest") {
                 return obj2._source[prop] - obj1._source[prop]
@@ -26,18 +26,19 @@ function sortByProperty(array, prop, option) {
             return obj2._source[prop] - obj1._source[prop]
         }
     })
+    console.log(filtered)
     return filtered;
 }
 
 function filterByGenres(array, prop, genre) {
     var filtered = new Array();
-    
     for (var i = 0; i < array.length; i++) {
         var tab = array[i]._source.genres;
+        var items = tab.split(',')
         var bool = 0;
         for (var k = 0; k < genre.length; k++) {
-            for (var j = 0; j < tab.length; j++) {
-                if (genre[k] === tab[j]) {
+            for (var j = 0; j < items.length; j++) {
+                if (genre[k] === items[j].trim()) {
                     bool++;
                 } if (bool === genre.length) {
                     filtered.push(array[i]);

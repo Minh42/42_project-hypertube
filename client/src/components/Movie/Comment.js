@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Cmt from './Cmt';
+import { withCredentials } from '../../utils/headers';
 
 class Comment extends Component {
 
@@ -10,10 +11,11 @@ class Comment extends Component {
     }
 
     async componentDidMount() {
-        console.log("IN DID MOUNT")
+        console.log("IN DID MOUNT", withCredentials())
         const response = await axios.post("http://localhost:8080/api/comment/all", {
             imdbid: this.props.imdbid
-        })
+        },withCredentials
+    )
 
         console.log("COMMENTS", response.data)
         this.setState({comments: response.data})
@@ -22,12 +24,12 @@ class Comment extends Component {
     handleSubmit = async (e) => {
         e.preventDefault();
         console.log("test")
-        this.setState({comments: [...this.state.comments, {_id: "new", imdbid: this.props.imdbid, username: "test", message: this.state.comment, date: Date.now()}]})
+        this.setState({comments: [...this.state.comments, {_id: "new", imdbid: this.props.imdbid, username: "Just added by me", message: this.state.comment, date: Date.now()}]})
         const response = await axios.post("http://localhost:8080/api/comment/add", {
             imdbid: this.props.imdbid,
             username: "test",
             message: this.state.comment
-        })
+        },withCredentials())
 
         this.setState({comment: ""})
         console.log(response)

@@ -1,9 +1,28 @@
 const keys = require('../config/keys');
 const fs = require('fs');
 const axios = require('axios');
+const JSONStream = require("JSONStream");
 
 const throttledQueue = require('throttled-queue');
-const throttle = throttledQueue(1, 1000);
+const throttle = throttledQueue(20, 10000);
+
+async function readStream(imdb_id, callback) {
+    let idExists = false;
+  
+    let stream = await fs.createReadStream('./movies.json');
+    let jsonStream = JSONStream.parse('*');
+    stream.pipe(jsonStream);
+    jsonStream.on('data', function(data) {
+        if (data === imdb_id) {
+            idExists = true;
+            callback(idExists)
+        }
+    })
+    jsonStream.on('end', function() {
+        callback(idExists)
+    })
+}
+
 
 async function getAllMoviesFromEZTV(i) {
     try {
@@ -13,53 +32,61 @@ async function getAllMoviesFromEZTV(i) {
                 let data = new Object();
                 let movie = res.data.torrents[j];
                 if (movie.torrents_url || movie.magnet_url && movie.imdb_id) {
-                    throttle(async function () {
-                        try {
-                            const res = await axios.get('http://www.omdbapi.com/?i=tt' + movie.imdb_id + '&apikey=' + keys.OMDB_API_KEY);
-                            const res2 = await axios.get('https://api.themoviedb.org/3/find/tt' + movie.imdb_id + '?api_key=' + keys.TMDB_API_KEY + '&external_source=imdb_id');
-                            data['id'] = movie.id;
-                            data['title'] = res.data.Title;
-                            data['sypnosis'] = res.data.Plot;
-                            data['runtime'] = res.data.Runtime;
-                            data['year'] = res.data.Year;
-                            data['genres'] = res.data.Genre;
-                            data['type'] = res.data.Type;
-                            data['imdb_rating'] = res.data.imdbRating;
-                            data['imdb_id'] = 'tt' + movie.imdb_id;
-                            data['director'] = res.data.Director;  
-                            data['writer'] = res.data.Writer;  
-                            data['actors'] = res.data.Actors;
-                            let torrents = new Array();
-                            torrents.push({
-                                "url" : movie.torrent_url,
-                                "magnet" : movie.magnet_url,
-                                "hash" : movie.hash,
-                                "quality" : movie.filename,
-                                "seeds" : movie.seeds,
-                                "peers" : movie.peers,
-                                "size_bytes": movie.size_bytes
-                            })
-                            data['torrents'] = torrents;
-                            if (res2.data.movie_results.length > 0) {
-                                if (res2.data.movie_results[0].poster_path !== null) {
-                                    data['image'] = 'https://image.tmdb.org/t/p/w780' + res2.data.movie_results[0].poster_path;
-                                } else {
-                                    data['image'] = 'N/A';
-                                }
-                            } else if (res2.data.tv_results.length > 0) {
-                                if (res2.data.tv_results[0].poster_path !== null) {
-                                    data['image'] = 'https://image.tmdb.org/t/p/w780' + res2.data.tv_results[0].poster_path;
-                                } else {
-                                    data['image'] = 'N/A';
-                                }
-                            }
-                            console.log(data);
-                            fs.appendFileSync("movies.json", JSON.stringify(data), 'utf8');
 
-                        } catch (err) { 
-                            console.log(err.response)
-                        }  
-                    })
+                    // console.log(movie)
+                    // readStream(movie.imdb_id, function(idExists) {
+                    //     if (!idExists) {
+                            throttle(async function () {
+                                try {
+                                    const res = await axios.get('http://www.omdbapi.com/?i=tt' + movie.imdb_id + '&apikey=' + keys.OMDB_API_KEY);
+                                    const res2 = await axios.get('https://api.themoviedb.org/3/find/tt' + movie.imdb_id + '?api_key=' + keys.TMDB_API_KEY + '&external_source=imdb_id');
+                                    
+                                    console.log(res.data.Type)
+                                    data['id'] = movie.id;
+                                    data['title'] = res.data.Title;
+                                    data['sypnosis'] = res.data.Plot;
+                                    data['runtime'] = res.data.Runtime;
+                                    data['year'] = res.data.Year;
+                                    data['genres'] = res.data.Genre;
+                                    data['type'] = res.data.Type;
+                                    data['imdb_rating'] = res.data.imdbRating;
+                                    data['imdb_id'] = 'tt' + movie.imdb_id;
+                                    data['director'] = res.data.Director;  
+                                    data['writer'] = res.data.Writer;  
+                                    data['actors'] = res.data.Actors;
+                                    let torrents = new Array();
+                                    torrents.push({
+                                        "url" : movie.torrent_url,
+                                        "magnet" : movie.magnet_url,
+                                        "hash" : movie.hash,
+                                        "quality" : movie.filename,
+                                        "seeds" : movie.seeds,
+                                        "peers" : movie.peers,
+                                        "size_bytes": movie.size_bytes
+                                    })
+                                    data['torrents'] = torrents;
+                                    if (res2.data.movie_results.length > 0) {
+                                        if (res2.data.movie_results[0].poster_path !== null) {
+                                            data['image'] = 'https://image.tmdb.org/t/p/w780' + res2.data.movie_results[0].poster_path;
+                                        } else {
+                                            data['image'] = 'N/A';
+                                        }
+                                    } else if (res2.data.tv_results.length > 0) {
+                                        if (res2.data.tv_results[0].poster_path !== null) {
+                                            data['image'] = 'https://image.tmdb.org/t/p/w780' + res2.data.tv_results[0].poster_path;
+                                        } else {
+                                            data['image'] = 'N/A';
+                                        }
+                                    }
+                                    // console.log(data);
+                                    fs.appendFileSync("movies.json", JSON.stringify(data), 'utf8');
+
+                                } catch (err) { 
+                                    console.log(err.response)
+                                }  
+                            })
+                    //     }
+                    // });
                 }
             }
             i++;

@@ -2,13 +2,16 @@
     "SignIn": {
         "title": "déjà client? choissisez votre film",
         "subtitle": "Connectez-vous",
+        "username": "Login",
+        "password": "Mot de passe",
         "button": "Se connecter",
         "forgotPassword": "Mot de passe oublié?",
         "newClient": "Nouveau client"
     },
     "SignUp": {
-        "title": "Vous voulez découvrir notre selection de films",
+        "title": "Vous souhaitez découvrir notre selection de films",
         "subtitle": "Inscrivez-vous",
+        "picture": "Ajouter une photo",
         "firstname": "Prénom",
         "lastname": "Nom",
         "username": "Login",
@@ -16,5 +19,26 @@
         "password": "Mot de passe",
         "button": "S'inscrire"
     },
-    "SignOut": "Signout"
+    "SignOut": "Signout",
+    "Reset": {
+        "title": "Entrer votre email pour changer de mot de passe.",
+        "subtitle": "Votre Email",
+        "button": "Valider"
+    },
+    "ChangePassword": {
+        "title": "Entrer votre nouveau mot de passe.",
+        "subtitle": "Votre MDP",
+        "new": "Nouveau mot de passe",
+        "confirm": "Confirmer votre mot de passe",
+        "button": "Valider"
+    },
+    "EditInfo": {
+        "title": "Souhaitez-vous changer vos infos perso?",
+        "subtitle": "Vos informations",
+        "firstname": "Prenom",
+        "lastname": "Nom",
+        "username": "Login",
+        "email": "Email",
+        "button": "Valider"
+    }
 }
