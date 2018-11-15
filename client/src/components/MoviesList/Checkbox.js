@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 
 class Checkbox extends Component {
     render(){
-        const { label, onClick, checked, genreFilter } = this.props;
+        const { label, onClick, genreFilter } = this.props;
         if (genreFilter && genreFilter.length > 0) {
-            console.log(genreFilter)
             if (genreFilter.includes(label)) {
                     return (
                         <div className='checkbox'>
