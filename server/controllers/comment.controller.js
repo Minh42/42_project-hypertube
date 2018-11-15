@@ -20,7 +20,7 @@ updateDb = (imdbid, updated) => {
 
 exports.comment = async (req, res) => {
     console.log("REQ", req.body)
-    const toAddInDb = new Comment({imdbid: req.body.imdbid, username: req.body.username, message: req.body.message, date: Date.now()});
+    const toAddInDb = new Comment({imdbid: req.body.imdbid, username: req.username, message: req.body.message, date: Date.now()});
         toAddInDb.save(err => {
             if (err) {
                 console.log("error not added in db", err)

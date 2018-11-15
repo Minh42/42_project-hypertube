@@ -29,7 +29,10 @@ export default function(state = INITIAL_STATE, action) {
 
 export function signInAction({username, password}, history) {
 	return (dispatch) => {
-        axios.post('http://localhost:8080/api/auth/signin', {username, password})
+        axios.post('http://localhost:8080/api/auth/signin', {username, password}, {
+                withCredentials: true
+        }
+    )
             .catch((err) => {
                 if(err) {
                     dispatch({
@@ -43,6 +46,7 @@ export function signInAction({username, password}, history) {
             })
             .then(res => {
                 if(res) {
+                    localStorage.setItem('xsrf', res.data.xsrfToken)
                     setAuthorizationToken(res.data.xsrfToken);
                     dispatch({ 
                         type: AUTHENTICATED,
