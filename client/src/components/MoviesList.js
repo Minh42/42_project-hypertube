@@ -26,7 +26,6 @@ class MoviesList extends Component {
             return this.props.movies.map((movie, id) => {
                 return (
                     <MovieCard
-                        // key={movie._source.imdb_id}
                         key={id}
                         movie={movie}
                         showMovieDetails={this.showMovieDetails.bind(this)}
