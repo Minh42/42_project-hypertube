@@ -24,6 +24,10 @@ class Comment extends Component {
     handleSubmit = async (e) => {
         e.preventDefault();
         console.log("test")
+        if (this.state.comment === "") {
+            this.props.isTyping(false);
+            return ;
+        }
         this.setState({comments: [...this.state.comments, {_id: "new", imdbid: this.props.imdbid, username: "Just added by me", message: this.state.comment, date: Date.now()}]})
         const response = await axios.post("http://localhost:8080/api/comment/add", {
             imdbid: this.props.imdbid,
@@ -32,11 +36,13 @@ class Comment extends Component {
         },withCredentials())
 
         this.setState({comment: ""})
+        this.props.isTyping(false);
         console.log(response)
     }
 
     handleChange = async (e) => {
         this.setState({ [e.target.name]: e.target.value });
+        this.props.isTyping(true);
     }
 
     render () {

@@ -20,7 +20,8 @@ class MoviePlayer extends Component {
         quality: "",
         en: "",
         fr: "",
-        watching: false
+        watching: false,
+        isTyping: false
     }
 
     componentDidMount() {
@@ -83,7 +84,7 @@ class MoviePlayer extends Component {
     }
 
     handleKeyPress = (e) => {
-        if (this.state.started) {
+        if (this.state.started && !this.state.isTyping) {
             switch(e.key) {
                 case " ":
                     const playing = this.state.playing; 
@@ -124,6 +125,11 @@ class MoviePlayer extends Component {
         this.handleDownload(url, magnet, quality);
     }
 
+    handleTyping = (isTyping) => {
+        if (isTyping !== this.state.isTyping)
+            this.setState({isTyping: isTyping})
+    }
+
      render () {
          return (
             <div>
@@ -151,7 +157,7 @@ class MoviePlayer extends Component {
                         }
                     </ul>
                 </div>
-                <Comment imdbid={this.props.movie._source.imdb_id}/>
+                <Comment imdbid={this.props.movie._source.imdb_id} isTyping={this.handleTyping}/>
             </div>      
          )
      }
