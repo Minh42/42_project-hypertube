@@ -27,7 +27,7 @@ export function initMoviesAction() {
         dispatch({
             type: SEARCH_REQUEST
         });
-        axios.post('http://localhost:8080/api/search/movies')
+       axios.post('http://localhost:8080/api/search/movies')
             .catch((err) => {
                 console.log(err)
                 if(err) {
@@ -63,7 +63,6 @@ export function searchAction(input) {
             })
             .then(res => {
                 if(res) {
-                    console.log(res)
                     dispatch({ 
                         type: SEARCH_SUCCESS,
                         payload: res.data.movies

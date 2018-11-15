@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import izitoast from 'izitoast';
 import validator from 'validator';
+import { translate } from 'react-i18next';
 
 
 class ChangeUserInfo extends Component {
@@ -63,41 +64,42 @@ class ChangeUserInfo extends Component {
 
     render() {
         const { handleSubmit } = this.props;
+        const { t, i18n } = this.props; 
         return (
             <div className="form">
                 <div className="card">
                     <div className="card__side card__side--front">
                         <FormHeader 
-                            heading1 = "Need to change your personal information?"
-                            heading2 = "edit profile"
+                            heading1 = { t('EditInfo.title', { framework: "react-i18next" }) }
+                            heading2 = { t('EditInfo.subtitle', { framework: "react-i18next" }) }
                         />
                         <div className="card__form">
                             <form className="card__form--input" onSubmit={handleSubmit(this.changeUserInformation.bind(this))}>
                                 <Field
-                                    label="Firstname"
+                                    label={ t('EditInfo.firstname', { framework: "react-i18next" }) }
                                     name="firstname"
                                     type="text"
                                     component= {RenderField}
                                 />
                                 <Field
-                                    label="Lastname"
+                                    label={ t('EditInfo.lastname', { framework: "react-i18next" }) }
                                     name="lastname"
                                     type="text"
                                     component= {RenderField}
                                 />
                                 <Field
-                                    label="Username"
+                                    label={ t('EditInfo.username', { framework: "react-i18next" }) }
                                     name="username"
                                     type="text"
                                     component= {RenderField}
                                 />
                                 <Field
-                                    label="Email"
+                                    label={ t('EditInfo.email', { framework: "react-i18next" }) }
                                     name="email"
                                     type="email"
                                     component= {RenderField}
                                 />
-                                <button type="submit" className="btn btn-primary btn-primary--pink">Submit</button>
+                                <button type="submit" className="btn btn-primary btn-primary--pink">{ t('EditInfo.button', { framework: "react-i18next" }) }</button>
                             </form>
                         </div>
                     </div>
@@ -156,4 +158,4 @@ const reduxFormChangeUserInfo = reduxForm({
     form: 'editProfile'
 })(ChangeUserInfo);
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(reduxFormChangeUserInfo));
+export default translate('common')(withRouter(connect(mapStateToProps, mapDispatchToProps)(reduxFormChangeUserInfo)));

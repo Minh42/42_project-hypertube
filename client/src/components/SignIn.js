@@ -48,7 +48,7 @@ class SignIn extends Component {
                         <Field
                             className1="card__form--input-label"
                             className2="card__form--input-input"
-                            label="Username"
+                            label= { t('SignIn.username', { framework: "react-i18next" }) }
                             name="username"
                             type="text"
                             component= {RenderField}
@@ -57,21 +57,21 @@ class SignIn extends Component {
                         <Field
                             className1="card__form--input-label"
                             className2="card__form--input-input"
-                            label="Password"
+                            label={ t('SignIn.password', { framework: "react-i18next" }) }
                             name="password"
                             type="password"
                             placeholder=""
                             component={RenderField}
                         />
-                        <button className="btn btn-primary btn-primary--pink" type="submit">Sign In</button>
+                        <button className="btn btn-primary btn-primary--pink" type="submit">{ t('SignIn.button', { framework: "react-i18next" }) }</button>
                     </form>
                 </div>
                 <div className="card__forgot">
-                    <a className="card__forgot--link" onClick={this.showPageReset}>Forgot password?</a>
+                    <a className="card__forgot--link" onClick={this.showPageReset}>{ t('SignIn.forgotPassword', { framework: "react-i18next" }) }</a>
                 </div>
                 <Oauth />
                 <div className="card__newClient">
-                    <span>New client</span>
+                    <span>{ t('SignIn.newClient', { framework: "react-i18next" }) }</span>
                     <Chevron className="icon" fill='rgb(216, 3, 81)'/>
                 </div>
             </div>

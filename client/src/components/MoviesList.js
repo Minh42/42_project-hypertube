@@ -23,17 +23,18 @@ class MoviesList extends Component {
     renderMovies() {
         if (this.props.movies) {
             console.log(this.props.movies)
-            return this.props.movies.map((movie, id) => {
-                return (
-                    <MovieCard
-                        key={id}
-                        movie={movie}
-                        showMovieDetails={this.showMovieDetails.bind(this)}
-                    />
-                );
-            })
-        } else {
-            return null;
+            const allMovies = this.props.movies.map((movie, i) => (
+                <MovieCard
+                    key={i}
+                    movie={movie}
+                    showMovieDetails={this.showMovieDetails.bind(this)}
+                />
+            ));
+            return (
+                <div className="movies-list">
+                    {allMovies} 
+                </div>
+            );     
         }
     }
 
@@ -60,9 +61,7 @@ class MoviesList extends Component {
                     <FilterRange />
                     <FiltersGenders />
                 </div>
-                <div className="movies-list">
-                    {this.renderMovies()}
-                </div>
+                {this.renderMovies()}
             </div>
         );
     }

@@ -9,16 +9,14 @@ class SortBy extends Component {
 		super(props);
 
 		this.state = {
-			sortby : "Relevance"
+			sortby : "relevance"
 		}
 
 		this.handleSort = this.handleSort.bind(this);
     }
     
     componentDidMount() {
-		this.setState({
-			sortby: this.props.sort
-		})
+        this.props.SortByAction(this.state.sortby, this.props.history)
 	}
 
 	handleSort(event) {
