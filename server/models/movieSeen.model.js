@@ -7,4 +7,5 @@ const movieSeenSchema = new Schema({
     date: { type: Date, required: true }
 });
 
+movieSeenSchema.index({ userID: 1, imdbid: 1 }, { unique: true });
 module.exports = mongoose.model('MovieSeen', movieSeenSchema);
