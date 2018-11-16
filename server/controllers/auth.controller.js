@@ -96,7 +96,7 @@ exports.github = (req, res) => {
 }
 
 exports.fortytwo = (req, res) => {
-    passport.authenticate('fortytwo', { failureRedirect: '/' }, (err, user) => {
+    passport.authenticate('42', { failureRedirect: '/' }, (err, user) => {
         if (err || !user) {
             return res.status(401).json({
                 message: 'Please check your 42 credentials'

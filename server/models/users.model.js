@@ -25,12 +25,12 @@ var usernameValidator = [
         validator: 'isLength',
         arguments: [1, 30],
         message: 'Your username is too short or too long'
-    }),
+    })/*,
     validate({
         validator: 'isAlphanumeric',
         passIfEmpty: true,
         message: 'Your username must contain only alphanumeric characters'
-    }),
+    }),*/
 ]
 
 var emailValidator = [

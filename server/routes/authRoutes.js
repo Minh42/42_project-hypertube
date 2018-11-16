@@ -13,7 +13,7 @@ auth.get('/linkedin', passport.authenticate('linkedin', { scope: ['r_basicprofil
 auth.get('/linkedin/callback', authController.linkedin);
 auth.get('/github', passport.authenticate('github', { session: false }, { scope: [ 'user:email' ] }));
 auth.get('/github/callback', authController.github);
-auth.get('/fortytwo', passport.authenticate('fortytwo', { session: false }));
+auth.get('/fortytwo', passport.authenticate('42', { session: false }));
 auth.get('/fortytwo/callback', authController.fortytwo);
 auth.get('/logout', authController.logout);
 
