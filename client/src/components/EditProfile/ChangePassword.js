@@ -7,6 +7,7 @@ import axios from 'axios';
 import izitoast from 'izitoast';
 import tools from '../../utils/tools.js';
 import { translate } from 'react-i18next';
+import { withCredentials } from '../../utils/headers';
 
 class ChangePassword extends Component {   
     constructor(props) {
@@ -21,7 +22,7 @@ class ChangePassword extends Component {
             confirmedNewPassword : values.confirmPassword,
             user_id : this.props.match.params.id
         }
-        axios.post('http://localhost:8080/api/verification/changePassword', dataReset)
+        axios.post('http://localhost:8080/api/verification/changePassword', dataReset, withCredentials())
         .catch((err) => {
             if (err) {
                 switch (err.response.status) {

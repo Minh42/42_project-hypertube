@@ -5,6 +5,7 @@ import * as reducerDownload from '../../reducers/reducer_download';
 import Loader from '../Loader/Loader';
 import axios from 'axios';
 import Comment from './Comment';
+import { withCredentials } from '../../utils/headers';
 
 let hls = null;
 
@@ -49,7 +50,7 @@ class MoviePlayer extends Component {
             imdbid: this.props.movie._source.imdb_id,
             link: url,
             quality: quality
-        })
+        }, withCredentials())
         console.log("response", response)
         if (response && response.status === 200) {
             this.setState({watching: true})
@@ -78,7 +79,9 @@ class MoviePlayer extends Component {
                 this.refs.video.addEventListener('loadedmetadata',function() {});
             } 
             this.refs.video.currentTime = 1;
-            this.refs.video.play();     
+            this.refs.video.play();
+            const added = await axios.post('http://localhost:8080/api/movie/add', {userid: this.props.user, imdbid: this.props.movie._source.imdb_id}, withCredentials());
+            console.log("ADDED", added)
         }
     }
 
@@ -157,17 +160,18 @@ class MoviePlayer extends Component {
                         }
                     </ul>
                 </div>
-                <Comment imdbid={this.props.movie._source.imdb_id} isTyping={this.handleTyping}/>
+                <Comment history={this.props.history} userid={this.props.user} imdbid={this.props.movie._source.imdb_id} isTyping={this.handleTyping}/>
             </div>      
          )
      }
  }
 
-const mapStateToProps = state => {
+ function mapStateToProps(state) {
     return {
-      // stream_link: state.download.stream_link
-    }
-};
+ //       isAuthenticated: state.auth.authenticated,
+        user: state.auth.currentUser
+    };
+}
 
 const mapDispatchToProps = (dispatch) => {
     return {

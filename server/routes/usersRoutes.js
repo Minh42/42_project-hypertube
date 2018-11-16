@@ -2,9 +2,9 @@ const users = require('express').Router();
 const usersController = require('../controllers/users.controller');
 const authenticate = require('../middlewares/authenticate');
 
-users.get('/', usersController.getAllUsers);
+users.get('/', authenticate, usersController.getAllUsers);
 users.post('/', usersController.createUser);
-users.get('/:id', usersController.getUser);
+users.get('/:id/:xsrf', usersController.getUser);
 users.put('/:id', authenticate, usersController.updateUser);
 users.delete('/:id', authenticate, usersController.deleteUser);
 

@@ -8,7 +8,7 @@ import logo from '../assets/img/logo-white.png';
 import user from '../assets/img/user.jpg';
 import axios from 'axios';
 import { ReactComponent as Login} from '../assets/img/svg/login.svg';
-
+import { withCredentials } from '../utils/headers';
 import { translate, Trans } from 'react-i18next';
 
 
@@ -25,28 +25,30 @@ class Header extends Component {
     }
 
     async componentDidUpdate(prevProps, prevState) {
-        if (prevProps.user && prevState.files === null) {
-            console.log(this.props.user)
-            const res = await axios.post('http://localhost:8080/api/picture/', {'id': this.props.user._id})
-            if (res) {
-                this.setState ({
-                    files: res.data.path
-                })
+        if (this.props.user) {
+            if (prevProps.user && prevState.files === null) {
+                console.log(this.props.user)
+                const res = await axios.post('http://localhost:8080/api/picture/', {'id': this.props.user._id})
+                if (res) {
+                    this.setState ({
+                        files: res.data.path
+                    })
+                }
             }
         }
     }
 
     async componentDidMount() {
-        console.log(this.props.user)
+        console.log("USER", this.props.user)
         if (this.props.user) {
-            console.log(this.props.user)
-            const res = await axios.post('http://localhost:8080/api/picture/', {'id': this.props.user._id})
+            const res = await axios.post('http://localhost:8080/api/picture/', {'id': this.props.user._id}, withCredentials())
             if (res) {
                 this.setState ({
                     files: res.data.path
                 })
             }
         }
+        console.log("USER", this.props.user)
     }
 
     editProfile() {
@@ -92,7 +94,7 @@ class Header extends Component {
                                 <span className="btn btn-secondary__icon">
                                     <Login fill='rgba(216, 3, 81, 0.733)'/>
                                 </span>
-                                    { t('Header.signout', { framework: "react-i18next" }) }
+                                    { t('Header.signOut', { framework: "react-i18next" }) }
                             </button>
                         </div>
                     </nav>

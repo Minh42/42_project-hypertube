@@ -1,0 +1,26 @@
+.user-container {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2vw;
+    color: $color-grey-dark-1;
+    background-color: red;
+}
+
+.user-card {
+    background-color: $color-grey-light-3;
+    width: 60%;
+    margin: auto;
+}
+
+.user-picture {
+    width: 100%;
+    clip-path: polygon(0 0, 100% 0, 100% 15vh, 0 100%);
+}
+
+.user-picture:hover {
+    clip-path: none;
+}
+
+.bold {
+    font-weight: bold;
+}

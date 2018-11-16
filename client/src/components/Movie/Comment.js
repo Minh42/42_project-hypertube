@@ -14,7 +14,7 @@ class Comment extends Component {
         console.log("IN DID MOUNT", withCredentials())
         const response = await axios.post("http://localhost:8080/api/comment/all", {
             imdbid: this.props.imdbid
-        },withCredentials
+        }, withCredentials()
     )
 
         console.log("COMMENTS", response.data)
@@ -28,7 +28,8 @@ class Comment extends Component {
             this.props.isTyping(false);
             return ;
         }
-        this.setState({comments: [...this.state.comments, {_id: "new", imdbid: this.props.imdbid, username: "Just added by me", message: this.state.comment, date: Date.now()}]})
+        console.log("U", this.props.userid)
+        this.setState({comments: [...this.state.comments, {id: this.props.userid, imdbid: this.props.imdbid, username: "Just added by me", message: this.state.comment, date: Date.now()}]})
         const response = await axios.post("http://localhost:8080/api/comment/add", {
             imdbid: this.props.imdbid,
             username: "test",
@@ -45,20 +46,29 @@ class Comment extends Component {
         this.props.isTyping(true);
     }
 
+    goToProfile = (userid) => {
+        console.log("goto")
+        this.props.history.push(`/user/${userid}`)
+    }
+
     render () {
         return (
-            <div>
-                <h2> Comments: </h2>
+            <div className="comment-box">
+                <h2 className="comment-header"> Comments: </h2>
                 {
                     this.state.comments.map(c => {
                         return (
-                            <Cmt key={`${c.username}-${c.date}}`} username={c.username} message={c.message} date={c.date} />
+                            <Cmt key={`${c.username}-${c.date}}`} goToProfile={this.goToProfile} userid={c.id} username={c.username} message={c.message} date={c.date} />
                         )
                     })
                 }
                 <form onSubmit={this.handleSubmit}>
-                    <textarea name="comment" onChange={this.handleChange} rows="4" cols="50" value={this.state.comment}> </textarea>
-                    <button type="submit" className="li-video"> Add a comment </button>
+                    <div>
+                        <textarea className="comment-area" name="comment" onChange={this.handleChange} rows="4" cols="50" value={this.state.comment}> </textarea>
+                    </div>
+                    <div>
+                        <button type="submit" className="add-comment"> Add a comment </button>
+                    </div>                
                 </form>
             </div>
         )

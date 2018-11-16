@@ -78,3 +78,19 @@
     background-color:$color-primary-light-2;
     cursor: pointer;
 }
+
+.add-comment {
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    padding: 10px 15px;
+    color: $color-white;
+    background-color: $color-primary-light-3;
+    width: 60%;
+}
+
+.add-comment:hover {
+    color: $color-grey-dark-1;
+    background-color: $color-grey-light-1;
+}

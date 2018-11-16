@@ -1,9 +1,65 @@
+.comment-box {
+    margin-bottom: 50px;
+    height: 0px;
+}
+
+.comment-header {
+    background-color: $color-grey-dark-1;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
 .movie-cmt {
-    background-color: $color-grey-light-1;
-    color: $color-grey-dark-1; 
+    padding: 5px;
+    color: $color-grey-light-1; 
     width: 60%;
     margin: auto;
     margin-top: 5px;
     margin-bottom: 5px;
     border-radius: 5px;
+}
+
+.comment-username {
+    cursor: pointer;
+    font-size: 15px;
+    color: $color-grey-dark-3;
+}
+
+.comment-username:hover{
+    color: $color-grey-light-4;
+}
+
+.message-content {
+    margin-right: 1vw;
+}
+
+.comment-date {
+    font-size: 10px;
+    margin: auto;
+    margin-left: 5px;
+}
+
+.small-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+.container-user {
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+}
+
+.container-msg {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-left: 10px;
+}
+
+.comment-area {
+    width: 60%;
+    padding: 5px;
 }

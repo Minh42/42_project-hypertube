@@ -3,5 +3,5 @@ const commentController = require('../controllers/comment.controller');
 const authenticate = require('../middlewares/authenticate');
 
 comment.post('/add', authenticate, commentController.comment)
-comment.post('/all', commentController.allComment)
+comment.post('/all', authenticate, commentController.allComment)
 module.exports = comment;

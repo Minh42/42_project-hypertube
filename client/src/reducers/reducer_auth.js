@@ -76,7 +76,7 @@ export function signOutAction(history) {
 			type: UNAUTHENTICATED,
 			payload: null
 		})
-        axios.get('http://localhost:8080/api/auth/logout');
+        axios.get('http://localhost:8080/api/auth/logout', withCredentials());
         history.push('/')
 	}
 }
