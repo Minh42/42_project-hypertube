@@ -5,8 +5,6 @@ const getMovies = (state) => state.search.results
 const getFilters = (state) => state.filters
 
 export const getFilterMovies = createSelector([getMovies, getFilters], (movies, filters) => {
-    console.log(movies)
-    console.log(filters)
     if (movies !== null) {
         if (filters.ratingChange) {
             var movies = filterByProperty(movies, "imdb_rating", filters.ratingFilter.min, filters.ratingFilter.max);
@@ -32,6 +30,7 @@ export const getFilterMovies = createSelector([getMovies, getFilters], (movies, 
                 return movies;
             }
         }
+        console.log(movies)
         return movies;
     } else {
         return movies;

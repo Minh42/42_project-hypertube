@@ -6,7 +6,7 @@ import SortBy from './MoviesList/SortBy';
 import FiltersGenders from './MoviesList/FiltersChekbox';
 import MovieCard from './MoviesList/MovieCard';
 import Loader from './Loader/Loader';
-import { bindActionCreators } from 'redux';
+import { getFilterMovies } from '../selectors/index';
 import { initMoviesAction } from '../reducers/reducer_search';
 import { selectMovie } from '../reducers/reducer_movies';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -28,6 +28,19 @@ class MoviesList extends Component {
         if (this.props.movies) (
             this.setState({items: this.props.movies.slice(0, this.state.offset )})
         )
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        console.log('derived');
+        console.log(props, state);
+        const copy = JSON.parse(JSON.stringify(props.movies));
+        return {
+            items: copy
+        }
+    }
+
+    componentDidUpdate() {
+        console.log('didididididididii');
     }
 
     fetchMoreData = () => {
@@ -115,8 +128,9 @@ class MoviesList extends Component {
 }
 
 function mapStateToProps(state) {
+    console.log('hey')
     return {
-        movies: state.search.results
+        movies: getFilterMovies(state)
     };
 }
 
