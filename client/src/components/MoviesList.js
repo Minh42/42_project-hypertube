@@ -46,7 +46,7 @@ class MoviesList extends Component {
             if (this.props.movies.length !== null) {
                 return (
                     <div className="movies-filters__container">
-                        <span>{this.props.movies.length} { t('Results', { framework: "react-i18next" }) }</span>
+                        <span className="movies-filters__container--span">{this.props.movies.length} { t('Results', { framework: "react-i18next" }) }</span>
                         <SortBy />
                     </div>
                 )

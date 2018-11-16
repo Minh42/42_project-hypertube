@@ -17,19 +17,33 @@ class Header extends Component {
         super(props);
 
         this.state = {
-            file: null
+            files: null
         }
 
         this.onSubmit = this.onSubmit.bind(this);
         this.editProfile = this.editProfile.bind(this); 
     }
 
-    async componentDidMount() {
-        if (this.props.user) {
+    async componentDidUpdate(prevProps, prevState) {
+        if (prevProps.user && prevState.files === null) {
+            console.log(this.props.user)
             const res = await axios.post('http://localhost:8080/api/picture/', {'id': this.props.user._id})
             if (res) {
                 this.setState ({
-                    file: res.data.path
+                    files: res.data.path
+                })
+            }
+        }
+    }
+
+    async componentDidMount() {
+        console.log(this.props.user)
+        if (this.props.user) {
+            console.log(this.props.user)
+            const res = await axios.post('http://localhost:8080/api/picture/', {'id': this.props.user._id})
+            if (res) {
+                this.setState ({
+                    files: res.data.path
                 })
             }
         }
@@ -46,6 +60,7 @@ class Header extends Component {
     }
     
     render() {
+        console.log(this.props.user)
         const { t, i18n } = this.props;
         const { files } = this.state;
         var path;
@@ -70,14 +85,14 @@ class Header extends Component {
                         </div>
                         <div className="user-nav__user" onClick={this.editProfile}>
                             <img src={path} alt="user" className="user-nav__user-photo"/>
-                            <span className="user-nav__user-name">Minh</span>
+                            <span className="user-nav__user-name">{this.props.user.username}</span>
                         </div>
                         <div className="user-nav__signout">
                             <button className="btn btn-secondary" onClick={this.onSubmit}>
                                 <span className="btn btn-secondary__icon">
-                                    <Login fill='#eb2f64'/>
+                                    <Login fill='rgba(216, 3, 81, 0.733)'/>
                                 </span>
-                                    { t('SignOut', { framework: "react-i18next" }) }
+                                    { t('Header.signout', { framework: "react-i18next" }) }
                             </button>
                         </div>
                     </nav>

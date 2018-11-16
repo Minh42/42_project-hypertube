@@ -103,7 +103,7 @@ class FiltersCheckbox extends Component {
       const { t, i18n } = this.props;
       return (
         <div className="movies-filters__genders">
-            <label>{ t('titleGenres', { framework: "react-i18next" }) }</label><br></br>
+            <label className="movies-filters__genders--title">{ t('titleGenres', { framework: "react-i18next" }) }</label><br></br>
             {this.mapGenders()}
         </div>
       )

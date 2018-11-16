@@ -1,7 +1,7 @@
 {
     "SignIn": {
         "title": "déjà client? choissisez votre film",
-        "subtitle": "Connectez-vous",
+        "subtitle": "Connectez vous",
         "username": "Login",
         "password": "Mot de passe",
         "button": "Se connecter",
@@ -10,7 +10,7 @@
     },
     "SignUp": {
         "title": "Vous souhaitez découvrir notre selection de films",
-        "subtitle": "Inscrivez-vous",
+        "subtitle": "Inscrivez vous",
         "picture": "Ajouter une photo",
         "firstname": "Prénom",
         "lastname": "Nom",
@@ -19,7 +19,10 @@
         "password": "Mot de passe",
         "button": "S'inscrire"
     },
-    "SignOut": "Déconnexion",
+    "Header": {
+        "searchBar": "Indiquer un titre...",
+        "signOut": "Déconnexion"
+    },
     "Reset": {
         "title": "Entrer votre email pour changer de mot de passe.",
         "subtitle": "Votre Email",
@@ -34,7 +37,7 @@
     },
     "EditInfo": {
         "title": "Souhaitez-vous changer vos infos perso?",
-        "subtitle": "Vos informations",
+        "subtitle": "Vos infos perso",
         "firstname": "Prenom",
         "lastname": "Nom",
         "username": "Login",

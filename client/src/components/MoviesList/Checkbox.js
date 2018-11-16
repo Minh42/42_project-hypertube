@@ -10,42 +10,45 @@ class Checkbox extends Component {
         if (genreFilter && genreFilter.length > 0) {
             if (genreFilter.includes(label)) {
                     return (
-                        <div className='checkbox'>
-                            <label>
+                        <div className="movies-filters__genders--checkbox">
+                            <label className="movies-filters__genders--checkbox-label">
                                 <input
+                                    className="movies-filters__genders--checkbox-input"
                                     type='checkbox'
                                     value={label}
                                     onClick={onClick}
                                     defaultChecked
                                 />
-                                {label}
+                                <span className="movies-filters__genders--checkbox-span">{label}</span>
                             </label>
                         </div>
                     )
                 } else {
                     return (
-                        <div className='checkbox'>
-                            <label>
+                        <div className="movies-filters__genders--checkbox">
+                            <label className="movies-filters__genders--checkbox-label">
                                 <input
+                                    className="movies-filters__genders--checkbox-input"
                                     type='checkbox'
                                     value={label}
                                     onClick={onClick}
                                 />
-                                {label}
+                                <span className="movies-filters__genders--checkbox-span">{label}</span>
                             </label>
                         </div>
                     )
                 }
     } else {
             return (
-                <div className='checkbox'>
-                    <label>
+                <div className="movies-filters__genders--checkbox">
+                    <label className="movies-filters__genders--checkbox-label">
                         <input
+                            className="movies-filters__genders--checkbox-input"
                             type='checkbox'
                             value={label}
                             onClick={onClick}
                         />
-                        {label}
+                        <span className="movies-filters__genders--checkbox-span">{label}</span>
                     </label>
                 </div>
             )

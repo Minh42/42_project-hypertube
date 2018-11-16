@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { searchAction } from '../../reducers/reducer_search';
 import { initMoviesAction } from '../../reducers/reducer_search';
 import { ReactComponent as Glass} from '../../assets/img/svg/magnifying-glass.svg';
+import { translate } from 'react-i18next';
   
 class SearchBar extends Component {
     constructor(props) {
@@ -32,17 +33,18 @@ class SearchBar extends Component {
     }
 
     render() {
+        const { t, i18n } = this.props;
         return (
             <form action="#" className="search" onSubmit={this.handleSubmit}>
                 <input 
                     type="text" 
                     className="search__input" 
-                    placeholder="Search for movies..." 
+                    placeholder={ t('Header.searchBar', { framework: "react-i18next" }) }
                     onChange={this.handleChange}
                     value={this.state.input}
                 />
                 <button className="search__button" onClick={this.handleSubmit}>
-                    <Glass fill='#999'/>
+                    <Glass fill='rgba(216, 3, 81, 0.733)'/>
                 </button>
             </form>
         );
@@ -56,4 +58,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 } 
 
-export default connect(null , mapDispatchToProps)(SearchBar);
+export default translate('common')(connect(null , mapDispatchToProps)(SearchBar));

@@ -19,7 +19,10 @@
         "password": "Password",
         "button": "Sign Up"
     },
-    "SignOut": "Signout",
+    "Header": {
+        "searchBar": "Search movies...",
+        "signOut": "Signout"
+    },
     "Reset": {
         "title": "Please enter your email to reset your password.",
         "subtitle": "Your email",

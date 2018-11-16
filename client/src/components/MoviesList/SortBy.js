@@ -43,7 +43,7 @@ class SortBy extends Component {
         const { t, i18n } = this.props;
         return (
             <div className="movies-filters__sort">
-                <select id="select" name="sortby" onChange={this.handleSort} value={this.state.sortby}>
+                <select className="movies-filters__sort--select" id="select" name="sortby" onChange={this.handleSort} value={this.state.sortby}>
 					<option value="relevance">{ t('SortBy.relevance', { framework: "react-i18next" }) }</option>
 					<option value="latest">{ t('SortBy.latest', { framework: "react-i18next" }) }</option>
 					<option value="earliest">{ t('SortBy.earliest', { framework: "react-i18next" }) }</option>

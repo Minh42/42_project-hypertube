@@ -144,19 +144,19 @@ exports.deleteUser = (req, res) => {
     });
 }
 
-exports.pictureUser = (req, res) => {
-    console.log(res)
-    Users.findOne({_id :req.params.id}, (err, user) => {
-        if (err) {
-            res.sendStatus(500);  
-        }
-        if (!user) {
-            res.sendStatus(404);    
-        } else {
-            res.status(200).json({
-                message: 'User retrieved successfully',
-                user: user.toJSON()
-            });
-        }
-    })
-}
+// exports.pictureUser = (req, res) => {
+//     console.log(res)
+//     Users.findOne({_id :req.params.id}, (err, user) => {
+//         if (err) {
+//             res.sendStatus(500);  
+//         }
+//         if (!user) {
+//             res.sendStatus(404);    
+//         } else {
+//             res.status(200).json({
+//                 message: 'User retrieved successfully',
+//                 user: user.toJSON()
+//             });
+//         }
+//     })
+// }

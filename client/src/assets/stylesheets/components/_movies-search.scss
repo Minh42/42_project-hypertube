@@ -12,21 +12,97 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-size: 1.3rem;
 
     &__container {
         width: 100%;
         display: flex;
         flex-direction: row;
         justify-content: space-around;
-    }
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        font-size: 1.3rem;
 
+        &--span {
+            color: $color-primary-light-1;
+        }
+    }
+  
     &__range {
         width: 80%;
     }
 
-    // &__sort {
+    &__sort {
+        position: relative;
+        display: block;
+        // border: 1px solid white;
+        background-color: $color-primary-light-3;
+        z-index: 10;
+        border-radius: 1.5rem;
+        opacity: 0.78;
 
-    // }
+            &:after {
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: 4rem;
+                height: 100%;
+                line-height: 3rem;
+                content: "∨";
+                opacity: none;
+                text-align: center;
+                color: white;
+                font-size: 1.5rem;
+                // border-left: 1px solid white;
+                z-index: -1;
+            }
+
+        &--select {
+            border: none;
+            outline: none;
+            background: transparent;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border-radius: 0;
+            margin: 0;
+            display: block;
+            width: 100%;
+            padding: .6rem 5rem 0.8rem 0.8rem;
+            font-size: 1.4rem;
+            color: white;
+            opacity: none;
+        }
+    }
+
+    &__genders {
+        width: 80%;
+
+        &--title {
+            font-size: 1.5rem;
+        }
+
+        &--checkbox {
+            border: none;
+            margin: .5rem;
+
+            &-label {
+                padding: .5rem;
+                color: white;
+            }
+
+            &-input {
+                margin-left: .5rem;
+                // appearance: none;
+                // border: 1px solid #714BB9;
+                // padding:0.7rem;
+            }
+
+            &-span{
+                margin-left: 1rem; 
+            }
+        }
+    }
 }
 
 .movies-list {

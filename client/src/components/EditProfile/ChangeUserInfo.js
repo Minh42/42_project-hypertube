@@ -9,11 +9,20 @@ import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import izitoast from 'izitoast';
 import validator from 'validator';
+import Dropzone from 'react-dropzone'
 import { translate } from 'react-i18next';
 
 
 class ChangeUserInfo extends Component {
-    componentDidMount() {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            files: null 
+        }
+    }
+
+    async componentDidMount() {
         if(this.props.user) {
             let initData = {
                 "firstname": this.props.user.firstname,
@@ -21,8 +30,53 @@ class ChangeUserInfo extends Component {
                 "username": this.props.user.username,
                 "email": this.props.user.email
             };
+
             this.props.initialize(initData);
+
+            const res = await axios.post('http://localhost:8080/api/picture/', {'id': this.props.user._id})
+            if (res) {
+                this.setState ({
+                    files: res.data.path
+                })
+            }
         }
+    }
+
+    onDrop(files) {
+        let message;
+        const data = new FormData();
+        data.append('file', files[0]);
+        data.append('filename', files[0].name);
+        axios.post('http://localhost:8080/api/verification/upload', data)
+            .catch((err) => {
+                if (err) {
+                    switch (err.response.status) {
+                        case 404 :
+                            message = 'Upload file is invalid';
+                            break;
+                        case 500:
+                            message = 'Oops, something went wrong!';
+                            break;
+                        default: 
+                            break;
+                    }
+                    izitoast.error({
+                        message: message,
+                        position: 'topRight'
+                    });
+                }
+            })
+            .then((res) => {
+                if (res) {
+                    this.setState({
+                        files: res.data
+                    });
+                    izitoast.success({
+                        message: 'Your picture is valid',
+                        position: 'topRight'
+                    });
+                }
+            })
     }
     
     async changeUserInformation(values) {
@@ -64,7 +118,23 @@ class ChangeUserInfo extends Component {
 
     render() {
         const { handleSubmit } = this.props;
-        const { t, i18n } = this.props; 
+        const { files } = this.state;
+        const { t, i18n } = this.props;
+        var path;
+       
+        const dropzoneStyle = {
+            width: 110,
+            height: 100,
+            borderRadius: 20,
+            border: "none",
+            position: "relative"
+          };
+
+        if (files != null)
+            path = files;
+        else 
+            path = require('../../assets/img/photo2.jpg');
+
         return (
             <div className="form">
                 <div className="card">
@@ -74,6 +144,18 @@ class ChangeUserInfo extends Component {
                             heading2 = { t('EditInfo.subtitle', { framework: "react-i18next" }) }
                         />
                         <div className="card__form">
+                        <div className="card__form--picture">
+                            <div className="card__form--picture-block">
+                                <img className="card__form--picture-block-img" src={path} alt="img"/>
+                                <Dropzone multiple={false} 
+                                accept="image/*" 
+                                onDrop={this.onDrop.bind(this)} 
+                                style={dropzoneStyle}
+                                >
+                                <p className="card__form--picture-block-text">{ t('SignUp.picture', { framework: "react-i18next" }) }</p>
+                                </Dropzone>
+                            </div>
+                        </div>
                             <form className="card__form--input" onSubmit={handleSubmit(this.changeUserInformation.bind(this))}>
                                 <Field
                                     label={ t('EditInfo.firstname', { framework: "react-i18next" }) }

@@ -8,16 +8,16 @@
 //   }
   
 .input-range {
-    margin-bottom: 50px;
+    margin-bottom: 5rem;
 }
 
 .input-range__slider {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background: rgb(216, 3, 81);
-    border: 1px solid rgb(216, 3, 81);
-    border-radius: 100%;
+    background: $color-primary-dark;
+    border: 1px solid $color-primary-dark;
+    border-radius: 5rem;
     cursor: pointer;
     display: block;
     height: 1rem;
@@ -40,8 +40,7 @@
 }
   
 .input-range__label {
-    font-family: "Helvetica Neue", san-serif;
-    font-size: 0.7rem;
+    font-size: 1.1rem;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     white-space: nowrap;
@@ -49,7 +48,8 @@
   
 .input-range__label--min,
 .input-range__label--max {
-    bottom: -2.8rem;
+    font-size: 1.1rem;
+    bottom: -3rem;
     position: absolute;
 }
   
@@ -67,7 +67,7 @@
 }
     
 .input-range__track {
-    background: rgb(216, 3, 81);
+    background: $color-primary-dark;
     border-radius: 0.3rem;
     display: block;
     height: 0.3rem;
@@ -77,7 +77,7 @@
 }
 
 .input-range--disabled .input-range__track {
-    background: rgb(216, 3, 81); 
+    background: $color-primary-dark; 
 }
   
 .input-range__track--background {
@@ -89,17 +89,17 @@
 }
   
 .input-range__track--active {
-    background: white; 
+    background:white; 
 }
   
 .input-range {
-    height: 1rem;
+    height: 1.5rem;
     position: relative;
-    width: 100%; 
+    // width: 100%; 
 }
 
-.labelRange {
-    font-family: 'Lato', sans-serif;
-    font-size: 1em;
-    margin-bottom: 15%;
-}
+// .labelRange {
+//     font-family: 'Lato', sans-serif;
+//     font-size: 1em;
+//     margin-bottom: 15%;
+// }
