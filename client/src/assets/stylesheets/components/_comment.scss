@@ -1,9 +1,55 @@
 .movie-cmt {
-    background-color: $color-grey-light-1;
-    color: $color-grey-dark-1; 
+    padding: 5px;
+    //background-color: $color-grey-light-1;
+    color: $color-grey-light-1; 
     width: 60%;
     margin: auto;
     margin-top: 5px;
     margin-bottom: 5px;
     border-radius: 5px;
+}
+
+.comment-username {
+    cursor: pointer;
+    font-size: 0.8vw;
+    margin: auto;
+}
+
+.comment-username:hover{
+    color: $color-grey-light-4;
+    font-size: 1.5rem;
+}
+
+.message-content {
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
+.comment-date {
+    font-size: 0.5vw;
+    margin: auto;
+    margin-left: 5px;
+}
+
+.small-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+}
+
+.container-user {
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+}
+
+.container-msg {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.comment-area {
+    width: 60%;
+    padding: 5px;
 }

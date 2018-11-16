@@ -15,6 +15,11 @@
 .user-picture {
     width: 90%;
     padding: 2%;
+    clip-path: polygon(0 0, 100% 0, 100% 15vh, 0 100%);
+}
+
+.user-picture:hover {
+    clip-path: none;
 }
 
 .bold {

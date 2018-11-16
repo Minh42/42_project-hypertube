@@ -28,7 +28,8 @@ class Comment extends Component {
             this.props.isTyping(false);
             return ;
         }
-        this.setState({comments: [...this.state.comments, {_id: "new", imdbid: this.props.imdbid, username: "Just added by me", message: this.state.comment, date: Date.now()}]})
+        console.log("U", this.props.userid)
+        this.setState({comments: [...this.state.comments, {id: this.props.userid, imdbid: this.props.imdbid, username: "Just added by me", message: this.state.comment, date: Date.now()}]})
         const response = await axios.post("http://localhost:8080/api/comment/add", {
             imdbid: this.props.imdbid,
             username: "test",
@@ -62,8 +63,12 @@ class Comment extends Component {
                     })
                 }
                 <form onSubmit={this.handleSubmit}>
-                    <textarea name="comment" onChange={this.handleChange} rows="4" cols="50" value={this.state.comment}> </textarea>
-                    <button type="submit" className="li-video"> Add a comment </button>
+                    <div>
+                        <textarea className="comment-area" name="comment" onChange={this.handleChange} rows="4" cols="50" value={this.state.comment}> </textarea>
+                    </div>
+                    <div>
+                        <button type="submit" className="add-comment"> Add a comment </button>
+                    </div>                
                 </form>
             </div>
         )

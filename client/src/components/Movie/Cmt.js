@@ -1,13 +1,36 @@
-import React from 'react';
+import React, { Component } from 'react';
+import axios from 'axios';
+import { withCredentials } from '../../utils/headers';
 
-const Cmt = ({username, goToProfile, userid, message, date}) => {
-    return (
-        <div className="movie-cmt">
-            <h4 onClick={() => goToProfile(userid)}> {username} </h4>
-            <div> {message} </div>
-            <p> {date} </p>
-        </div>
-    )
+class Cmt extends Component {
+
+    state = {
+        src: ""
+    }
+
+    async componentDidMount() {
+        const src = await axios.post(`http://localhost:8080/api/picture/`, {id: this.props.userid} , withCredentials());
+        this.setState({src: src.data.path})
+    }
+
+    render () {
+        return (
+            <div className="movie-cmt">
+                <div className="container-user">
+                    <img className="small-pic" src={this.state.src}></img>
+                    <div className="container-msg">
+                        <div className="container-user">
+                            <h4 className="comment-username" onClick={() => this.props.goToProfile(this.props.userid)}> {this.props.username} </h4>
+                            <p className="comment-date"> {isNaN(this.props.date) ? this.props.date.substring(0, 10) : 'Added just now'} </p>
+                        </div>
+                        <div className="message-content"> {this.props.message} </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        )
+    }
 }
 
 export default Cmt;

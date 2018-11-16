@@ -158,17 +158,18 @@ class MoviePlayer extends Component {
                         }
                     </ul>
                 </div>
-                <Comment history={this.props.history} imdbid={this.props.movie._source.imdb_id} isTyping={this.handleTyping}/>
+                <Comment history={this.props.history} userid={this.props.user} imdbid={this.props.movie._source.imdb_id} isTyping={this.handleTyping}/>
             </div>      
          )
      }
  }
 
-const mapStateToProps = state => {
+ function mapStateToProps(state) {
     return {
-      // stream_link: state.download.stream_link
-    }
-};
+ //       isAuthenticated: state.auth.authenticated,
+        user: state.auth.currentUser
+    };
+}
 
 const mapDispatchToProps = (dispatch) => {
     return {
