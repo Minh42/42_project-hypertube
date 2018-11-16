@@ -14,15 +14,13 @@ exports.addSeen = async (req, res) => {
 }
 
 exports.getSeen = async (req, res) => {
-    console.log("IMI", req.body.imdbid)
-    /*Comment.find({imdbid: req.body.imdbid}, function(err, comments) {
+    console.log("GET ALL MOVIE SEEN")
+    MovieSeen.find({userID: req.user._id}, function(err, movies) {
         if (!err){ 
-            console.log(comments);
-            res.status(200).json(comments)
+            console.log(movies);
+            res.status(200).json(movies)
         } else {console.log(err);
             res.status(400).json("ERROR ")
         }
     });
-    
-    */
 }

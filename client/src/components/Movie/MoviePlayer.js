@@ -16,8 +16,6 @@ class MoviePlayer extends Component {
      
         started: false,
         playing: true,
-        width: 0,
-        height: 0,
         quality: "",
         en: "",
         fr: "",
@@ -29,19 +27,6 @@ class MoviePlayer extends Component {
         document.addEventListener("keydown", (e) => {
             this.handleKeyPress(e);        
         })
-        window.addEventListener("resize", this.updateDimensions);
-        this.updateDimensions();
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener("resize", this.updateDimensions);
-    }
-
-    updateDimensions = () => {
-        this.setState({width: window.innerWidth, height: window.innerHeight});
-        if (this.refs.video)
-        this.refs.video.width = this.state.width * 0.8;
-        this.refs.video.height = this.state.height * 0.6;
     }
 
     handleDownload = async (url, quality) => {
@@ -57,8 +42,6 @@ class MoviePlayer extends Component {
             const en = response.data.en;
             const fr = response.data.fr;
             await this.setState({started: true, en: en, fr: fr});
-            this.refs.video.width = window.innerWidth * 0.8;
-            this.refs.video.height = window.innerHeight * 0.6;
             if(Hls.isSupported()) {
                 var config = { 
                     xhrSetup: function (xhr,url) { 
@@ -133,7 +116,7 @@ class MoviePlayer extends Component {
             <div>
                 <h1 className="movie-title"> {`${this.props.movie._source.title} ${this.state.quality}`} </h1>
                 <div>
-                    <video ref="video" crossOrigin="anomymous" controls>
+                    <video className="video-play" ref="video" crossOrigin="anomymous" controls>
                         {this.state.en !== "" && <track ref="track1" label="English" kind="subtitles" src={this.state.en} default />} 
                         {this.state.fr !== "" && <track ref="track2" label="French" kind="subtitles" src={this.state.fr} />}
                     </video>
