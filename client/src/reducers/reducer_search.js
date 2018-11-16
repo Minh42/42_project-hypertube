@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import { withCredentials } from '../utils/headers';
 export const SEARCH_REQUEST = 'SEARCH_REQUEST';
 export const SEARCH_SUCCESS = 'SEARCH_SUCCESS';
 export const SEARCH_ERROR = 'SEARCH_ERROR';
@@ -28,7 +28,7 @@ export function initMoviesAction() {
         dispatch({
             type: SEARCH_REQUEST
         });
-       axios.post('http://localhost:8080/api/search/movies')
+       axios.post('http://localhost:8080/api/search/movies', {}, withCredentials())
             .catch((err) => {
                 console.log(err)
                 if(err) {
@@ -54,7 +54,7 @@ export function searchAction(input) {
         dispatch({
             type: SEARCH_REQUEST
         });
-        axios.post('http://localhost:8080/api/search', {input: input})
+        axios.post('http://localhost:8080/api/search', {input: input}, withCredentials())
             .catch((err) => {
                 if(err) {
                     dispatch({

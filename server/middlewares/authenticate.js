@@ -14,8 +14,9 @@ module.exports = function verifyToken(req, res, next) {
             if(decoded.xsrf != xsrfToken) {
                 res.sendStatus(401);
             } else {
-                console.log("authentification ok")
+                console.log("authentification ok", decoded.user)
                 req.username = decoded.user.username;
+                req.id = decoded.user._id;
                 next();
             }
         })

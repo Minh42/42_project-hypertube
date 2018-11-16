@@ -2,7 +2,8 @@ const Comment = require('../models/comment.model');
 
 exports.comment = async (req, res) => {
     console.log("REQ", req.body)
-    const toAddInDb = new Comment({imdbid: req.body.imdbid, username: req.username, message: req.body.message, date: Date.now()});
+    console.log(req.id, req.username)
+    const toAddInDb = new Comment({imdbid: req.body.imdbid, id: req.id, username: req.username, message: req.body.message, date: Date.now()});
         toAddInDb.save(err => {
             if (err) {
                 console.log("error not added in db", err)

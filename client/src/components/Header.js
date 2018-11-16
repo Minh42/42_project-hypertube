@@ -8,7 +8,7 @@ import logo from '../assets/img/logo-white.png';
 import user from '../assets/img/user.jpg';
 import axios from 'axios';
 import { ReactComponent as Login} from '../assets/img/svg/login.svg';
-
+import { withCredentials } from '../utils/headers';
 import { translate, Trans } from 'react-i18next';
 
 
@@ -25,14 +25,16 @@ class Header extends Component {
     }
 
     async componentDidMount() {
+        console.log("USER", this.props.user)
         if (this.props.user) {
-            const res = await axios.post('http://localhost:8080/api/picture/', {'id': this.props.user._id})
+            const res = await axios.post('http://localhost:8080/api/picture/', {'id': this.props.user._id}, withCredentials())
             if (res) {
                 this.setState ({
                     file: res.data.path
                 })
             }
         }
+        console.log("USER", this.props.user)
     }
 
     editProfile() {

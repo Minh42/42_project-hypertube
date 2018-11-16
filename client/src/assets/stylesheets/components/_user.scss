@@ -1,0 +1,22 @@
+.user-container {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2vw;
+    color: $color-grey-dark-1;
+}
+
+.user-card {
+    background-color: $color-grey-light-3;
+    width: 60%;
+    margin: auto;
+    padding: 2%;
+}
+
+.user-picture {
+    width: 90%;
+    padding: 2%;
+}
+
+.bold {
+    font-weight: bold;
+}

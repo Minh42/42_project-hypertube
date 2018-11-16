@@ -97,7 +97,9 @@ exports.createUser = (req, res) => {
 exports.getUser = (req, res) => {
     Users.findOne({_id :req.params.id}, (err, user) => {
         if (err) {
-            res.sendStatus(500);  
+            console.log(err)
+            res.sendStatus(500);
+            return ;  
         }
         if (!user) {
             res.sendStatus(404);    

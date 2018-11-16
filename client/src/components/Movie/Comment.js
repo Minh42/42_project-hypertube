@@ -14,7 +14,7 @@ class Comment extends Component {
         console.log("IN DID MOUNT", withCredentials())
         const response = await axios.post("http://localhost:8080/api/comment/all", {
             imdbid: this.props.imdbid
-        },withCredentials
+        }, withCredentials()
     )
 
         console.log("COMMENTS", response.data)
@@ -45,6 +45,11 @@ class Comment extends Component {
         this.props.isTyping(true);
     }
 
+    goToProfile = (userid) => {
+        console.log("goto")
+        this.props.history.push(`/user/${userid}`)
+    }
+
     render () {
         return (
             <div>
@@ -52,7 +57,7 @@ class Comment extends Component {
                 {
                     this.state.comments.map(c => {
                         return (
-                            <Cmt key={`${c.username}-${c.date}}`} username={c.username} message={c.message} date={c.date} />
+                            <Cmt key={`${c.username}-${c.date}}`} goToProfile={this.goToProfile} userid={c.id} username={c.username} message={c.message} date={c.date} />
                         )
                     })
                 }

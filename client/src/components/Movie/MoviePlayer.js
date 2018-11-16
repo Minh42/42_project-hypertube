@@ -5,6 +5,7 @@ import * as reducerDownload from '../../reducers/reducer_download';
 import Loader from '../Loader/Loader';
 import axios from 'axios';
 import Comment from './Comment';
+import { withCredentials } from '../../utils/headers';
 
 let hls = null;
 
@@ -49,7 +50,7 @@ class MoviePlayer extends Component {
             imdbid: this.props.movie._source.imdb_id,
             link: url,
             quality: quality
-        })
+        }, withCredentials())
         console.log("response", response)
         if (response && response.status === 200) {
             this.setState({watching: true})
@@ -157,7 +158,7 @@ class MoviePlayer extends Component {
                         }
                     </ul>
                 </div>
-                <Comment imdbid={this.props.movie._source.imdb_id} isTyping={this.handleTyping}/>
+                <Comment history={this.props.history} imdbid={this.props.movie._source.imdb_id} isTyping={this.handleTyping}/>
             </div>      
          )
      }

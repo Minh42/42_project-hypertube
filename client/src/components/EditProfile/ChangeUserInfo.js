@@ -10,7 +10,7 @@ import axios from 'axios';
 import izitoast from 'izitoast';
 import validator from 'validator';
 import { translate } from 'react-i18next';
-
+import { withCredentials } from '../../utils/headers';
 
 class ChangeUserInfo extends Component {
     componentDidMount() {
@@ -30,7 +30,7 @@ class ChangeUserInfo extends Component {
         let userID = this.props.user._id;
 
         try {
-            const res = await axios.put('http://localhost:8080/api/users/' + userID, values);
+            const res = await axios.put('http://localhost:8080/api/users/' + userID, values, withCredentials());
             izitoast.success({
                 message: res.data.message,
                 position: 'topRight'
