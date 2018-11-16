@@ -51,7 +51,6 @@ class MoviePlayer extends Component {
             link: url,
             quality: quality
         }, withCredentials())
-        console.log("response", response)
         if (response && response.status === 200) {
             this.setState({watching: true})
             const stream_link = response.data.stream_link;
@@ -81,7 +80,6 @@ class MoviePlayer extends Component {
             this.refs.video.currentTime = 1;
             this.refs.video.play();
             const added = await axios.post('http://localhost:8080/api/movie/add', {imdbid: this.props.movie._source.imdb_id}, withCredentials());
-            console.log("ADDED", added)
         }
     }
 
@@ -120,7 +118,6 @@ class MoviePlayer extends Component {
     }
   
     handleClick = async (url, quality) => {
-        console.log(url)
         url = url !== undefined ? url : "";
         await this.setState({started: false, watching: false, quality: quality});
         this.handleDownload(url, quality);
@@ -132,10 +129,9 @@ class MoviePlayer extends Component {
     }
 
      render () {
-         console.log('loool');
          return (
             <div>
-                <h2> {`${this.props.movie._source.title} ${this.state.quality}`} </h2>
+                <h1 className="movie-title"> {`${this.props.movie._source.title} ${this.state.quality}`} </h1>
                 <div>
                     <video ref="video" crossOrigin="anomymous" controls>
                         {this.state.en !== "" && <track ref="track1" label="English" kind="subtitles" src={this.state.en} default />} 
@@ -152,7 +148,6 @@ class MoviePlayer extends Component {
                     <ul className='ul-video'>
                         {
                         this.props.movie._source.torrents.map(m => {
-                            console.log('ddd', m);
                                 return (
                                     <li className='li-video' key={m.url} onClick={() => this.handleClick(m.url, m.quality)}> {m.quality} {this.state.quality === m.quality && !this.state.watching && <Loader />} </li>
                                 )

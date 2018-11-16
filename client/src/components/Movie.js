@@ -18,7 +18,6 @@ class Curtain extends Component {
     }
 
     componentDidMount() {
-        console.log("HHH", this.props.selectedMovie)
         if (!this.props.selectedMovie || this.props.selectedMovie === undefined)
             this.props.history.push("/")
         if (this.props.movies) {

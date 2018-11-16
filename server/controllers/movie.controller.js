@@ -1,8 +1,6 @@
 const MovieSeen = require('../models/movieSeen.model');
 
 exports.addSeen = async (req, res) => {
-    console.log("REQ", req.body)
-   // console.log(req.id, req.username)
     const toAddInDb = new MovieSeen({userID: req.user._id ,imdbid: req.body.imdbid, date: Date.now()});
         toAddInDb.save(err => {
             if (err) {
