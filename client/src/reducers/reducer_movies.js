@@ -10,6 +10,7 @@ export default function(state = initialState, action) {
     switch(action.type) {
         case MOVIE_SELECTED:
             return { ...state, selectedMovie: action.payload };
+        default:break;
     }
     return state;
 }
