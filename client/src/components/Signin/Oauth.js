@@ -45,6 +45,7 @@ class Oauth extends Component {
                     })
                     .then((res) => {
                         if (res) {
+                            console.log(res.data)
                             const user = res.data.user;
                             this.props.signInActionOauth(xsrfToken, user, this.props.history)
                         }

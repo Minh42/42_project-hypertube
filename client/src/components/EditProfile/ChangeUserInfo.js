@@ -12,6 +12,7 @@ import validator from 'validator';
 import Dropzone from 'react-dropzone'
 import { translate } from 'react-i18next';
 import { withCredentials } from '../../utils/headers';
+import { runInThisContext } from 'vm';
 
 class ChangeUserInfo extends Component {
     constructor(props) {
@@ -25,20 +26,17 @@ class ChangeUserInfo extends Component {
     async componentDidMount() {
         if(this.props.user) {
             let initData = {
-                "firstname": this.props.user.firstname,
-                "lastname": this.props.user.lastname,
-                "username": this.props.user.username,
-                "email": this.props.user.email
+                "firstname": this.props.user.currentUser.firstname,
+                "lastname": this.props.user.currentUser.lastname,
+                "username": this.props.user.currentUser.username,
+                "email": this.props.user.currentUser.email
             };
 
             this.props.initialize(initData);
 
-            const res = await axios.post('http://localhost:8080/api/picture/', {'id': this.props.user._id})
-            if (res) {
-                this.setState ({
-                    files: res.data.path
-                })
-            }
+            this.setState ({
+                files: this.props.user.picture
+            })
         }
     }
 
@@ -49,6 +47,7 @@ class ChangeUserInfo extends Component {
         data.append('filename', files[0].name);
         axios.post('http://localhost:8080/api/verification/upload', data)
             .catch((err) => {
+                console.log(err)
                 if (err) {
                     switch (err.response.status) {
                         case 404 :
@@ -80,16 +79,21 @@ class ChangeUserInfo extends Component {
     }
     
     async changeUserInformation(values) {
+        var data = { values: values,
+            path: this.state.files}
+
         let message;
-        let userID = this.props.user._id;
+        let userID = this.props.user.currentUser._id;
+        console.log(userID)
 
         try {
-            const res = await axios.put('http://localhost:8080/api/users/' + userID, values, withCredentials());
+            const res = await axios.put('http://localhost:8080/api/users/' + userID, data, withCredentials());
             izitoast.success({
                 message: res.data.message,
                 position: 'topRight'
             });
         } catch (err) {
+            console.log(err)
             switch (err.response.status) {
                 case 401 :
                     izitoast.error({

@@ -18,7 +18,7 @@ class MoviesList extends Component {
         this.state = {
             hasMore: true,
             offset: 20,
-            items: []
+            // items: this.props.movies.slice(0, 20)
         }
     };
 
@@ -41,10 +41,11 @@ class MoviesList extends Component {
     }
 
     renderMovies = () => {
+        console.log(this.props.movies)
         if (this.state.items) {
             return this.state.items.map((movie, i) => {
                 return (
-                    <div key={i} className="movies-list">
+
                         <InfiniteScroll
                             dataLength={this.state.items.length}
                             next={this.fetchMoreData}
@@ -62,7 +63,7 @@ class MoviesList extends Component {
                             showMovieDetails={this.showMovieDetails.bind(this)}
                         />
                         </InfiniteScroll>
-                    </div>
+
                 )
             });
         } else {
@@ -94,10 +95,18 @@ class MoviesList extends Component {
                     <FilterRange />
                     <FiltersGenders />
                 </div>
-                {this.renderMovies()}
+                <div className="movies-list">
+                    {this.renderMovies()}
+                </div>
             </div>
         );
     }
+}
+
+function mapStateToProps(state) {
+    return {
+        movies: state.search.results
+    };
 }
 
 function mapDispatchToProps(dispatch) { 
@@ -107,4 +116,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 
-export default translate('common')(withRouter(connect(null, mapDispatchToProps)(MoviesList)));
+export default translate('common')(withRouter(connect(mapStateToProps, mapDispatchToProps)(MoviesList)));

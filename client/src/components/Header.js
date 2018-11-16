@@ -25,30 +25,23 @@ class Header extends Component {
     }
 
     async componentDidUpdate(prevProps, prevState) {
+        console.log(this.props.user)
         if (this.props.user) {
-            if (prevProps.user && prevState.files === null) {
-                console.log(this.props.user)
-                const res = await axios.post('http://localhost:8080/api/picture/', {'id': this.props.user._id})
-                if (res) {
-                    this.setState ({
-                        files: res.data.path
-                    })
-                }
-            }
+            // if (prevProps.user.currentUser && prevState.files === null) {
+            //     this.setState ({
+            //         files: this.props.user.picture
+            //     })
+            // }
         }
     }
 
     async componentDidMount() {
-        console.log("USER", this.props.user)
         if (this.props.user) {
-            const res = await axios.post('http://localhost:8080/api/picture/', {'id': this.props.user._id}, withCredentials())
-            if (res) {
-                this.setState ({
-                    files: res.data.path
-                })
-            }
+            console.log(this.props.user)
+            this.setState ({
+                files: this.props.user.picture
+            })
         }
-        console.log("USER", this.props.user)
     }
 
     editProfile() {
