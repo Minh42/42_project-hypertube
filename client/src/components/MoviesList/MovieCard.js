@@ -56,7 +56,7 @@ class MovieCard extends Component {
     render() {
         const { movie, showMovieDetails } = this.props;
         return (
-            <div key={movie._source.id} className="movies-list-container">
+            <div>
                 {this.renderImage(movie, showMovieDetails)}
                 <div className="movies-list-container__info">
                     {this.renderBasicInfo(movie)}

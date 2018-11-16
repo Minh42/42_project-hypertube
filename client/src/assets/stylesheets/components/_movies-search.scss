@@ -31,9 +31,8 @@
 
 .movies-list {
     display: flex;
-    flex-direction: row;
-    // flex-wrap: wrap;
-    // align-content: flex-start;
+    flex-wrap: wrap;
+    align-content: flex-start;
 
     @include respond(phone) {
         flex-direction: column;
