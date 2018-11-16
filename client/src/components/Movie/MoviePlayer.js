@@ -80,7 +80,7 @@ class MoviePlayer extends Component {
             } 
             this.refs.video.currentTime = 1;
             this.refs.video.play();
-            const added = await axios.post('http://localhost:8080/api/movie/add', {userid: this.props.user, imdbid: this.props.movie._source.imdb_id}, withCredentials());
+            const added = await axios.post('http://localhost:8080/api/movie/add', {imdbid: this.props.movie._source.imdb_id}, withCredentials());
             console.log("ADDED", added)
         }
     }

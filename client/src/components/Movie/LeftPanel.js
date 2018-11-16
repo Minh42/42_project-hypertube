@@ -174,6 +174,10 @@ class LeftPanel extends Component {
                 </div>
             );
 
+        } else {
+            return (
+                <div></div>
+            )
         }
     }
 }

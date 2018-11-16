@@ -25,9 +25,9 @@ class SortBy extends Component {
             })
             this.props.SortByAction(this.props.sort, this.props.history)
         } else {
-            this.state = {
+            this.setState({
                 sortby : "relevance"
-            }
+            });
             this.props.SortByAction(this.state.sortby, this.props.history)
         }
 	}
