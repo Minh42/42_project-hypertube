@@ -2,7 +2,11 @@ const slug = require('slug')
 
 export const MOVIE_SELECTED = 'MOVIE_SELECTED';
 
-export default function(state = null, action) {
+const initialState = {
+    movies: {}
+}
+
+export default function(state = initialState, action) {
     switch(action.type) {
         case MOVIE_SELECTED:
             return { ...state, selectedMovie: action.payload };
