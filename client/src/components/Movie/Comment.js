@@ -53,7 +53,7 @@ class Comment extends Component {
 
     render () {
         return (
-            <div>
+            <div className="comment-box">
                 <h2> Comments: </h2>
                 {
                     this.state.comments.map(c => {
