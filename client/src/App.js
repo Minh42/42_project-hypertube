@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { translate, Trans } from 'react-i18next';
 import requireAuth from './utils/HOC/requireAuth';
 
@@ -26,17 +26,18 @@ class App extends Component {
                           this.props.isAuthenticated
                             ?
                                 <Aux>
-                                    <Route path="/homepage" component={requireAuth(HomePage)} />
+                                    <Route exact path="/homepage" component={requireAuth(HomePage)} />
                                     <Route path="/profile/:id" component={requireAuth(EditProfile)} />
                                     <Route path="/movie/:id" component={requireAuth(Movie)} />
                                     <Route path="/user/:id" component={requireAuth(User)} />
-                                    <Route path="/" component={requireAuth(HomePage)} />
+                                    <Redirect from="/" to="/homepage"/>
                                 </Aux>
                             :
                                 <Aux>
-                                    <Route path="/reset" component={Reset} />
+                                    <Route exact path="/reset" component={Reset} />
                                     <Route path="/changePassword/:id" component={ChangePassword} />
-                                    <Route path="/" component={LandingPage} />
+                                    <Route exact path="/" component={LandingPage} />
+                                    <Redirect from="/" to="/"/>
                                 </Aux>
                         } 
                       <Route component={NotFound} />
