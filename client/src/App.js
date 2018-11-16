@@ -17,30 +17,35 @@ import Aux from './utils/HOC/Aux';
 
 class App extends Component { 
   render() {
+
+    let routes = (
+        <Switch>
+            <Route exact path="/reset" component={Reset} />
+            <Route path="/changePassword/:id" component={ChangePassword} />
+            <Route path="/" component={LandingPage} />
+            <Redirect from="/" to="/"/>
+        </Switch>
+    )
+
+    if (this.props.isAuthenticated) {
+        routes = (
+            <Switch>
+                <Route exact path="/homepage" component={requireAuth(HomePage)} />
+                <Route path="/profile/:id" component={requireAuth(EditProfile)} />
+                <Route path="/movie/:id" component={requireAuth(Movie)} />
+                <Route path="/user/:id" component={requireAuth(User)} />
+                <Redirect from="/" to="/homepage"/>
+            </Switch>
+        )
+    }
+
       return (
           <Router>
               <div>
                   <Header/>
                   <Switch> 
-                        {
-                          this.props.isAuthenticated
-                            ?
-                                <Aux>
-                                    <Route exact path="/homepage" component={requireAuth(HomePage)} />
-                                    <Route path="/profile/:id" component={requireAuth(EditProfile)} />
-                                    <Route path="/movie/:id" component={requireAuth(Movie)} />
-                                    <Route path="/user/:id" component={requireAuth(User)} />
-                                    <Redirect from="/" to="/homepage"/>
-                                </Aux>
-                            :
-                                <Aux>
-                                    <Route exact path="/reset" component={Reset} />
-                                    <Route path="/changePassword/:id" component={ChangePassword} />
-                                    <Route exact path="/" component={LandingPage} />
-                                    <Redirect from="/" to="/"/>
-                                </Aux>
-                        } 
-                      <Route component={NotFound} />
+                        {routes}
+                      {/* <Route component={NotFound} /> */}
                   </Switch>
               </div>
           </Router>
