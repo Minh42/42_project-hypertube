@@ -26,7 +26,6 @@ class Header extends Component {
 
     async componentDidMount() {
         if (this.props.user) {
-            console.log(this.props.user)
             const res = await axios.post('http://localhost:8080/api/picture/', {'id': this.props.user._id}, withCredentials())
             if (res) {
                 this.setState ({

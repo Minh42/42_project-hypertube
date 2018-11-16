@@ -16,9 +16,10 @@ class MoviesList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: false,
             hasMore: true,
-            offset: 20,
-            // items: this.props.movies.slice(0, 20)
+            offset: 40,
+            items: this.props.movies.slice(0, 20)
         }
     };
 
@@ -26,12 +27,23 @@ class MoviesList extends Component {
         this.props.initMoviesAction();
     }
 
-    fetchMoreData() {
+    fetchMoreData = () => {
+        console.log(this.props)
         if (this.props.movies) {
             console.log(this.props.movies)
             if (this.state.offset <= this.props.movies.length) {
-                this.setState({ movies: this.props.movies.slice(0, this.state.offset)})
-                this.setState({ offset: this.state.offset + 20 });
+                this.setState({ 
+                    loading : true,
+                    hasMore: true,
+                    items: this.props.movies.slice(0, this.state.offset),
+                    offset: this.state.offset + 20 
+                })
+            } else {
+                this.setState({ 
+                    loading : false,
+                    hasMore: false,
+                    items: this.props.movies
+                })
             }
         }
     }
@@ -41,29 +53,27 @@ class MoviesList extends Component {
     }
 
     renderMovies = () => {
-        console.log(this.props.movies)
         if (this.state.items) {
             return this.state.items.map((movie, i) => {
                 return (
-
-                        <InfiniteScroll
-                            dataLength={this.state.items.length}
-                            next={this.fetchMoreData}
-                            hasMore={this.state.hasMore}
-                            loader={<h4>Loading...</h4>}
-                            endMessage={
-                                <p style={{ textAlign: "center" }}>
-                                    <b>Yay! You have seen it all</b>
-                                </p>
-                            }
-                        >
-                        <MovieCard
-                            key={i}
-                            movie={movie}
-                            showMovieDetails={this.showMovieDetails.bind(this)}
-                        />
-                        </InfiniteScroll>
-
+                    <div key={i} className="movies-list-container">
+                    <InfiniteScroll
+                        dataLength={this.state.items.length}
+                        next={this.fetchMoreData}
+                        hasMore={this.state.hasMore}
+                        endMessage={
+                            <p style={{ textAlign: "center" }}>
+                                <b>Yay! You have seen it all</b>
+                            </p>
+                        }
+                    >
+                    <MovieCard
+                        key={i}
+                        movie={movie}
+                        showMovieDetails={this.showMovieDetails.bind(this)}
+                    />
+                    </InfiniteScroll>
+                    </div>
                 )
             });
         } else {
