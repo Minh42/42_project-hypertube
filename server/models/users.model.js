@@ -103,8 +103,7 @@ userSchema.methods = {
           expiresIn: 60 * 60 * 24
         });
         const xsrf = uid.sync(18);
-        token['xsrfToken'] =  xsrf;// generate random token
-        console.log("TOKEN", token)
+        token['xsrfToken'] =  xsrf; // generate random token
         token['jwtToken'] = jwt.sign({xsrf: xsrf, user: user}, keys.jwtSecret, {
           expiresIn: 60 * 60 * 24
         });

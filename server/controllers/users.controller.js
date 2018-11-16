@@ -95,25 +95,36 @@ exports.createUser = (req, res) => {
 }
 
 exports.getUser = (req, res) => {
-    Users.findOne({_id :req.params.id}, (err, user) => {
+    const accessToken = req.cookies['accessToken'];
+    jwt.verify(accessToken, keys.jwtSecret, function(err, decoded) {
         if (err) {
             console.log(err)
             res.sendStatus(500);
             return ;  
-        }
-        if (!user) {
-            res.sendStatus(404);    
+        } 
+        if(decoded.xsrf === req.params.xsrf) {
+            Users.findOne({_id :req.params.id}, (err, user) => {
+                if (err) {
+                    console.log(err)
+                    res.sendStatus(500);
+                    return ;  
+                }
+                if (!user) {
+                    res.sendStatus(404);    
+                } else {
+                    res.status(200).json({
+                        message: 'User retrieved successfully',
+                        user: user.toJSON()
+                    });
+                }
+            })
         } else {
-            res.status(200).json({
-                message: 'User retrieved successfully',
-                user: user.toJSON()
-            });
+            res.redirect('/');
         }
     })
 }
 
 exports.updateUser = (req, res) => {
-    console.log('i came here')
     var update = {
         firstname: req.body.firstname,
         lastname: req.body.lastname,

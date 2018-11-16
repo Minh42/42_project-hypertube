@@ -6,7 +6,7 @@ import { signInActionOauth } from '../../reducers/reducer_auth';
 import queryString from 'query-string';
 import axios from 'axios';
 import izitoast from 'izitoast';
-
+import { withCredentials } from '../../utils/headers';
 import { ReactComponent as Facebook} from '../../assets/img/svg/facebook.svg';
 import { ReactComponent as Twitter} from '../../assets/img/svg/twitter.svg';
 import { ReactComponent as LinkedIn} from '../../assets/img/svg/linkedin.svg';
@@ -26,7 +26,7 @@ class Oauth extends Component {
             let xsrfToken = queryString.parse(this.props.location.search).xsrfToken;
             let userID = queryString.parse(this.props.location.search).userID;
             if (xsrfToken && userID) {
-                axios.get('http://localhost:8080/api/users/' + userID)
+                axios.get('http://localhost:8080/api/users/' + userID + '/' + xsrfToken, withCredentials())
                     .catch((err) => {
                         switch (err.response.status) {
                             case 404 :

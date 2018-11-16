@@ -9,13 +9,8 @@ import Loader from './Loader/Loader';
 import { bindActionCreators } from 'redux';
 import { initMoviesAction } from '../reducers/reducer_search';
 import { selectMovie } from '../reducers/reducer_movies';
-<<<<<<< HEAD
 import InfiniteScroll from 'react-infinite-scroll-component';
-=======
-import withInfiniteScroll from '../utils/HOC/InfiniteScrollHOC';
-
 import { translate } from 'react-i18next';
->>>>>>> b31d07da856d6f719a8311cf0da5cd9ebdf7facb
   
 class MoviesList extends Component {
     constructor(props) {
@@ -112,10 +107,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 
-<<<<<<< HEAD
-export default withRouter(connect(null, mapDispatchToProps)(MoviesList));
-=======
-const WrappedComponent = withInfiniteScroll(MoviesList);
-
-export default translate('common')(withRouter(connect(null, mapDispatchToProps)(WrappedComponent)));
->>>>>>> b31d07da856d6f719a8311cf0da5cd9ebdf7facb
+export default translate('common')(withRouter(connect(null, mapDispatchToProps)(MoviesList)));
