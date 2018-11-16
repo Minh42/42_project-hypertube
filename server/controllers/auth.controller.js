@@ -5,7 +5,6 @@ const Users = require('../models/users.model');
 
 exports.local = (req, res) => {
     passport.authenticate('local', (err, user, info) => {
-        
         if (err || !user) {
             return res.status(401).json({
                 message: info.message
@@ -14,7 +13,8 @@ exports.local = (req, res) => {
             const token = user.createJwtToken(user);
             res.cookie('accessToken', token['jwtToken'], { httpOnly: true })
                 .status(200).send({ 
-                    xsrfToken : token['xsrfToken']
+                    xsrfToken : token['xsrfToken'],
+                    user: user
                 });
         }
     })(req, res);
