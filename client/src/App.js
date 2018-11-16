@@ -22,7 +22,7 @@ class App extends Component {
         <Switch>
             <Route exact path="/reset" component={Reset} />
             <Route path="/changePassword/:id" component={ChangePassword} />
-            <Route path="/" component={LandingPage} />
+            <Route exact path="/" component={LandingPage} />
             <Redirect from="/" to="/"/>
         </Switch>
     )
@@ -42,11 +42,9 @@ class App extends Component {
       return (
           <Router>
               <div>
-                  <Header/>
-                  <Switch> 
-                        {routes}
-                      {/* <Route component={NotFound} /> */}
-                  </Switch>
+                    <Header/>
+                    {routes}
+                    {/* <Route component={NotFound} /> */}
               </div>
           </Router>
       )
