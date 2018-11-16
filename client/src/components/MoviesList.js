@@ -39,10 +39,6 @@ class MoviesList extends Component {
         }
     }
 
-    componentDidUpdate() {
-        console.log('didididididididii');
-    }
-
     fetchMoreData = () => {
         if (this.props.movies) {
             if (this.state.offset <= this.props.movies.length) {
