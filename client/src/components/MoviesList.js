@@ -19,18 +19,19 @@ class MoviesList extends Component {
             loading: false,
             hasMore: true,
             offset: 40,
-            items: this.props.movies.slice(0, 20)
+            items: []
         }
     };
 
-    componentDidMount() {
-        this.props.initMoviesAction();
+    async componentDidMount() {
+        await this.props.onMovieAction();
+        if (this.props.movies) (
+            this.setState({items: this.props.movies.slice(0, this.state.offset )})
+        )
     }
 
     fetchMoreData = () => {
-        console.log(this.props)
         if (this.props.movies) {
-            console.log(this.props.movies)
             if (this.state.offset <= this.props.movies.length) {
                 this.setState({ 
                     loading : true,
@@ -49,7 +50,7 @@ class MoviesList extends Component {
     }
 
     showMovieDetails(movie) {
-       this.props.selectMovie(movie, this.props.history);
+       this.props.onSelectMovie(movie, this.props.history);
     }
 
     renderMovies = () => {
@@ -120,10 +121,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) { 
-	return bindActionCreators({ 
-        initMoviesAction : initMoviesAction,
-        selectMovie: selectMovie
-    }, dispatch);
+    return {
+        onMovieAction: () => dispatch(initMoviesAction()),
+        onSelectMovie: (movie, history) => dispatch(selectMovie(movie, history))
+    }
 }
 
 export default translate('common')(withRouter(connect(mapStateToProps, mapDispatchToProps)(MoviesList)));
