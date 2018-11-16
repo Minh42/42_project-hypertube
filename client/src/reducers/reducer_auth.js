@@ -45,7 +45,6 @@ export function signInAction({username, password}, history) {
             })
             .then(res => {
                 if(res) {
-                    console.log(res.data)
                     localStorage.setItem('xsrf', res.data.xsrfToken)
                     setAuthorizationToken(res.data.xsrfToken);
                     dispatch({ 

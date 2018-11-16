@@ -11,24 +11,18 @@ class Comment extends Component {
     }
 
     async componentDidMount() {
-        console.log("IN DID MOUNT", withCredentials())
         const response = await axios.post("http://localhost:8080/api/comment/all", {
             imdbid: this.props.imdbid
-        }, withCredentials()
-    )
-
-        console.log("COMMENTS", response.data)
+        }, withCredentials())
         this.setState({comments: response.data})
     }
 
     handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("test")
         if (this.state.comment === "") {
             this.props.isTyping(false);
             return ;
         }
-        console.log("U", this.props.userid)
         this.setState({comments: [...this.state.comments, {id: this.props.userid, imdbid: this.props.imdbid, username: "Just added by me", message: this.state.comment, date: Date.now()}]})
         const response = await axios.post("http://localhost:8080/api/comment/add", {
             imdbid: this.props.imdbid,
@@ -38,7 +32,6 @@ class Comment extends Component {
 
         this.setState({comment: ""})
         this.props.isTyping(false);
-        console.log(response)
     }
 
     handleChange = async (e) => {
@@ -47,14 +40,13 @@ class Comment extends Component {
     }
 
     goToProfile = (userid) => {
-        console.log("goto")
         this.props.history.push(`/user/${userid}`)
     }
 
     render () {
         return (
             <div className="comment-box">
-                <h2 className="comment-header"> Comments: </h2>
+                <h3 className="comment-header"> Comments: </h3>
                 {
                     this.state.comments.map(c => {
                         return (

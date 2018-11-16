@@ -24,28 +24,25 @@ export default function(state = INITIAL_STATE, action) {
 }
 
 export function initMoviesAction() {
-	return (dispatch) => {
+	return async (dispatch) => {
         dispatch({
             type: SEARCH_REQUEST
         });
-       axios.post('http://localhost:8080/api/search/movies', {}, withCredentials())
-            .catch((err) => {
-                console.log(err)
-                if(err) {
-                    dispatch({
-                        type: SEARCH_ERROR
-                    });
-                }
-            })
-            .then(res => {
-                if(res) {
-                    console.log(res.data.movies)
-                    dispatch({ 
-                        type: SEARCH_SUCCESS,
-                        payload: res.data.movies
-                    });
-                } 
-            })
+        try {
+            const res = await axios.post('http://localhost:8080/api/search/movies', {}, withCredentials());
+            if (res) {
+                dispatch({ 
+                    type: SEARCH_SUCCESS,
+                    payload: res.data.movies
+                });
+            }
+        } catch (err) {
+            if(err) {
+                dispatch({
+                    type: SEARCH_ERROR
+                });
+            }
+        }
 	};
 }
 

@@ -20,6 +20,10 @@ class RightPanel extends Component {
                     </div>
                 );  
             }
+        } else {
+            return (
+            <div></div>
+            )
         }
     }
 }

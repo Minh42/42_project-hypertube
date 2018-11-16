@@ -30,6 +30,7 @@ export const getFilterMovies = createSelector([getMovies, getFilters], (movies, 
                 return movies;
             }
         }
+        console.log(movies)
         return movies;
     } else {
         return movies;
