@@ -17,12 +17,11 @@ class Cmt extends Component {
         return (
             <div className="movie-cmt">
                 <div className="container-user">
-                    <img className="small-pic" src={this.state.src}></img>
+                    <img className="small-pic" src={this.state.src} onClick={() => this.props.goToProfile(this.props.userid)}></img>
                     <div className="container-msg">
-                        <div className="container-user">
-                            <h4 className="comment-username" onClick={() => this.props.goToProfile(this.props.userid)}> {this.props.username} </h4>
-                            <p className="comment-date"> {isNaN(this.props.date) ? this.props.date.substring(0, 10) : 'Added just now'} </p>
-                        </div>
+                            <h4 className="comment-username" onClick={() => this.props.goToProfile(this.props.userid)}> {this.props.username} 
+                                <span className="comment-date"> {isNaN(this.props.date) ? this.props.date.substring(0, 10) : 'Added just now'} </span>
+                            </h4>
                         <div className="message-content"> {this.props.message} </div>
                     </div>
                 </div>
