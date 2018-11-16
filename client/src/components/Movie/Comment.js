@@ -54,7 +54,7 @@ class Comment extends Component {
     render () {
         return (
             <div className="comment-box">
-                <h2> Comments: </h2>
+                <h2 className="comment-header"> Comments: </h2>
                 {
                     this.state.comments.map(c => {
                         return (
