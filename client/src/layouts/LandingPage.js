@@ -4,7 +4,7 @@ import { ReactComponent as Cycle} from '../assets/img/svg/cycle.svg';
 import SignIn from '../components/SignIn';
 import SignUp from '../components/SignUp';
 
-import { translate, Trans } from 'react-i18next';
+import { translate } from 'react-i18next';
 
 class LandingPage extends Component {
     componentDidMount() {

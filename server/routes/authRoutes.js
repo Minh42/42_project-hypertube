@@ -1,6 +1,7 @@
 const auth = require('express').Router();
 const passport = require('passport');
 const authController = require('../controllers/auth.controller');
+const authenticate = require('../middlewares/authenticate');
 
 auth.post('/signin', authController.local);
 auth.get('/facebook', passport.authenticate('facebook', { session: false }, { display: 'popup' }, { scope: ['public_profile', 'email'] }));
@@ -13,8 +14,8 @@ auth.get('/linkedin', passport.authenticate('linkedin', { scope: ['r_basicprofil
 auth.get('/linkedin/callback', authController.linkedin);
 auth.get('/github', passport.authenticate('github', { session: false }, { scope: [ 'user:email' ] }));
 auth.get('/github/callback', authController.github);
-auth.get('/fortytwo', passport.authenticate('fortytwo', { session: false }));
+auth.get('/fortytwo', passport.authenticate('42', { session: false }));
 auth.get('/fortytwo/callback', authController.fortytwo);
-auth.get('/logout', authController.logout);
+auth.get('/logout', authenticate, authController.logout);
 
 module.exports = auth;

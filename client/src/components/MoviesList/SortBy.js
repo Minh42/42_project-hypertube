@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { SortByAction } from '../../reducers/reducer_filters';
 import { bindActionCreators } from 'redux';
+
+import { translate } from 'react-i18next';
   
 class SortBy extends Component { 
 
@@ -9,16 +11,24 @@ class SortBy extends Component {
 		super(props);
 
 		this.state = {
-			sortby : "Relevance"
+			sortby : "relevance"
 		}
 
 		this.handleSort = this.handleSort.bind(this);
     }
     
     componentDidMount() {
-		this.setState({
-			sortby: this.props.sort
-		})
+        if (this.props.sort) {
+            this.setState({
+                sortby: this.props.sort
+            })
+            this.props.SortByAction(this.props.sort, this.props.history)
+        } else {
+            this.setState({
+                sortby : "relevance"
+            });
+            this.props.SortByAction(this.state.sortby, this.props.history)
+        }
 	}
 
 	handleSort(event) {
@@ -29,12 +39,13 @@ class SortBy extends Component {
 	}
     
     render() {
+        const { t } = this.props;
         return (
             <div className="movies-filters__sort">
-                <select id="select" name="sortby" onChange={this.handleSort} value={this.state.sortby}>
-					<option value="relevance">Relevance</option>
-					<option value="latest">Latest Releases</option>
-					<option value="earliest">Earliest Releases</option>
+                <select className="movies-filters__sort--select" id="select" name="sortby" onChange={this.handleSort} value={this.state.sortby}>
+					<option value="relevance">{ t('SortBy.relevance', { framework: "react-i18next" }) }</option>
+					<option value="latest">{ t('SortBy.latest', { framework: "react-i18next" }) }</option>
+					<option value="earliest">{ t('SortBy.earliest', { framework: "react-i18next" }) }</option>
 				</select>
             </div>
             );
@@ -53,4 +64,4 @@ class SortBy extends Component {
         }, dispatch);
     }
     
-export default connect(mapStateToProps, mapDispatchToProps)(SortBy);
+export default translate('common')(connect(mapStateToProps, mapDispatchToProps)(SortBy));

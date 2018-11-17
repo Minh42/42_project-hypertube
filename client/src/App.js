@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { translate, Trans } from 'react-i18next';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { translate } from 'react-i18next';
 import requireAuth from './utils/HOC/requireAuth';
 
 import Header from './components/Header';
@@ -11,26 +11,49 @@ import LandingPage from './layouts/LandingPage';
 import EditProfile from './components/EditProfile';
 import Movie from './components/Movie';
 import NotFound from './layouts/NotFound';
+import User from './components/User/User';
+import { connect } from 'react-redux'
 
 class App extends Component { 
   render() {
+
+    let routes = (
+        <Switch>
+            <Route exact path="/reset" component={Reset} />
+            <Route path="/changePassword/:id" component={ChangePassword} />
+            <Route exact path="/" component={LandingPage} />
+            <Redirect from="/" to="/"/>
+        </Switch>
+    )
+
+    if (this.props.isAuthenticated) {
+        routes = (
+            <Switch>
+                <Route exact path="/homepage" component={requireAuth(HomePage)} />
+                <Route path="/profile/:id" component={requireAuth(EditProfile)} />
+                <Route path="/movie/:id" component={requireAuth(Movie)} />
+                <Route path="/user/:id" component={requireAuth(User)} />
+                <Redirect from="/" to="/homepage"/>
+            </Switch>
+        )
+    }
+
       return (
           <Router>
               <div>
-                  <Header/>
-                  <Switch>
-                      <Route exact path="/" component={LandingPage} />
-                      <Route path="/reset" component={Reset} />
-                      <Route path="/changePassword/:id" component={ChangePassword} />
-                      <Route path="/homepage" component={requireAuth(HomePage)} />
-                      <Route path="/profile/:id" component={requireAuth(EditProfile)} />
-                      <Route path="/movie/:id" component={requireAuth(Movie)} />
-                      <Route component={NotFound} />
-                  </Switch>
+                    <Header/>
+                    {routes}
+                    {/* <Route component={NotFound} /> */}
               </div>
           </Router>
       )
   }
 }
 
-export default translate('common')(App);
+function mapStateToProps(state) {
+    return {
+        isAuthenticated: state.auth.authenticated
+    };
+}
+
+export default connect(mapStateToProps, null) (translate('common')(App));

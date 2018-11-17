@@ -1,5 +1,7 @@
 import axios from 'axios';
-
+import izitoast from 'izitoast';
+import { withCredentials } from '../utils/headers';
+import { UNAUTHENTICATED } from './reducer_auth';
 export const SEARCH_REQUEST = 'SEARCH_REQUEST';
 export const SEARCH_SUCCESS = 'SEARCH_SUCCESS';
 export const SEARCH_ERROR = 'SEARCH_ERROR';
@@ -8,6 +10,7 @@ const INITIAL_STATE = {
     loading: false,
     results: null
   };
+  
   
 export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
@@ -23,27 +26,54 @@ export default function(state = INITIAL_STATE, action) {
 }
 
 export function initMoviesAction() {
-	return (dispatch) => {
+	return async (dispatch) => {
         dispatch({
             type: SEARCH_REQUEST
         });
-        axios.post('http://localhost:8080/api/search/movies')
-            .catch((err) => {
-                if(err) {
-                    dispatch({
-                        type: SEARCH_ERROR
-                    });
+        try {
+            const res = await axios.post('http://localhost:8080/api/search/movies', {}, withCredentials());
+            if (res) {
+                dispatch({ 
+                    type: SEARCH_SUCCESS,
+                    payload: res.data.movies
+                });
+            }
+        } catch (err) {
+            if(err) {
+                console.log(err.response.status)
+                switch (err.response.status) {
+                    case 401:
+                        izitoast.error({
+                            message: 'Please retry to login',
+                            position: 'topRight'
+                        });
+                        dispatch({ 
+                            type: UNAUTHENTICATED,
+                            payload: null
+                        })
+                        break;
+                    case 403 :
+                        izitoast.error({
+                            message: 'Please retry to login',
+                            position: 'topRight'
+                        });
+                        dispatch({ 
+                            type: UNAUTHENTICATED,
+                            payload: null
+                        })
+                        break;
+                    default :
+                        dispatch({
+                            type: SEARCH_ERROR
+                        });
+                        izitoast.error({
+                            message: 'Oops, something went wrong!',
+                            position: 'topRight'
+                        });
+                        break;
                 }
-            })
-            .then(res => {
-                if(res) {
-                    console.log(res.data.movies)
-                    dispatch({ 
-                        type: SEARCH_SUCCESS,
-                        payload: res.data.movies
-                    });
-                } 
-            })
+            }
+        }
 	};
 }
 
@@ -52,17 +82,44 @@ export function searchAction(input) {
         dispatch({
             type: SEARCH_REQUEST
         });
-        axios.post('http://localhost:8080/api/search', {input: input})
+        axios.post('http://localhost:8080/api/search', {input: input}, withCredentials())
             .catch((err) => {
                 if(err) {
-                    dispatch({
-                        type: SEARCH_ERROR
-                    });
+                    switch (err.response.status) {
+                        case 401 :
+                            izitoast.error({
+                                message: 'Please retry to login',
+                                position: 'topRight'
+                            });
+                            dispatch({ 
+                                type: UNAUTHENTICATED,
+                                payload: null
+                            })
+                            break;
+                        case 403 :
+                            izitoast.error({
+                                message: 'Please retry to login',
+                                position: 'topRight'
+                            });
+                            dispatch({ 
+                                type: UNAUTHENTICATED,
+                                payload: null
+                            })
+                            break;
+                        default :
+                            dispatch({
+                                type: SEARCH_ERROR
+                            });
+                            izitoast.error({
+                                message: 'Oops, something went wrong!',
+                                position: 'topRight'
+                            });
+                            break;
+                    }
                 }
             })
             .then(res => {
                 if(res) {
-                    console.log(res)
                     dispatch({ 
                         type: SEARCH_SUCCESS,
                         payload: res.data.movies

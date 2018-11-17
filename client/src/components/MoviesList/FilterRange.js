@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import InputRange from 'react-input-range';
 import { FilterRatingAction, FilterYearsAction } from '../../reducers/reducer_filters';
 import { bindActionCreators } from 'redux';
+
+import { translate } from 'react-i18next';
   
 class FilterRange extends Component { 
 
@@ -45,21 +47,22 @@ class FilterRange extends Component {
     }
 
     render() {
+        const { t } = this.props;
         if (this.state.valueRating.min < 0){
-			this.state.valueRating.min = 0;
+            this.setState({ valueRating: { min: 0 } })           
 		}
 		if (this.state.valueRating.max > 100){
-			this.state.valueRating.max = 100;
+            this.setState({ valueRating: { max: 100 } })   
 		}
 		if (this.state.valueYears.min < 1900){
-			this.state.valueYears.min = 1900;
+            this.setState({ valueYears: { min: 1900 } })   
 		}
 		if (this.state.valueYears.max > 2018){
-			this.state.valueYears.max = 2018;
+            this.setState({ valueYears: { max: 2018 } })  
 		}
         return (
             <div className="movies-filters__range">
-                <div>Rating</div>
+                <div>{ t('Range.rating', { framework: "react-i18next" }) }</div>
                 <div >
                     <InputRange
                     maxValue={10}
@@ -68,7 +71,7 @@ class FilterRange extends Component {
                     onChange={value => this.setState({ valueRating: value })}
                     onChangeComplete={value => this.handleRating(value)} />
                 </div>
-                <label>Years</label>
+                <label>{ t('Range.years', { framework: "react-i18next" }) }</label>
                 <div >
                     <InputRange
                     maxValue={2018}
@@ -96,4 +99,4 @@ class FilterRange extends Component {
         }, dispatch);
     }
     
-export default connect(mapStateToProps, mapDispatchToProps)(FilterRange);
+export default translate('common')(connect(mapStateToProps, mapDispatchToProps)(FilterRange));

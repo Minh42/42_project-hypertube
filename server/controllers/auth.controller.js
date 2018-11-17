@@ -10,13 +10,12 @@ exports.local = (req, res) => {
                 message: info.message
             });
         } else {
-            // Double security auth with jwt and http only cookies
             const token = user.createJwtToken(user);
-            new Cookies(req, res).set('accessToken', token['jwtToken'], { httpOnly: true });
-            res.status(200).json({ 
-                xsrfToken : token['xsrfToken'],
-                user: user._id
-            });
+            res.cookie('accessToken', token['jwtToken'], { httpOnly: true })
+                .status(200).send({ 
+                    xsrfToken : token['xsrfToken'],
+                    user: user
+                });
         }
     })(req, res);
 }
@@ -30,7 +29,7 @@ exports.facebook = (req, res) => {
         } else {
             const token = user.createJwtToken(user);
             const xsrfToken = token['xsrfToken'];
-            new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
+            res.cookie('accessToken', token['jwtToken'], { httpOnly: true });
             res.redirect('http://localhost:3000?xsrfToken=' + xsrfToken + '&userID=' + user._id)
         }
     })(req, res);
@@ -45,7 +44,7 @@ exports.google = (req, res) => {
         } else {
             const token = user.createJwtToken(user);
             const xsrfToken = token['xsrfToken'];
-            new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
+            res.cookie('accessToken', token['jwtToken'], { httpOnly: true });
             res.redirect('http://localhost:3000?xsrfToken=' + xsrfToken + '&userID=' + user._id)
         }
     })(req, res);
@@ -60,7 +59,7 @@ exports.twitter = (req, res) => {
         } else {
             const token = user.createJwtToken(user);
             const xsrfToken = token['xsrfToken'];
-            new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
+            res.cookie('accessToken', token['jwtToken'], { httpOnly: true });
             res.redirect('http://localhost:3000?xsrfToken=' + xsrfToken + '&userID=' + user._id)
         }
     })(req, res);
@@ -75,7 +74,7 @@ exports.linkedin = (req, res) => {
         } else {
             const token = user.createJwtToken(user);
             const xsrfToken = token['xsrfToken'];
-            new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
+            res.cookie('accessToken', token['jwtToken'], { httpOnly: true });
             res.redirect('http://localhost:3000?xsrfToken=' + xsrfToken + '&userID=' + user._id)
         }
     })(req, res);
@@ -90,14 +89,14 @@ exports.github = (req, res) => {
         } else {
             const token = user.createJwtToken(user);
             const xsrfToken = token['xsrfToken'];
-            new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
+            res.cookie('accessToken', token['jwtToken'], { httpOnly: true });
             res.redirect('http://localhost:3000?xsrfToken=' + xsrfToken + '&userID=' + user._id)
         }
     })(req, res);
 }
 
 exports.fortytwo = (req, res) => {
-    passport.authenticate('fortytwo', { failureRedirect: '/' }, (err, user) => {
+    passport.authenticate('42', { failureRedirect: '/' }, (err, user) => {
         if (err || !user) {
             return res.status(401).json({
                 message: 'Please check your 42 credentials'
@@ -106,13 +105,13 @@ exports.fortytwo = (req, res) => {
             console.log('been there')
             const token = user.createJwtToken(user);
             const xsrfToken = token['xsrfToken'];
-            new Cookies(req,res).set('accessToken', token['jwtToken'], { httpOnly: true });
+            res.cookie('accessToken', token['jwtToken'], { httpOnly: true });
             res.redirect('http://localhost:3000?xsrfToken=' + xsrfToken + '&userID=' + user._id)
         }
     })(req, res);
 }
 
 exports.logout = (req, res) => {
-    new Cookies(req,res).set('accessToken');
     req.logout();
+    res.clearCookie('accessToken').sendStatus(200);
 }

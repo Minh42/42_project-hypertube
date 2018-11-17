@@ -6,8 +6,8 @@ class EditProfile extends Component {
     render() {
         return (
             <div className="edit-profile">
-                <ChangeUserInfo />
-                <ChangePassword />
+                    <ChangeUserInfo />
+                    <ChangePassword />
             </div>
         );
     }

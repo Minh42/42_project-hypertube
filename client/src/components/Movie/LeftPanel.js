@@ -19,26 +19,41 @@ class LeftPanel extends Component {
     }
 
     renderBasicInfo(movie) {
-        const min = movie._source.runtime.split(' ');
-        // const duration = convertMinsToHrsMins(min);
-        // console.log(duration)
+        if (movie._source.year) {
+            var year = movie._source.year
+            if (movie._source.year.length > 4)
+                year = movie._source.year.substring(0,4);
+            if (movie._source.title !== "N/A" && movie._source.year !== 'N/A') {
+                return (
+                    <div className="left-panel__movie-title">{movie._source.title} ({year})</div>
+                )
+            } else if (movie._source.title === "N/A" && movie._source.year !== 'N/A') {
+                return (
+                    <div className="left-panel__movie-title">Untitled ({year})</div>
+                )
+            } else if (movie._source.title !== 'N/A' && movie._source.year === 'N/A') {
+                return (
+                    <div className="left-panel__movie-title">{movie._source.title} (Unknown)</div>
+                )
+            } else {
+                return (
+                    <div className="left-panel__movie-title">Untitled (Unknown)</div>
+                )
+            }
+        }
+    }
 
-        if (movie._source.title !== "N/A" && movie._source.year !== 'N/A') {
+    renderRuntime(movie) {
+        const min = movie._source.runtime.split(' ');
+        const duration = convertMinsToHrsMins(parseInt(min[0]));
+        if (movie._source.runtime !== "N/A") {
             return (
-                <div className="left-panel__movie-title">{movie._source.title} ({movie._source.year})</div>
-            )
-        } else if (movie._source.title === "N/A" && movie._source.year !== 'N/A') {
-            return (
-                <div className="left-panel__movie-title">Untitled ({movie._source.year})</div>
-            )
-        } else if (movie._source.title !== 'N/A' && movie._source.year === 'N/A') {
-            return (
-                <div className="left-panel__movie-title">{movie._source.title} (Unknown)</div>
+                <div className="left-panel__movie-runtime">
+                {duration}
+                </div>
             )
         } else {
-            return (
-                <div className="left-panel__movie-title">Untitled (Unknown)</div>
-            )
+            return null;
         }
     }
 
@@ -72,6 +87,55 @@ class LeftPanel extends Component {
         }
     }
 
+    renderDirector(movie) {
+        if (movie._source.director !== 'N/A') {
+            return (
+                <div className="left-panel__movie-director">
+                    Director: {movie._source.director}
+                </div>
+            ) 
+        } else {
+            return (
+                <div className="left-panel__movie-director">
+                    Director: Unknown
+                </div> 
+            )
+        }
+    }
+
+
+    renderWriter(movie) {
+        if (movie._source.writer !== 'N/A') {
+            return (
+                <div className="left-panel__movie-director">
+                    Writer:  {movie._source.writer}
+                </div>
+            ) 
+        } else {
+            return (
+                <div className="left-panel__movie-director">
+                    Writer:  Unknown
+                </div> 
+            )
+        }
+    }
+
+    renderActor(movie) {
+        if (movie._source.actor !== 'N/A') {
+            return (
+                <div className="left-panel__movie-director">
+                    Actor:  {movie._source.actors}
+                </div>
+            )
+        } else {
+            return (
+                <div className="left-panel__movie-director">
+                    Actor:  Unknown
+                </div>
+            )
+        }
+    }
+
     renderSypnosis(movie) {
         if (movie._source.sypnosis !== 'N/A') {
             return (
@@ -97,15 +161,23 @@ class LeftPanel extends Component {
 
                     <div className="left-panel__movie-information">
                         {this.renderBasicInfo(movie)}
-                        {this.renderRating(movie)}
-                        {this.renderSypnosis(movie)}
+                        {this.renderRuntime(movie)}
                         {this.renderGenres(movie)}
+                        {this.renderRating(movie)}
+                        {this.renderDirector(movie)}
+                        {this.renderWriter(movie)}
+                        {this.renderActor(movie)}
+                        {this.renderSypnosis(movie)}
                     </div>
 
  
                 </div>
             );
 
+        } else {
+            return (
+                <div></div>
+            )
         }
     }
 }

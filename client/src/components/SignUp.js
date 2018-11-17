@@ -7,6 +7,7 @@ import axios from 'axios';
 import validator from 'validator';
 import izitoast from 'izitoast';
 import tools from '../utils/tools.js';
+import { translate } from 'react-i18next';
 
 class SignUp extends Component {   
     constructor(props) {
@@ -99,7 +100,8 @@ class SignUp extends Component {
 
     render() {
         const { handleSubmit } = this.props;
-        const { files } = this.state
+        const { files } = this.state;
+        const { t } = this.props;
         var path;
        
         const dropzoneStyle = {
@@ -118,8 +120,8 @@ class SignUp extends Component {
         return (
             <div className="card__side card__side--back">
                 <FormHeader 
-                    heading1 = "You want to see our film's selection"
-                    heading2 = "sign up now"
+                    heading1 = { t('SignUp.title', { framework: "react-i18next" }) }
+                    heading2 = { t('SignUp.subtitle', { framework: "react-i18next" }) }
                 />
                 <div className="card__form">
                 <div className="card__form--picture">
@@ -130,47 +132,47 @@ class SignUp extends Component {
                         onDrop={this.onDrop.bind(this)} 
                         style={dropzoneStyle}
                         >
-                        <p className="card__form--picture-block-text">Please select a picture</p>
+                        <p className="card__form--picture-block-text">{ t('SignUp.picture', { framework: "react-i18next" }) }</p>
                         </Dropzone>
                     </div>
                 </div>
                     <form className="card__form--input" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                         <Field
-                            label="Firstname"
+                            label={ t('SignUp.firstname', { framework: "react-i18next" }) }
                             name="firstname"
                             type="text"
                             component= {RenderField}
                             placeholder=""
                         />
                         <Field
-                            label="Lastname"
+                            label={ t('SignUp.lastname', { framework: "react-i18next" }) }
                             name="lastname"
                             type="text"
                             component= {RenderField}
                             placeholder=""
                         />
                         <Field
-                            label="Username"
+                            label={ t('SignUp.username', { framework: "react-i18next" }) }
                             name="username"
                             type="text"
                             component= {RenderField}
                             placeholder=""
                         />
                         <Field
-                            label="Email"
+                            label={ t('SignUp.email', { framework: "react-i18next" }) }
                             name="email"
                             type="email"
                             component= {RenderField}
                             placeholder=""
                         />
                         <Field
-                            label="Password"
+                            label={ t('SignUp.password', { framework: "react-i18next" }) }
                             name="password"
                             type="password"
                             placeholder=""
                             component={RenderField}
                         />
-                        <button type="submit" className="btn btn-primary btn-primary--pink">Sign Up</button>
+                        <button type="submit" className="btn btn-primary btn-primary--pink">{ t('SignUp.button', { framework: "react-i18next" }) }</button>
                     </form>
                 </div>
             </div>
@@ -224,4 +226,4 @@ const reduxFormSignUp = reduxForm({
     form: 'signup'
 })(SignUp);
 
-export default reduxFormSignUp;
+export default translate('common')(reduxFormSignUp);

@@ -6,43 +6,90 @@ import SortBy from './MoviesList/SortBy';
 import FiltersGenders from './MoviesList/FiltersChekbox';
 import MovieCard from './MoviesList/MovieCard';
 import { getFilterMovies } from '../selectors/index';
-import { bindActionCreators } from 'redux';
 import { initMoviesAction } from '../reducers/reducer_search';
 import { selectMovie } from '../reducers/reducer_movies';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { translate } from 'react-i18next';
   
 class MoviesList extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: false,
+            hasMore: true,
+            offset: 40,
+            items: []
+        }
+    };
 
-    componentDidMount() {
-        this.props.initMoviesAction();
+    async componentDidMount() {
+        await this.props.onMovieAction();
+        if (this.props.movies) (
+            this.setState({items: this.props.movies.slice(0, this.state.offset )})
+        )
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        const copy = JSON.parse(JSON.stringify(props.movies));
+        return {
+            items: copy
+        }
+    }
+
+    fetchMoreData = () => {
+        if (this.props.movies) {
+            if (this.state.offset <= this.props.movies.length) {
+                this.setState({ 
+                    loading : true,
+                    hasMore: true,
+                    items: this.props.movies.slice(0, this.state.offset),
+                    offset: this.state.offset + 20 
+                })
+            } else {
+                this.setState({ 
+                    loading : false,
+                    hasMore: false,
+                    items: this.props.movies
+                })
+            }
+        }
     }
 
     showMovieDetails(movie) {
-        this.props.selectMovie(movie, this.props.history);
+       this.props.onSelectMovie(movie, this.props.history);
     }
 
-    renderMovies() {
-        if (this.props.movies) {
-            console.log(this.props.movies)
-            return this.props.movies.map((movie) => {
+    renderMovies = () => {
+        if (this.state.items) {
+            return this.state.items.map((movie, i) => {
                 return (
+                    <div key={i} className="movies-list-container">
+                    <InfiniteScroll
+                        dataLength={this.state.items.length}
+                        next={this.fetchMoreData}
+                        hasMore={this.state.hasMore}
+                    >
                     <MovieCard
-                        key={movie._source.imdb_id}
+                        key={i}
                         movie={movie}
                         showMovieDetails={this.showMovieDetails.bind(this)}
                     />
-                );
-            })
+                    </InfiniteScroll>
+                    </div>
+                )
+            });
         } else {
-            return null;
+            return;
         }
     }
 
     renderSortContainer() {
+        const { t } = this.props;
         if (this.props.movies) {
             if (this.props.movies.length !== null) {
                 return (
                     <div className="movies-filters__container">
-                        <span>{this.props.movies.length} results found</span>
+                        <span className="movies-filters__container--span">{this.props.movies.length} { t('Results', { framework: "react-i18next" }) }</span>
                         <SortBy />
                     </div>
                 )
@@ -75,10 +122,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) { 
-	return bindActionCreators({ 
-        initMoviesAction : initMoviesAction,
-        selectMovie: selectMovie
-    }, dispatch);
-} 
+    return {
+        onMovieAction: () => dispatch(initMoviesAction()),
+        onSelectMovie: (movie, history) => dispatch(selectMovie(movie, history))
+    }
+}
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MoviesList));
+export default translate('common')(withRouter(connect(mapStateToProps, mapDispatchToProps)(MoviesList)));

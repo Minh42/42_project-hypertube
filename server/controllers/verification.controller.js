@@ -42,7 +42,6 @@ exports.verifyToken = (req, res) => {
 
 exports.sendMessage = (req, res) => {
     var email = req.body.email;
-
     Users.findOne({ "email": email }, (err, user) => {
         if (err) {
             res.sendStatus(500);
@@ -51,8 +50,8 @@ exports.sendMessage = (req, res) => {
             res.sendStatus(404);
         } else {
             let resetToken = jwt.sign( { username : user.username } , keys.jwtSecret);
-
-            Token.findOneAndUpdate({"userID": user._id} , {$set: {"resetToken": resetToken}}, {new: true}, (err, existingToken) => {
+            
+            Token.findOneAndUpdate({"userID": user._id}, {$set: {"resetToken": resetToken}}, {new: true}, (err, existingToken) => {
                 if (!existingToken) {
                     res.sendStatus(500);
                 } else {

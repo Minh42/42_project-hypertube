@@ -1,14 +1,17 @@
 {
     "SignIn": {
         "title": "déjà client? choissisez votre film",
-        "subtitle": "Connectez-vous",
+        "subtitle": "Connectez vous",
+        "username": "Login",
+        "password": "Mot de passe",
         "button": "Se connecter",
         "forgotPassword": "Mot de passe oublié?",
         "newClient": "Nouveau client"
     },
     "SignUp": {
-        "title": "Vous voulez découvrir notre selection de films",
-        "subtitle": "Inscrivez-vous",
+        "title": "Vous souhaitez découvrir notre selection de films",
+        "subtitle": "Inscrivez vous",
+        "picture": "Ajouter une photo",
         "firstname": "Prénom",
         "lastname": "Nom",
         "username": "Login",
@@ -16,5 +19,60 @@
         "password": "Mot de passe",
         "button": "S'inscrire"
     },
-    "SignOut": "Signout"
+    "Header": {
+        "searchBar": "Indiquer un titre...",
+        "signOut": "Déconnexion"
+    },
+    "Reset": {
+        "title": "Entrer votre email pour changer de mot de passe.",
+        "subtitle": "Votre Email",
+        "button": "Valider"
+    },
+    "ChangePassword": {
+        "title": "Souhaitez-vous changer votre mot de passe?",
+        "subtitle": "Votre MDP",
+        "new": "Nouveau mot de passe",
+        "confirm": "Confirmer votre mot de passe",
+        "button": "Valider"
+    },
+    "EditInfo": {
+        "title": "Souhaitez-vous changer vos informations personnelles?",
+        "subtitle": "Vos infos perso",
+        "firstname": "Prenom",
+        "lastname": "Nom",
+        "username": "Login",
+        "email": "Email",
+        "button": "Valider"
+    },
+    "Results": "résultat(s) trouvé(s)",
+    "SortBy": {
+        "relevance": "Les mieux notés",
+        "latest": "Les plus récents",
+        "earliest": "Les plus anciens"
+    },
+    "Range": {
+        "rating": "Notes",
+        "years": "Années de production"
+    },
+    "titleGenres": "Genres",
+    "Drama": "Drame",
+    "Comedy": "Comedie",
+    "Crime": "Policier",
+    "Romance": "Romantique",
+    "Action": "Action",
+    "Thriller": "Suspens",
+    "Adventure": "Aventure",
+    "Mystery": "Mystère",
+    "Fantasy": "Fantastique",
+    "Horror": "Horreur",
+    "Sci-Fi": "Sience-Fiction",
+    "Biography": "Biographie",
+    "Animation": "Animation",
+    "Family": "Famille",
+    "War": "Guerre",
+    "History": "Histoire",
+    "Documentary": "Documentaire",
+    "Music": "Musique",
+    "Musical": "Comedie musicale",
+    "Sport": "Sport"
 }

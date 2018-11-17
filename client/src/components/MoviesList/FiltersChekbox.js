@@ -3,8 +3,28 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { gendersAction } from '../../reducers/reducer_filters';
 import Checkbox from './Checkbox';
+import { translate } from 'react-i18next';
 
-const genres = ['Drama', 'Comedy', 'Crime', 'Romance', 'Action', 'Thriller', 'Adventure', 'Mystery', 'Fantasy', 'Horror', 'Sci-Fi', 'Biography', 'Animation', 'Family', 'War', 'History', 'Documentary', 'Music', 'Musical', 'Sport']
+const genres = ['Drama', 
+              'Comedy', 
+              'Crime', 
+              'Romance', 
+              'Action', 
+              'Thriller', 
+              'Adventure', 
+              'Mystery', 
+              'Fantasy', 
+              'Horror', 
+              'Sci-Fi', 
+              'Biography', 
+              'Animation', 
+              'Family', 
+              'War', 
+              'History', 
+              'Documentary', 
+              'Music', 
+              'Musical', 
+              'Sport']
 
 class FiltersCheckbox extends Component {
 
@@ -12,68 +32,64 @@ class FiltersCheckbox extends Component {
     super(props)
 
     this.state = {
-      drama: false,
-      comedy: false,
       items: []
     }
   }
 
-  // componentDidMount() {
-  //   var arrayGenre = this.props.genreFilter;
-  //   if (arrayGenre) {
-  //     for (var i = 0; i < arrayGenre.length; i++) {
-  //       console.log(arrayGenre[i])
-  //       if (arrayGenre[i] === "Drama") {
-  //         this.setState ({
-  //           drama: true
-  //         })
-  //       } 
-  //       if (arrayGenre[i] === "Comedy") {
-  //         this.setState ({
-  //           comedy: true
-  //         })
-  //       }   
-  //     }
-  //   }
-  //   console.log(this.props.genreFilter);
-  // }
+  componentDidMount() {
+    if (this.props.genreFilter !== undefined) {
+      this.setState({
+        items: this.props.Filter
+      })
+    } else {
+      this.setState({
+        items: []
+      })
+    }
+  }
 
   handleClick(genre) {
-    console.log(genre)
-
-    if (this.state.items.length > 0) {
-      for (var i = 0; i < this.state.items.length; i++) {
-        if (genre === this.state.items[i]) {
-          this.state.items.splice(i, 1);
-          this.setState({
-            items: this.state.items
-          })
-          break;
-        } if (i + 1 === this.state.items.length) {
-          this.state.items.push(genre)
-          this.setState({
-            items: this.state.items
-          })
-          break;
+    if (this.props.genreFilter !== undefined) {
+      if (this.props.genreFilter.length > 0) {
+        for (var i = 0; i < this.props.genreFilter.length; i++) {
+          if (genre === this.props.genreFilter[i]) {
+            this.props.genreFilter.splice(i, 1);
+            this.setState({
+              items: this.props.genreFilter
+            })
+            break;
+          } if (i + 1 === this.props.genreFilter.length) {
+            this.props.genreFilter.push(genre)
+            this.setState({
+              items: this.props.genreFilter
+            })
+            break;
+          }
         }
+      } else {
+        this.props.genreFilter.push(genre)
+        this.setState({
+          items: this.props.genreFilter
+        })
       }
-    } else {
+      this.props.gendersAction(this.props.genreFilter, this.props.history);
+    }
+    else {
       this.state.items.push(genre)
       this.setState({
         items: this.state.items
       })
     }
-
     this.props.gendersAction(this.state.items, this.props.history);
   }
 
   mapGenders() {
+    const { t } = this.props;
     const genresFilters = genres.map((genre, i) => (
         <Checkbox
           key={i}
-          label={genre}
+          label={ t(genre, { framework: "react-i18next" }) }
           onClick={() => this.handleClick(genre)}
-          checked={this.props.genreFilter}
         />
     ))
     return (
@@ -84,9 +100,10 @@ class FiltersCheckbox extends Component {
   }
 
     render(){
+      const { t, i18n } = this.props;
       return (
         <div className="movies-filters__genders">
-            <label>Movie's genders</label><br></br>
+            <label className="movies-filters__genders--title">{ t('titleGenres', { framework: "react-i18next" }) }</label><br></br>
             {this.mapGenders()}
         </div>
       )
@@ -103,4 +120,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ gendersAction : gendersAction }, dispatch);
 } 
 
-export default connect(mapStateToProps, mapDispatchToProps)(FiltersCheckbox);
+export default translate('common')(connect(mapStateToProps, mapDispatchToProps)(FiltersCheckbox));

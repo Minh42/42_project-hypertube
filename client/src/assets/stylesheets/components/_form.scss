@@ -21,11 +21,11 @@
     perspective: 150rem;
     -moz-perspective: 150rem;
     position: relative;
-    height: 60rem;
+    height: 59.5rem;
     width: 33rem;
 
     &__side {
-        height: 60rem;
+        height: 59.5rem;
         width: 100%;
         background-color: $color-white-tranparent;
         box-shadow: 0 1rem 5rem rgba(250, 248, 248, 0.3);
@@ -62,7 +62,7 @@
         padding-left: 16rem;
         -webkit-box-decoration-break: clone;
         box-decoration-break: clone;
-        font-weight: 100;
+        font-weight: 300;
 
         &--1 {
             background-image: linear-gradient(
@@ -139,14 +139,10 @@
             }
 
             &-error {
-                display: flex;
-                justify-content: center;
                 color: $color-primary-light-1;
             } 
 
             &-success {
-                display: flex;
-                justify-content: center;
                 color: $color-primary-light-1;
             } 
         }

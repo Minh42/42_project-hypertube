@@ -95,39 +95,86 @@ exports.createUser = (req, res) => {
 }
 
 exports.getUser = (req, res) => {
-    Users.findOne({_id :req.params.id}, (err, user) => {
+    const accessToken = req.cookies['accessToken'];
+    jwt.verify(accessToken, keys.jwtSecret, function(err, decoded) {
         if (err) {
-            res.sendStatus(500);  
-        }
-        if (!user) {
-            res.sendStatus(404);    
+            console.log(err)
+            res.sendStatus(500);
+            return ;  
+        } 
+        if(decoded.xsrf === req.params.xsrf) {
+            Users.findOne({_id :req.params.id}, (err, user) => {
+                if (err) {
+                    console.log(err)
+                    res.sendStatus(500);
+                    return ;  
+                }
+                if (!user) {
+                    res.sendStatus(404);    
+                } else {
+                    ProfilePicture.findOne({"userID" :user._id}, (err, picture) => {
+                        if (err) {
+                            console.log(err)
+                            res.sendStatus(500);
+                            return ;  
+                        }
+                        if (!picture) {
+                            const currentUser = {
+                                'currentUser': user,
+                                'picture': null
+                            }
+                            res.status(200).send({
+                                message: 'User retrieved successfully',
+                                user: currentUser
+                            });   
+                        } else {
+                            const currentUser = {
+                                'currentUser': user,
+                                'picture': picture.path
+                            }
+                            console.log(currentUser)
+                            res.status(200).send({
+                                message: 'User retrieved successfully',
+                                user: currentUser
+                            });
+                        }
+                    })
+                }
+            })
         } else {
-            res.status(200).json({
-                message: 'User retrieved successfully',
-                user: user.toJSON()
-            });
+            res.redirect('/');
         }
     })
 }
 
 exports.updateUser = (req, res) => {
-    console.log('i came here')
+    console.log(req.body)
     var update = {
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        username: req.body.username,
-        email: req.body.email,
+        firstname: req.body.values.firstname,
+        lastname: req.body.values.lastname,
+        username: req.body.values.username,
+        email: req.body.values.email
     }
-
+    console.log(update)
     Users.findOneAndUpdate({_id :req.params.id}, update, {new: true}, (err, user) => {
         if (err)
             res.sendStatus(500);     
         if (!user) {
             res.sendStatus(404);  
         } else {
-            res.status(200).json({ 
-                message: 'Your information was updated successfully' 
-            });
+            // console.log(user)
+            // ProfilePicture.findOneAndUpdate({"userID" :user._id}, {$set: {path: req.body.path }}, {new: true}, (err, picture) => {
+            //     console.log(picture)
+            //     if (err)
+            //         res.sendStatus(500);     
+            //     if (!picture) {
+            //         res.sendStatus(404);  
+            //     } else {
+                    res.status(200).json({ 
+                        message: 'Your information was updated successfully' 
+                    });
+            //     }
+            // })
         }
     });
 }
@@ -143,3 +190,20 @@ exports.deleteUser = (req, res) => {
         } 
     });
 }
+
+// exports.pictureUser = (req, res) => {
+//     console.log(res)
+//     Users.findOne({_id :req.params.id}, (err, user) => {
+//         if (err) {
+//             res.sendStatus(500);  
+//         }
+//         if (!user) {
+//             res.sendStatus(404);    
+//         } else {
+//             res.status(200).json({
+//                 message: 'User retrieved successfully',
+//                 user: user.toJSON()
+//             });
+//         }
+//     })
+// }

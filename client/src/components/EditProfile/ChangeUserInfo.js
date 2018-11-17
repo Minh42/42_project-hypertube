@@ -9,27 +9,77 @@ import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import izitoast from 'izitoast';
 import validator from 'validator';
-
+import Dropzone from 'react-dropzone'
+import { translate } from 'react-i18next';
+import { withCredentials } from '../../utils/headers';
 
 class ChangeUserInfo extends Component {
-    componentDidMount() {
+    constructor(props) {
+        super(props);
+        this.state = {
+            files: null 
+        }
+    }
+
+    async componentDidMount() {
         if(this.props.user) {
             let initData = {
-                "firstname": this.props.user.firstname,
-                "lastname": this.props.user.lastname,
-                "username": this.props.user.username,
-                "email": this.props.user.email
+                "firstname": this.props.user.currentUser.firstname,
+                "lastname": this.props.user.currentUser.lastname,
+                "username": this.props.user.currentUser.username,
+                "email": this.props.user.currentUser.email
             };
+
             this.props.initialize(initData);
+
+            this.setState ({
+                files: this.props.user.picture
+            })
         }
+    }
+
+    onDrop(files) {
+        let message;
+        const data = new FormData();
+        data.append('file', files[0]);
+        data.append('filename', files[0].name);
+        axios.post('http://localhost:8080/api/verification/upload', data)
+            .catch((err) => {
+                if (err) {
+                    switch (err.response.status) {
+                        case 404 :
+                            message = 'Upload file is invalid';
+                            break;
+                        case 500:
+                            message = 'Oops, something went wrong!';
+                            break;
+                        default: 
+                            break;
+                    }
+                    izitoast.error({
+                        message: message,
+                        position: 'topRight'
+                    });
+                }
+            })
+            .then((res) => {
+                if (res) {
+                    this.setState({
+                        files: res.data
+                    });
+                    izitoast.success({
+                        message: 'Your picture is valid',
+                        position: 'topRight'
+                    });
+                }
+            })
     }
     
     async changeUserInformation(values) {
-        let message;
-        let userID = this.props.user._id;
-
+        var data = { values: values, path: this.state.files}
+        let userID = this.props.user.currentUser._id;
         try {
-            const res = await axios.put('http://localhost:8080/api/users/' + userID, values);
+            const res = await axios.put('http://localhost:8080/api/users/' + userID, data, withCredentials());
             izitoast.success({
                 message: res.data.message,
                 position: 'topRight'
@@ -43,7 +93,7 @@ class ChangeUserInfo extends Component {
                     });
                     this.props.signOutAction(this.props.history);
                     break;
-                case 403:
+                case 403 :
                     izitoast.error({
                         message: 'Please retry to login',
                         position: 'topRight'
@@ -63,41 +113,70 @@ class ChangeUserInfo extends Component {
 
     render() {
         const { handleSubmit } = this.props;
+        const { files } = this.state;
+        const { t, i18n } = this.props;
+        var path;
+       
+        const dropzoneStyle = {
+            width: 110,
+            height: 100,
+            borderRadius: 20,
+            border: "none",
+            position: "relative"
+          };
+
+        if (files != null)
+            path = files;
+        else 
+            path = require('../../assets/img/photo2.jpg');
+
         return (
             <div className="form">
                 <div className="card">
                     <div className="card__side card__side--front">
                         <FormHeader 
-                            heading1 = "Need to change your personal information?"
-                            heading2 = "edit profile"
+                            heading1 = { t('EditInfo.title', { framework: "react-i18next" }) }
+                            heading2 = { t('EditInfo.subtitle', { framework: "react-i18next" }) }
                         />
                         <div className="card__form">
+                        <div className="card__form--picture">
+                            <div className="card__form--picture-block">
+                                <img className="card__form--picture-block-img" src={path} alt="img"/>
+                                <Dropzone multiple={false} 
+                                accept="image/*" 
+                                onDrop={this.onDrop.bind(this)} 
+                                style={dropzoneStyle}
+                                >
+                                <p className="card__form--picture-block-text">{ t('SignUp.picture', { framework: "react-i18next" }) }</p>
+                                </Dropzone>
+                            </div>
+                        </div>
                             <form className="card__form--input" onSubmit={handleSubmit(this.changeUserInformation.bind(this))}>
                                 <Field
-                                    label="Firstname"
+                                    label={ t('EditInfo.firstname', { framework: "react-i18next" }) }
                                     name="firstname"
                                     type="text"
                                     component= {RenderField}
                                 />
                                 <Field
-                                    label="Lastname"
+                                    label={ t('EditInfo.lastname', { framework: "react-i18next" }) }
                                     name="lastname"
                                     type="text"
                                     component= {RenderField}
                                 />
                                 <Field
-                                    label="Username"
+                                    label={ t('EditInfo.username', { framework: "react-i18next" }) }
                                     name="username"
                                     type="text"
                                     component= {RenderField}
                                 />
                                 <Field
-                                    label="Email"
+                                    label={ t('EditInfo.email', { framework: "react-i18next" }) }
                                     name="email"
                                     type="email"
                                     component= {RenderField}
                                 />
-                                <button type="submit" className="btn btn-primary btn-primary--pink">Submit</button>
+                                <button type="submit" className="btn btn-primary btn-primary--pink">{ t('EditInfo.button', { framework: "react-i18next" }) }</button>
                             </form>
                         </div>
                     </div>
@@ -156,4 +235,4 @@ const reduxFormChangeUserInfo = reduxForm({
     form: 'editProfile'
 })(ChangeUserInfo);
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(reduxFormChangeUserInfo));
+export default translate('common')(withRouter(connect(mapStateToProps, mapDispatchToProps)(reduxFormChangeUserInfo)));

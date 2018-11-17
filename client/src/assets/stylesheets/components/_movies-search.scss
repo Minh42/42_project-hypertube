@@ -8,25 +8,99 @@
 }
 
 .movies-filters {
-    flex: 0 0 20%;
+    flex: 0 0 25%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-size: 1.3rem;
 
     &__container {
         width: 100%;
         display: flex;
         flex-direction: row;
         justify-content: space-around;
-    }
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        font-size: 1.3rem;
 
+        &--span {
+            color: $color-white;
+            font-weight: 600;
+        }
+    }
+  
     &__range {
         width: 80%;
     }
 
-    // &__sort {
+    &__sort {
+        position: relative;
+        display: block;
+        background-color: $color-primary;
+        z-index: 10;
+        border-radius: 10rem;
+        opacity: 0.78;
 
-    // }
+            &:after {
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: 4rem;
+                height: 100%;
+                line-height: 3rem;
+                content: "v";
+                opacity: none;
+                text-align: center;
+                color: white;
+                font-size: 1.3rem;
+                z-index: -1;
+            }
+
+        &--select {
+            border: none;
+            outline: none;
+            background: transparent;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border-radius: 0;
+            margin: 0;
+            display: block;
+            width: 100%;
+            padding: .6rem 3rem 0.8rem 0.8rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: white;
+            opacity: none;
+        }
+    }
+
+    &__genders {
+        width: 80%;
+        margin-bottom: 1rem;
+
+        &--title {
+            font-size: 1.5rem;
+        }
+
+        &--checkbox {
+            border: none;
+            margin: .5rem;
+
+            &-label {
+                padding: .5rem;
+                color: white;
+            }
+
+            &-input {
+                margin-left: .5rem;
+            }
+
+            &-span {
+                margin-left: 1rem; 
+            }
+        }
+    }
 }
 
 .movies-list {
@@ -46,8 +120,7 @@
         padding-right: .25rem;
         padding-bottom: .05rem;
         position: relative;
-    
-      
+
         @include respond(phone) {
             padding-left: 0rem;
             padding-right: 0rem;

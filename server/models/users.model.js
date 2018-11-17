@@ -25,12 +25,12 @@ var usernameValidator = [
         validator: 'isLength',
         arguments: [1, 30],
         message: 'Your username is too short or too long'
-    }),
+    })/*,
     validate({
         validator: 'isAlphanumeric',
         passIfEmpty: true,
         message: 'Your username must contain only alphanumeric characters'
-    }),
+    }),*/
 ]
 
 var emailValidator = [
@@ -102,8 +102,9 @@ userSchema.methods = {
         token['classicToken'] = jwt.sign({user: user}, keys.jwtSecret, {
           expiresIn: 60 * 60 * 24
         });
-        token['xsrfToken'] = uid.sync(18); // generate random token
-        token['jwtToken'] = jwt.sign({token: token}, keys.jwtSecret, {
+        const xsrf = uid.sync(18);
+        token['xsrfToken'] =  xsrf; // generate random token
+        token['jwtToken'] = jwt.sign({xsrf: xsrf, user: user}, keys.jwtSecret, {
           expiresIn: 60 * 60 * 24
         });
         return token;

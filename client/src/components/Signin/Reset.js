@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import axios from 'axios';
 import validator from 'validator';
+import FormHeader from '../Form/FormHeader';
 import izitoast from 'izitoast';
+import { translate } from 'react-i18next';
 
 
 class ForgotPassword extends Component {   
@@ -44,21 +46,21 @@ class ForgotPassword extends Component {
 
     render() {
         const { handleSubmit } = this.props;  
+        const { t, i18n } = this.props;
         return (
         <div className="forgot-password">
+            <div className="landing__langage">
+                <span className="landing__langage--en" onClick={() => i18n.changeLanguage('en')}>EN</span> 
+                        | 
+                <span className="landing__langage--fr" onClick={() => i18n.changeLanguage('fr')}>FR</span>
+            </div>
             <div className="form">
                 <div className="card">
                     <div className="card__side card__side--front">
-                        <div className="card__text">
-                            <h4>
-                                Please enter your email to reset your password.
-                            </h4>
-                            <h2 className="card__text-span">
-                                <span className="card__text-span--1">
-                                    Your email
-                                </span>
-                            </h2>  
-                        </div>
+                        <FormHeader 
+                            heading1 = { t('Reset.title', { framework: "react-i18next" }) }
+                            heading2 = { t('Reset.subtitle', { framework: "react-i18next" }) }
+                        />
                         <div className="card__form">
                             <form className="card__form--input" onSubmit={handleSubmit(this.submitMessageReset.bind(this))}>  
                                 <Field
@@ -68,7 +70,7 @@ class ForgotPassword extends Component {
                                     component= {this.renderField}
                                     placeholder=""
                                 />
-                                <button className="btn btn-primary btn-primary--pink" type="submit">Submit</button>
+                                <button className="btn btn-primary btn-primary--pink" type="submit">{ t('Reset.button', { framework: "react-i18next" }) }</button>
                             </form>
                         </div>
                     </div>
@@ -94,4 +96,4 @@ const reduxFormForgotPassword = reduxForm({
     form: 'forgotPassword'
 })(ForgotPassword);
 
-export default reduxFormForgotPassword;
+export default translate('common')(reduxFormForgotPassword);

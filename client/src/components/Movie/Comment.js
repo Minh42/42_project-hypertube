@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Cmt from './Cmt';
+import { withCredentials } from '../../utils/headers';
 
 class Comment extends Component {
 
@@ -10,47 +11,56 @@ class Comment extends Component {
     }
 
     async componentDidMount() {
-        console.log("IN DID MOUNT")
         const response = await axios.post("http://localhost:8080/api/comment/all", {
             imdbid: this.props.imdbid
-        })
-
-        console.log("COMMENTS", response.data)
+        }, withCredentials())
         this.setState({comments: response.data})
     }
 
     handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("test")
-        this.setState({comments: [...this.state.comments, {_id: "new", imdbid: this.props.imdbid, username: "test", message: this.state.comment, date: Date.now()}]})
+        if (this.state.comment === "") {
+            this.props.isTyping(false);
+            return ;
+        }
+        this.setState({comments: [...this.state.comments, {id: this.props.userid, imdbid: this.props.imdbid, username: "Just added by me", message: this.state.comment, date: Date.now()}]})
         const response = await axios.post("http://localhost:8080/api/comment/add", {
             imdbid: this.props.imdbid,
             username: "test",
             message: this.state.comment
-        })
+        },withCredentials())
 
         this.setState({comment: ""})
-        console.log(response)
+        this.props.isTyping(false);
     }
 
     handleChange = async (e) => {
         this.setState({ [e.target.name]: e.target.value });
+        this.props.isTyping(true);
+    }
+
+    goToProfile = (userid) => {
+        this.props.history.push(`/user/${userid}`)
     }
 
     render () {
         return (
-            <div>
-                <h2> Comments: </h2>
+            <div className="comment-box">
+                <h3 className="comment-header"> Comments: </h3>
                 {
                     this.state.comments.map(c => {
                         return (
-                            <Cmt key={`${c.username}-${c.date}}`} username={c.username} message={c.message} date={c.date} />
+                            <Cmt key={`${c.username}-${c.date}}`} goToProfile={this.goToProfile} userid={c.id} username={c.username} message={c.message} date={c.date} />
                         )
                     })
                 }
                 <form onSubmit={this.handleSubmit}>
-                    <textarea name="comment" onChange={this.handleChange} rows="4" cols="50" value={this.state.comment}> </textarea>
-                    <button type="submit" className="li-video"> Add a comment </button>
+                    <div>
+                        <textarea className="comment-area" name="comment" onChange={this.handleChange} rows="4" cols="50" value={this.state.comment}> </textarea>
+                    </div>
+                    <div>
+                        <button type="submit" className="add-comment"> Add a comment </button>
+                    </div>                
                 </form>
             </div>
         )
