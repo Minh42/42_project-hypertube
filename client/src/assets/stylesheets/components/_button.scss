@@ -58,4 +58,23 @@
         align-self: flex-start;
         background-color: $color-red;
     }
+
+    &--darkerred {
+        align-self: flex-start;
+        background-color: $color-primary-light-3;
+    }
+}
+
+.li-video {
+    margin:auto;
+    list-style-type: none;
+    margin-top:10px;
+    margin-bottom:10px;
+    background-color:$color-grey-dark-2;
+    width:10%;
+}
+
+.ul-video li:hover {
+    background-color:$color-primary-light-2;
+    cursor: pointer;
 }

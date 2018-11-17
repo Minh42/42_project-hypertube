@@ -6,10 +6,14 @@ exports.getAllMovies = (req, res) => {
         type: 'movies',
         body: {
             from : 0, 
-            size : 10000
+            size : 100,
+            query: {
+                match_all : {}
+            }
         }
     }, function (error, response, status) {
         if (error) {
+            console.log(error);
             res.sendStatus(500);
         } else {
             res.json({movies: response.hits.hits})
@@ -26,6 +30,9 @@ exports.getMovies = (req, res) => {
             size : 10000,
             query: {
                 match: { "title": req.body.input }
+            },
+            collapse : {
+                field : "imdb_id"
             }
         }
     }, function (error, response, status) {

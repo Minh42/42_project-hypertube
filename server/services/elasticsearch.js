@@ -1,7 +1,7 @@
 const index = 'hypertube';
 const type = 'movies';
 const fs = require('fs');
-const JSONStream = require( "JSONStream" );
+const JSONStream = require("JSONStream");
 const elasticsearch = require('elasticsearch');
 
 const client = new elasticsearch.Client({  
@@ -31,11 +31,12 @@ function readStream(callback) {
   stream.pipe(jsonStream);
   jsonStream.on('data', function(data) {
     bulk.push({index:{
-        _index:index,
-        _type:type
+        _index:'hypertube',
+        _type:'movies'
       }
     })
     bulk.push(data);
+    console.log("BULKKKKKKKKKK", bulk)
   })
   jsonStream.on('end', function() {
     callback(bulk);
@@ -58,20 +59,20 @@ async function resetIndex() {
     await client.indices.delete({ index })
   }
 
-  await client.indices.create({ index })
+  await client.indices.create({ index });
   // await insertMovieMapping()
+
+  readStream(function(bulk) {
+    client.bulk({body:bulk}, function(err, res) { 
+      if(err) { 
+          console.log("Failed Bulk operation") ;
+      } else { 
+          console.log("Successfully imported " + bulk.length + " movies"); 
+      } 
+    }); 
+  });
 }
 
-resetIndex()
-
-readStream(function(bulk) {
-  client.bulk({body:bulk}, function(err, res) { 
-    if(err) { 
-        console.log("Failed Bulk operation") ;
-    } else { 
-        console.log("Successfully imported " + bulk.length + " movies"); 
-    } 
-  }); 
-});
+resetIndex();
 
 module.exports = client;

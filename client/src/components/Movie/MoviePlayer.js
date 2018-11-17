@@ -1,102 +1,159 @@
-// import React, { Component } from 'react';
-// import Hls from 'hls.js';
-// import { connect } from 'react-redux';
-// import * as reducerDownload from '../../reducers/reducer_download';
+import React, { Component } from 'react';
+import Hls from 'hls.js';
+import { connect } from 'react-redux';
+import * as reducerDownload from '../../reducers/reducer_download';
+import Loader from '../Loader/Loader';
+import axios from 'axios';
+import Comment from './Comment';
+
+let hls = null;
 
 // class MoviePlayer extends Component {
 
-//     state = {
-//         started: false
-//     }
+    state = {
+     
+     
+        started: false,
+        playing: true,
+        width: 0,
+        height: 0,
+        quality: "",
+        en: "",
+        fr: "",
+        watching: false
+    }
 
-//     componentDidMount() {
-//         /*if(Hls.isSupported()) {
-//             var hls = new Hls();
-//             hls.loadSource('http://localhost:8080/my-files/torrent-stream/18f05a35a335909b384d1d40d79efec3e71bcee0/out.m3u8');
-//             hls.attachMedia(this.refs.video);
-//             hls.on(Hls.Events.MANIFEST_PARSED,function() {
-//                 this.refs.video.play();
-//           });
-//          }
-//          // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
-//          // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
-//          // This is using the built-in support of the plain video element, without using hls.js.
-//          // Note: it would be more normal to wait on the 'canplay' event below however on Safari (where you are most likely to find built-in HLS support) the video.src URL must be on the user-driven
-//          // white-list before a 'canplay' event will be emitted; the last video event that can be reliably listened-for when the URL is not on the white-list is 'loadedmetadata'.
-//           else if (this.refs.video.canPlayType('application/vnd.apple.mpegurl')) {
-//             this.refs.video.src = 'http://localhost:8080/my-files/torrent-stream/18f05a35a335909b384d1d40d79efec3e71bcee0/out.m3u8';
-//             this.refs.video.addEventListener('loadedmetadata',function() {
-//                 this.refs.video.play();
-//             });
-//         } */
-//     }
+    componentDidMount() {
+        document.addEventListener("keydown", (e) => {
+            this.handleKeyPress(e);        
+        })
+        window.addEventListener("resize", this.updateDimensions);
+        this.updateDimensions();
+    }
 
-//     componentDidUpdate() {
-//         console.log('enter in didupdate');
-//         if (this.state.started === false && this.props.stream_link !== "") {
-            
-//             console.log('in didupdate ');
-//             if(Hls.isSupported()) {
-//                 console.log('here');
-//                 var hls = new Hls();
-//                 console.log(this.props.stream_link);
-//                 hls.loadSource(this.props.stream_link);
-//                 hls.attachMedia(this.refs.video);
-//                 hls.on(Hls.Events.MANIFEST_PARSED,function() {
-//                     this.refs.video.play();
-//               });
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateDimensions);
+    }
 
-//              }
-//              // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
-//              // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
-//              // This is using the built-in support of the plain video element, without using hls.js.
-//              // Note: it would be more normal to wait on the 'canplay' event below however on Safari (where you are most likely to find built-in HLS support) the video.src URL must be on the user-driven
-//              // white-list before a 'canplay' event will be emitted; the last video event that can be reliably listened-for when the URL is not on the white-list is 'loadedmetadata'.
-//               else if (this.refs.video.canPlayType('application/vnd.apple.mpegurl')) {
-//                 console.log('la');
-//                 this.refs.video.src = this.props.stream_link;
-//                 console.log(this.refs.video.src);
-//                 this.refs.video.addEventListener('loadedmetadata',function() {
-//                     this.refs.video.play();
-//                 });
-//             } 
-//             //this.setState({started: true});
-//         }
-//     }
+    updateDimensions = () => {
+        this.setState({width: window.innerWidth, height: window.innerHeight});
+        if (this.refs.video)
+        this.refs.video.width = this.state.width * 0.8;
+        this.refs.video.height = this.state.height * 0.6;
+    }
 
-//      playPause = () => { 
-//          if (this.refs.video.paused) 
-//              this.refs.video.play(); 
-//          else 
-//              this.refs.video.pause(); 
-//      } 
+    handleDownload = async (url, magnet, quality) => {
+        const response = await axios.post("http://localhost:8080/api/download/torrent", {
+            title: this.props.movie._source.title,
+            imdbid: this.props.movie._source.imdb_id,
+            link: url,
+            magnet: magnet,
+            quality: quality
+        })
+        console.log("response", response)
+        if (response && response.status === 200) {
+            this.setState({watching: true})
+            const stream_link = response.data.stream_link;
+            const en = response.data.en;
+            const fr = response.data.fr;
+            await this.setState({started: true, en: en, fr: fr});
+            this.refs.video.width = window.innerWidth * 0.8;
+            this.refs.video.height = window.innerHeight * 0.6;
+            if(Hls.isSupported()) {
+                var config = { 
+                    xhrSetup: function (xhr,url) { 
+                    } 
+                };
+                if (hls) {
+                    hls.stopLoad()
+                    hls = null;
+                } 
+                hls = new Hls(config);
+                hls.loadSource(stream_link);
+                hls.attachMedia(this.refs.video);
+                hls.on(Hls.Events.MANIFEST_PARSED,function() {});
+
+            } else if (this.refs.video.canPlayType('application/vnd.apple.mpegurl')) {
+                this.refs.video.src = stream_link;
+                this.refs.video.addEventListener('loadedmetadata',function() {});
+            } 
+            this.refs.video.currentTime = 1;
+            this.refs.video.play();     
+        }
+    }
+
+    handleKeyPress = (e) => {
+        switch(e.key) {
+            case " ":
+                const playing = this.state.playing; 
+                if (playing)
+                    this.refs.video.pause();
+                else
+                    this.refs.video.play();
+                this.setState({playing: !playing})
+                break ;
+            case "Enter":
+            if (this.refs.video) {
+                if(this.refs.video.requestFullScreen){
+                    this.refs.video.requestFullScreen();
+                } else if(this.refs.video.webkitRequestFullScreen){
+                    this.refs.video.webkitRequestFullScreen();
+                } else if(this.refs.video.mozRequestFullScreen){
+                    this.refs.video.mozRequestFullScreen();
+                }}
+            break ;
+            case "m":
+                if (this.refs.video.muted){
+                    this.refs.video.muted = false;
+                } else {
+                    this.refs.video.muted = true;
+                }
+            break ;
+            default:
+            break ;
+        }
+    }
   
-//      makeBig = () => { 
-//          this.refs.video.width = 560; 
-//      } 
-  
-//      makeSmall = () => { 
-//          this.refs.video.width = 320; 
-//      } 
-  
-//      makeNormal = () => { 
-//          this.refs.video.width = 420; 
-//      }
-  
-//      render () {
-//          return (
-//              <div>
-//                  <video ref="video" controls>
-                  
-//                  </video>
-//                  <button onClick={this.playPause}>Play/Pause</button> 
-//                  <button onClick={this.makeBig}>Big</button>
-//                  <button onClick={this.makeNormal}>Normal</button>
-//                  <button onClick={this.makeSmall}>Small</button>
-//              </div>        
-//          )
-//      }
-//  }
+    handleClick = async (url, magnet, quality) => {
+        console.log(url, magnet)
+        url = url !== undefined ? url : "";
+        magnet = magnet !== undefined ? magnet : "";
+        await this.setState({started: false, watching: false, quality: quality});
+        this.handleDownload(url, magnet, quality);
+    }
+
+     render () {
+         return (
+            <div>
+                <h2> {`${this.props.movie._source.title} ${this.state.quality}`} </h2>
+                <div>
+                    <video ref="video" crossOrigin="anomymous" controls>
+                        {this.state.en !== "" && <track ref="track1" label="English" kind="subtitles" src={this.state.en} default />} 
+                        {this.state.fr !== "" && <track ref="track2" label="French" kind="subtitles" src={this.state.fr} />}
+                    </video>
+                        
+                </div>
+                <div>
+                    <div className="btn btn-secondary btn-secondary--darkerred">
+                        <span className="btn btn-secondary__icon">
+                        </span>
+                            Choose your quality
+                    </div>
+                    <ul className='ul-video'>
+                        {
+                        this.props.movie._source.torrents.map(m => {
+                                return (
+                                    <li className='li-video' key={m.url} onClick={() => this.handleClick(m.url, m.magnet, m.quality)}> {m.quality} {this.state.quality === m.quality && !this.state.watching && <Loader />} </li>
+                                )
+                            })
+                        }
+                    </ul>
+                </div>
+                <Comment imdbid={this.props.movie._source.imdb_id}/>
+            </div>      
+         )
+     }
+ }
 
 // const mapStateToProps = state => {
 //     return {
