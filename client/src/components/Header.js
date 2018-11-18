@@ -5,12 +5,8 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import SearchBar from './Header/SearchBar';
 import logo from '../assets/img/logo-white.png';
-import user from '../assets/img/user.jpg';
-import axios from 'axios';
 import { ReactComponent as Login} from '../assets/img/svg/login.svg';
-import { withCredentials } from '../utils/headers';
-import { translate, Trans } from 'react-i18next';
-
+import { translate } from 'react-i18next';
 
 class Header extends Component {
     constructor(props) {
@@ -24,20 +20,8 @@ class Header extends Component {
         this.editProfile = this.editProfile.bind(this); 
     }
 
-    async componentDidUpdate(prevProps, prevState) {
-        console.log(this.props.user)
-        // if (this.props.user) {
-        //     if (prevProps.user.currentUser && prevState.files === null) {
-        //         this.setState ({
-        //             files: this.props.user.picture
-        //         })
-        //     }
-        // }
-    }
-
     async componentDidMount() {
         if (this.props.user) {
-            console.log(this.props.user)
             this.setState ({
                 files: this.props.user.picture
             })
@@ -55,7 +39,6 @@ class Header extends Component {
     }
     
     render() {
-        console.log(this.props.user)
         const { t, i18n } = this.props;
         const { files } = this.state;
         var path;
