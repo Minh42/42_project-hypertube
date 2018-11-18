@@ -1,0 +1,12 @@
+.movie-player {
+    display: flex;
+    flex-direction: column;
+
+    &__title {
+        font-size: 2.5rem;
+    }
+
+    &__video {
+        width: 100%;
+    }
+}

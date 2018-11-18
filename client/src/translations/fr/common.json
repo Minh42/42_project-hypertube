@@ -9,9 +9,9 @@
         "newClient": "Nouveau client"
     },
     "SignUp": {
-        "title": "Vous souhaitez découvrir notre selection de films",
+        "title": "Vous souhaitez découvrir notre selection de films?",
         "subtitle": "Inscrivez vous",
-        "picture": "Ajouter une photo",
+        "picture": "Uploader une photo",
         "firstname": "Prénom",
         "lastname": "Nom",
         "username": "Login",

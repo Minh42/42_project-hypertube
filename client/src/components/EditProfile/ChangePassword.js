@@ -47,9 +47,7 @@ class ChangePassword extends Component {
                     message: res.data.message,
                     position: 'topRight'
                 });
-                if(this.props.history.location.pathname !== '/profile') {
-                    this.props.history.push('/')
-                } 
+                this.props.history.push('/');
             }
         })
     }
@@ -59,11 +57,6 @@ class ChangePassword extends Component {
         const { t, i18n } = this.props; 
         return (
             <div className="forgot-password">
-                <div className="landing__langage">
-                    <span className="landing__langage--en" onClick={() => i18n.changeLanguage('en')}>EN</span> 
-                            | 
-                    <span className="landing__langage--fr" onClick={() => i18n.changeLanguage('fr')}>FR</span>
-                </div>
                 <div className="form">
                     <div className="card">
                         <div className="card__side card__side--front">

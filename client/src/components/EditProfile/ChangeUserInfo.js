@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import RenderField from '../Form/RenderField';
 import FormHeader from '../Form/FormHeader';
-import { signOutAction } from '../../reducers/reducer_auth';
+import { signOutAction, AUTHENTICATED } from '../../reducers/reducer_auth';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import izitoast from 'izitoast';
@@ -16,26 +16,16 @@ import { withCredentials } from '../../utils/headers';
 class ChangeUserInfo extends Component {
     constructor(props) {
         super(props);
+        const initData = {
+            "firstname": this.props.user.firstname,
+            "lastname": this.props.user.lastname,
+            "username": this.props.user.username,
+            "email": this.props.user.email
+        };
         this.state = {
             files: null 
         }
-    }
-
-    async componentDidMount() {
-        if(this.props.user) {
-            let initData = {
-                "firstname": this.props.user.currentUser.firstname,
-                "lastname": this.props.user.currentUser.lastname,
-                "username": this.props.user.currentUser.username,
-                "email": this.props.user.currentUser.email
-            };
-
-            this.props.initialize(initData);
-
-            this.setState ({
-                files: this.props.user.picture
-            })
-        }
+        this.props.initialize(initData);
     }
 
     onDrop(files) {
@@ -47,7 +37,7 @@ class ChangeUserInfo extends Component {
             .catch((err) => {
                 if (err) {
                     switch (err.response.status) {
-                        case 404 :
+                        case 422 :
                             message = 'Upload file is invalid';
                             break;
                         case 500:
@@ -77,9 +67,15 @@ class ChangeUserInfo extends Component {
     
     async changeUserInformation(values) {
         var data = { values: values, path: this.state.files}
-        let userID = this.props.user.currentUser._id;
+        let userID = this.props.user._id;
+        let message;
         try {
             const res = await axios.put('http://localhost:8080/api/users/' + userID, data, withCredentials());
+            console.log(res.data)
+            this.props.dispatch({
+                type: AUTHENTICATED,
+                payload: res.data.user
+            })
             izitoast.success({
                 message: res.data.message,
                 position: 'topRight'
@@ -110,12 +106,15 @@ class ChangeUserInfo extends Component {
         }
     }
 
-
     render() {
         const { handleSubmit } = this.props;
-        const { files } = this.state;
         const { t, i18n } = this.props;
-        var path;
+        let path;
+
+        if (this.state.files !== null) 
+            path = this.state.files;
+        else 
+            path = this.props.user.profile_picture;
        
         const dropzoneStyle = {
             width: 110,
@@ -124,11 +123,6 @@ class ChangeUserInfo extends Component {
             border: "none",
             position: "relative"
           };
-
-        if (files != null)
-            path = files;
-        else 
-            path = require('../../assets/img/photo2.jpg');
 
         return (
             <div className="form">

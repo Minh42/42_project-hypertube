@@ -23,7 +23,7 @@ class MoviesList extends Component {
     };
 
     async componentDidMount() {
-        await this.props.onMovieAction();
+        await this.props.onMovieAction(this.props.history);
         if (this.props.movies) (
             this.setState({items: this.props.movies.slice(0, this.state.offset )})
         )
@@ -123,7 +123,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) { 
     return {
-        onMovieAction: () => dispatch(initMoviesAction()),
+        onMovieAction: (history) => dispatch(initMoviesAction(history)),
         onSelectMovie: (movie, history) => dispatch(selectMovie(movie, history))
     }
 }

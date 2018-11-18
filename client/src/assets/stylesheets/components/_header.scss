@@ -10,8 +10,8 @@
     @include respond(phone) {
         flex-wrap: wrap;
         align-content: space-around;
-        justify-content: space-evenly;
-        height: 14rem;
+        justify-content: space-around;
+        height: 16rem;
     }
 }
 
@@ -98,6 +98,7 @@
 
     &__user-photo {
         height: 5.75rem;
+        width: 5.75rem;
         border-radius: 100%;
     }
 

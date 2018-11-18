@@ -25,7 +25,7 @@ export default function(state = INITIAL_STATE, action) {
     }
 }
 
-export function initMoviesAction() {
+export function initMoviesAction(history) {
 	return async (dispatch) => {
         dispatch({
             type: SEARCH_REQUEST
@@ -40,7 +40,6 @@ export function initMoviesAction() {
             }
         } catch (err) {
             if(err) {
-                console.log(err.response.status)
                 switch (err.response.status) {
                     case 401:
                         izitoast.error({
@@ -51,6 +50,7 @@ export function initMoviesAction() {
                             type: UNAUTHENTICATED,
                             payload: null
                         })
+                        history.push('/');
                         break;
                     case 403 :
                         izitoast.error({
@@ -61,6 +61,7 @@ export function initMoviesAction() {
                             type: UNAUTHENTICATED,
                             payload: null
                         })
+                        history.push('/');
                         break;
                     default :
                         dispatch({
@@ -77,7 +78,7 @@ export function initMoviesAction() {
 	};
 }
 
-export function searchAction(input) {
+export function searchAction(input, history) {
 	return (dispatch) => {
         dispatch({
             type: SEARCH_REQUEST
@@ -95,6 +96,7 @@ export function searchAction(input) {
                                 type: UNAUTHENTICATED,
                                 payload: null
                             })
+                            history.push('/');
                             break;
                         case 403 :
                             izitoast.error({
@@ -105,6 +107,7 @@ export function searchAction(input) {
                                 type: UNAUTHENTICATED,
                                 payload: null
                             })
+                            history.push('/');
                             break;
                         default :
                             dispatch({

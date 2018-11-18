@@ -158,16 +158,17 @@ class LeftPanel extends Component {
             return (
                 <div className="left-panel">
                     {this.renderImage(movie)}
-
                     <div className="left-panel__movie-information">
+
                         {this.renderBasicInfo(movie)}
                         {this.renderRuntime(movie)}
                         {this.renderGenres(movie)}
                         {this.renderRating(movie)}
+                        {this.renderSypnosis(movie)}
                         {this.renderDirector(movie)}
                         {this.renderWriter(movie)}
                         {this.renderActor(movie)}
-                        {this.renderSypnosis(movie)}
+              
                     </div>
 
  

@@ -10,7 +10,6 @@ import { withCredentials } from '../../utils/headers';
 let hls = null;
 
 class MoviePlayer extends Component {
-
     state = {
         started: false,
         playing: true,
@@ -111,10 +110,10 @@ class MoviePlayer extends Component {
 
      render () {
          return (
-            <div>
-                <h1 className="movie-title"> {`${this.props.movie._source.title} ${this.state.quality}`} </h1>
-                <div>
-                    <video className="video-play" ref="video" crossOrigin="anomymous" controls>
+            <div className="movie-player">
+                <h1 className="movie-player__title"> {`${this.props.movie._source.title} ${this.state.quality}`} </h1>
+                <div className="movie-player__video">
+                    <video ref="video" crossOrigin="anomymous" controls>
                         {this.state.en !== "" && <track ref="track1" label="English" kind="subtitles" src={this.state.en} default />} 
                         {this.state.fr !== "" && <track ref="track2" label="French" kind="subtitles" src={this.state.fr} />}
                     </video>

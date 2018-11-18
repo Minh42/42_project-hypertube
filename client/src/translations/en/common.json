@@ -29,7 +29,7 @@
         "button": "Submit"
     },
     "ChangePassword": {
-        "title": "Please enter you new password and submit.",
+        "title": "Need to change your password?",
         "subtitle": "New Password",
         "new": "New password",
         "confirm": "Confirm password",

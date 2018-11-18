@@ -11,49 +11,29 @@ import LandingPage from './layouts/LandingPage';
 import EditProfile from './components/EditProfile';
 import Movie from './components/Movie';
 import NotFound from './layouts/NotFound';
-import User from './components/User/User';
+import UserProfile from './components/UserProfile';
 import { connect } from 'react-redux'
 
 class App extends Component { 
-  render() {
-
-    let routes = (
-        <Switch>
-            <Route exact path="/reset" component={Reset} />
-            <Route path="/changePassword/:id" component={ChangePassword} />
-            <Route exact path="/" component={LandingPage} />
-            <Redirect from="/" to="/"/>
-        </Switch>
-    )
-
-    if (this.props.isAuthenticated) {
-        routes = (
-            <Switch>
-                <Route exact path="/homepage" component={requireAuth(HomePage)} />
-                <Route path="/profile/:id" component={requireAuth(EditProfile)} />
-                <Route path="/movie/:id" component={requireAuth(Movie)} />
-                <Route path="/user/:id" component={requireAuth(User)} />
-                <Redirect from="/" to="/homepage"/>
-            </Switch>
+    render() {
+        return (
+            <Router>
+                <div>
+                    <Header />
+                    <Switch>
+                        <Route exact path="/" component={LandingPage} />
+                        <Route exact path="/homepage" component={requireAuth(HomePage)} />
+                        <Route path="/profile/:id" component={requireAuth(UserProfile)} />
+                        <Route path="/movie/:id" component={requireAuth(Movie)} />
+                        <Route path="/user/:id" component={requireAuth(EditProfile)} />
+                        <Route exact path="/reset" component={Reset} />
+                        <Route path="/changePassword/:id" component={ChangePassword} />
+                        <Route component={NotFound} />
+                    </Switch>
+                </div>
+            </Router>
         )
     }
-
-      return (
-          <Router>
-              <div>
-                    <Header/>
-                    {routes}
-                    {/* <Route component={NotFound} /> */}
-              </div>
-          </Router>
-      )
-  }
 }
 
-function mapStateToProps(state) {
-    return {
-        isAuthenticated: state.auth.authenticated
-    };
-}
-
-export default connect(mapStateToProps, null) (translate('common')(App));
+export default (translate('common')(App));

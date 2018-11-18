@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { searchAction } from '../../reducers/reducer_search';
 import { initMoviesAction } from '../../reducers/reducer_search';
@@ -24,11 +25,10 @@ class SearchBar extends Component {
     
     handleSubmit(e) {
         e.preventDefault();
-        console.log(this.state.input)
         if (this.state.input) {
-            this.props.searchAction(this.state.input);
+            this.props.searchAction(this.state.input, this.props.history);
         } else {
-            this.props.initMoviesAction();
+            this.props.initMoviesAction(this.props.history);
         }
     }
 
@@ -58,4 +58,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 } 
 
-export default translate('common')(connect(null , mapDispatchToProps)(SearchBar));
+export default translate('common')(withRouter(connect(null , mapDispatchToProps)(SearchBar)));
