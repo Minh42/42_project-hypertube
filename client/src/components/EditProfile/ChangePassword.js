@@ -6,7 +6,7 @@ import FormHeader from '../Form/FormHeader';
 import axios from 'axios';
 import izitoast from 'izitoast';
 import tools from '../../utils/tools.js';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { withCredentials } from '../../utils/headers';
 
 class ChangePassword extends Component {   
@@ -47,9 +47,7 @@ class ChangePassword extends Component {
                     message: res.data.message,
                     position: 'topRight'
                 });
-                if(this.props.history.location.pathname !== '/profile') {
-                    this.props.history.push('/')
-                } 
+                this.props.history.push('/');
             }
         })
     }
@@ -59,11 +57,6 @@ class ChangePassword extends Component {
         const { t, i18n } = this.props; 
         return (
             <div className="forgot-password">
-                <div className="landing__langage">
-                    <span className="landing__langage--en" onClick={() => i18n.changeLanguage('en')}>EN</span> 
-                            | 
-                    <span className="landing__langage--fr" onClick={() => i18n.changeLanguage('fr')}>FR</span>
-                </div>
                 <div className="form">
                     <div className="card">
                         <div className="card__side card__side--front">
@@ -119,4 +112,4 @@ const reduxFormChangePassword = reduxForm({
     form: 'changePassword'
 })(ChangePassword);
 
-export default translate('common')(withRouter(reduxFormChangePassword));
+export default withNamespaces('common')(withRouter(reduxFormChangePassword));

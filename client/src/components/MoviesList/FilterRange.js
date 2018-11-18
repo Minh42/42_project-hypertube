@@ -4,7 +4,7 @@ import InputRange from 'react-input-range';
 import { FilterRatingAction, FilterYearsAction } from '../../reducers/reducer_filters';
 import { bindActionCreators } from 'redux';
 
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
   
 class FilterRange extends Component { 
 
@@ -85,4 +85,4 @@ class FilterRange extends Component {
         }, dispatch);
     }
     
-export default translate('common')(connect(mapStateToProps, mapDispatchToProps)(FilterRange));
+export default withNamespaces('common')(connect(mapStateToProps, mapDispatchToProps)(FilterRange));

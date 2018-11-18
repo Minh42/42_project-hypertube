@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { searchAction } from '../../reducers/reducer_search';
 import { initMoviesAction } from '../../reducers/reducer_search';
@@ -21,17 +22,15 @@ class SearchBar extends Component {
 		await this.setState({
 		    input: e.target.value
         });
-        await this.props.searchAction(this.state.input);
+        await this.props.searchAction(this.state.input, this.props.history);
     }
     
     handleSubmit(e) {
         e.preventDefault();
         if (this.state.input) {
-            this.props.searchAction(this.state.input);
-            console.log('props  ', this.props);
+            this.props.searchAction(this.state.input, this.props.history);
         } else {
-            console.log('init');
-            this.props.initMoviesAction();
+            this.props.initMoviesAction(this.props.history);
         }
     }
 

@@ -9,7 +9,7 @@ import { getFilterMovies } from '../selectors/index';
 import { initMoviesAction } from '../reducers/reducer_search';
 import { selectMovie } from '../reducers/reducer_movies';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
   
 class MoviesList extends Component {
     constructor(props) {
@@ -23,7 +23,7 @@ class MoviesList extends Component {
     };
 
     async componentDidMount() {
-        await this.props.onMovieAction();
+        await this.props.onMovieAction(this.props.history);
         if (this.props.movies) (
             this.setState({items: this.props.movies.slice(0, this.state.offset )})
         )
@@ -123,9 +123,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) { 
     return {
-        onMovieAction: () => dispatch(initMoviesAction()),
+        onMovieAction: (history) => dispatch(initMoviesAction(history)),
         onSelectMovie: (movie, history) => dispatch(selectMovie(movie, history))
     }
 }
 
-export default translate('common')(withRouter(connect(mapStateToProps, mapDispatchToProps)(MoviesList)));
+export default withNamespaces('common')(withRouter(connect(mapStateToProps, mapDispatchToProps)(MoviesList)));

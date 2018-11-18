@@ -4,7 +4,7 @@ import { ReactComponent as Cycle} from '../assets/img/svg/cycle.svg';
 import SignIn from '../components/SignIn';
 import SignUp from '../components/SignUp';
 
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
 class LandingPage extends Component {
     componentDidMount() {
@@ -14,7 +14,7 @@ class LandingPage extends Component {
     }
 
     render() {
-        const { t, i18n } = this.props;
+        const { i18n } = this.props;
         return (
             <div className="landing">
                 <div className="landing__langage">
@@ -24,12 +24,12 @@ class LandingPage extends Component {
                 </div>
     
                 <div className="landing__heading">
-                    <a>Hypertube</a>
+                    <p>Hypertube</p>
                 </div>
                 <div className="form">
                     <label className="toggle" htmlFor="toggle-1">Swap</label>
                     <Cycle className="icon" fill='#fff'/>
-                    <input type="checkbox" id="toggle-1"/>
+                    <input className="pointer" type="checkbox" id="toggle-1"/>
                     <div className="card">
                         <SignIn />
                         <SignUp />
@@ -46,4 +46,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default translate('common')(connect(mapStateToProps, null)(LandingPage));
+export default withNamespaces('common')(connect(mapStateToProps, null)(LandingPage));

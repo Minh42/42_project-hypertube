@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Cmt from './Cmt';
 import { withCredentials } from '../../utils/headers';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
 class Comment extends Component {
 
@@ -25,7 +25,7 @@ class Comment extends Component {
             return ;
         }
         this.setState({comments: [...this.state.comments, {id: this.props.userid, imdbid: this.props.imdbid, username: "Just added by me", message: this.state.comment, date: Date.now()}]})
-        const response = await axios.post("http://localhost:8080/api/comment/add", {
+        await axios.post("http://localhost:8080/api/comment/add", {
             imdbid: this.props.imdbid,
             username: "test",
             message: this.state.comment
@@ -46,7 +46,7 @@ class Comment extends Component {
 
     render () {
 
-        const { t, i18n } = this.props;
+        const { t } = this.props;
 
         return (
             <div className="comment-box">
@@ -71,4 +71,4 @@ class Comment extends Component {
     }
 }
 
-export default translate('common') (Comment);
+export default withNamespaces('common') (Comment);

@@ -4,7 +4,7 @@ import axios from 'axios';
 import validator from 'validator';
 import FormHeader from '../Form/FormHeader';
 import izitoast from 'izitoast';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
 
 class ForgotPassword extends Component {   
@@ -96,4 +96,4 @@ const reduxFormForgotPassword = reduxForm({
     form: 'forgotPassword'
 })(ForgotPassword);
 
-export default translate('common')(reduxFormForgotPassword);
+export default withNamespaces('common')(reduxFormForgotPassword);

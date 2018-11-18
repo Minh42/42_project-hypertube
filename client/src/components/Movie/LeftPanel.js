@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import NotFoundPoster from '../../assets/img/not-found-poster.jpg';
 import Rating from '../MoviesList/Rating';
 import { convertMinsToHrsMins } from '../../utils/tools';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
 class LeftPanel extends Component {
 
@@ -159,16 +159,17 @@ class LeftPanel extends Component {
             return (
                 <div className="left-panel">
                     {this.renderImage(movie)}
-
                     <div className="left-panel__movie-information">
+
                         {this.renderBasicInfo(movie)}
                         {this.renderRuntime(movie)}
                         {this.renderGenres(movie)}
                         {this.renderRating(movie)}
+                        {this.renderSypnosis(movie)}
                         {this.renderDirector(movie)}
                         {this.renderWriter(movie)}
                         {this.renderActor(movie)}
-                        {this.renderSypnosis(movie)}
+              
                     </div>
 
  
@@ -189,7 +190,7 @@ function mapStateToProps(state) {
     };
 }
 
-export default translate('common') (connect(mapStateToProps, null)(LeftPanel));
+export default withNamespaces('common') (connect(mapStateToProps, null)(LeftPanel));
 
 
 

@@ -17,7 +17,7 @@ class Cmt extends Component {
         return (
             <div className="movie-cmt">
                 <div className="container-user">
-                    <img className="small-pic" src={this.state.src} onClick={() => this.props.goToProfile(this.props.userid)}></img>
+                    <img alt="profile_picture" className="small-pic" src={this.state.src} onClick={() => this.props.goToProfile(this.props.userid)}></img>
                     <div className="container-msg">
                             <h4> <span className="comment-username" onClick={() => this.props.goToProfile(this.props.userid)}> {this.props.username} </span>
                                 <span className="comment-date"> {isNaN(this.props.date) ? this.props.date.substring(0, 10) : 'Added just now'} </span>

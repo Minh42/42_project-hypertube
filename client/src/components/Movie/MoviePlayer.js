@@ -5,13 +5,11 @@ import * as reducerDownload from '../../reducers/reducer_download';
 import Loader from '../Loader/Loader';
 import axios from 'axios';
 import Comment from './Comment';
-import { withCredentials } from '../../utils/headers';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
 let hls = null;
 
 class MoviePlayer extends Component {
-
     state = {
         started: false,
         playing: true,
@@ -124,7 +122,7 @@ class MoviePlayer extends Component {
 
      render () {
 
-        const { t, i18n } = this.props;
+        const { t } = this.props;
 
          return (
             <div>
@@ -171,4 +169,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default translate('common') (connect(mapStateToProps, mapDispatchToProps)(MoviePlayer));
+export default withNamespaces('common') (connect(mapStateToProps, mapDispatchToProps)(MoviePlayer));

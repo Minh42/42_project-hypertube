@@ -7,11 +7,17 @@ import axios from 'axios';
 import validator from 'validator';
 import izitoast from 'izitoast';
 import tools from '../utils/tools.js';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
 class SignUp extends Component {   
     constructor(props) {
         super(props);
+        this.state = {
+            files: null 
+        }
+    }
+
+    componentDidMount() {
         const initData = {
             "firstname": null,
             "lastname": null,
@@ -19,14 +25,9 @@ class SignUp extends Component {
             "email": null,
             "password": null
         };
-
-        this.state = {
-            files: null 
-        }
-
         this.props.initialize(initData);
     }
-
+ 
     onDrop(files) {
         let message;
         const data = new FormData();
@@ -65,8 +66,7 @@ class SignUp extends Component {
     }
 
     onSubmit(values) {
-        var data = { values: values,
-                     path: this.state.files}
+        var data = { values: values, path: this.state.files }
         let message;
         axios.post('http://localhost:8080/api/users', data)
         .catch((err) => {
@@ -100,9 +100,13 @@ class SignUp extends Component {
 
     render() {
         const { handleSubmit } = this.props;
-        const { files } = this.state;
         const { t } = this.props;
-        var path;
+        let path;
+
+        if (this.state.files !== null) 
+            path = this.state.files;
+        else 
+            path = require('../assets/img/photo2.jpg');
        
         const dropzoneStyle = {
             width: 110,
@@ -110,12 +114,7 @@ class SignUp extends Component {
             borderRadius: 20,
             border: "none",
             position: "relative"
-          };
-
-        if (files != null)
-            path = files;
-        else 
-            path = require('../assets/img/photo2.jpg');
+        };
 
         return (
             <div className="card__side card__side--back">
@@ -124,15 +123,15 @@ class SignUp extends Component {
                     heading2 = { t('SignUp.subtitle', { framework: "react-i18next" }) }
                 />
                 <div className="card__form">
-                <div className="card__form--picture">
+                <div className="card__form--picture pointer">
                     <div className="card__form--picture-block">
                         <img className="card__form--picture-block-img" src={path} alt="img"/>
                         <Dropzone multiple={false} 
-                        accept="image/*" 
-                        onDrop={this.onDrop.bind(this)} 
-                        style={dropzoneStyle}
-                        >
-                        <p className="card__form--picture-block-text">{ t('SignUp.picture', { framework: "react-i18next" }) }</p>
+                            accept="image/*" 
+                            onDrop={this.onDrop.bind(this)} 
+                            style={dropzoneStyle}
+                            >
+                            <p className="card__form--picture-block-text">{ t('SignUp.picture', { framework: "react-i18next" }) }</p>
                         </Dropzone>
                     </div>
                 </div>
@@ -172,7 +171,7 @@ class SignUp extends Component {
                             placeholder=""
                             component={RenderField}
                         />
-                        <button type="submit" className="btn btn-primary btn-primary--pink">{ t('SignUp.button', { framework: "react-i18next" }) }</button>
+                        <button type="submit" className="btn btn-primary btn-primary--pink pointer">{ t('SignUp.button', { framework: "react-i18next" }) }</button>
                     </form>
                 </div>
             </div>
@@ -226,4 +225,4 @@ const reduxFormSignUp = reduxForm({
     form: 'signup'
 })(SignUp);
 
-export default translate('common')(reduxFormSignUp);
+export default withNamespaces('common')(reduxFormSignUp);

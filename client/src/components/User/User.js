@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { withCredentials } from '../../utils/headers';
 import FormHeader from '../Form/FormHeader';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
 class User extends Component {
 
@@ -21,7 +21,7 @@ class User extends Component {
 
     render () {
 
-        const { t, i18n } = this.props;
+        const { t, } = this.props;
 
         return (
             <div className="form">
@@ -58,4 +58,4 @@ class User extends Component {
     }
 }
 
-export default translate('common') (User);
+export default withNamespaces('common') (User);

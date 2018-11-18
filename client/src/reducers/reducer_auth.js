@@ -14,9 +14,6 @@ const INITIAL_STATE = {
   
 export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
-    //   case 'REHYDRATE':
-    //     return {...state, currentUser: action.payload.currentUser
-    //   };
       case AUTHENTICATED:
         return { ...state, authenticated: true, currentUser: action.payload};
       case UNAUTHENTICATED:
@@ -76,8 +73,7 @@ export function signOutAction(history) {
 		dispatch({ 
 			type: UNAUTHENTICATED,
 			payload: null
-		})
-        
-        //history.push('/')
+        })
+        history.push('/')
 	}
 }
