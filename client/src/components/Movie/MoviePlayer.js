@@ -118,7 +118,7 @@ class MoviePlayer extends Component {
             <div>
                 <h1 className="movie-title"> {`${this.props.movie._source.title} ${this.state.quality}`} </h1>
                 <div>
-                    <video className="video-play" ref="video" crossOrigin="anomymous" controls>
+                    <video className={this.state.watching ? "video-play" : "video-playp" } ref="video" crossOrigin="anomymous" poster={this.props.poster} controls>
                         {this.state.en !== "" && <track ref="track1" label="English" kind="subtitles" src={this.state.en} default />} 
                         {this.state.fr !== "" && <track ref="track2" label="French" kind="subtitles" src={this.state.fr} />}
                     </video>
