@@ -6,6 +6,7 @@ import Loader from '../Loader/Loader';
 import axios from 'axios';
 import Comment from './Comment';
 import { withCredentials } from '../../utils/headers';
+import { translate } from 'react-i18next';
 
 let hls = null;
 
@@ -110,6 +111,9 @@ class MoviePlayer extends Component {
     }
 
      render () {
+
+        const { t, i18n } = this.props;
+
          return (
             <div>
                 <h1 className="movie-title"> {`${this.props.movie._source.title} ${this.state.quality}`} </h1>
@@ -124,7 +128,7 @@ class MoviePlayer extends Component {
                     <div className="btn btn-secondary btn-secondary--darkerred">
                         <span className="btn btn-secondary__icon">
                         </span>
-                            Choose your quality
+                        { t('Movie.quality', { framework: "react-i18next" }) }
                     </div>
                     <ul className='ul-video'>
                         {
@@ -155,4 +159,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MoviePlayer);
+export default translate('common') (connect(mapStateToProps, mapDispatchToProps)(MoviePlayer));

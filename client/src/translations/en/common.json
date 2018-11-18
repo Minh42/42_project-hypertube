@@ -77,5 +77,10 @@
     "Sport": "Sport",
     "User": {
         "profil": "User profil"
+    },
+    "Movie" : {
+        "quality": "Choose your quality",
+        "comment": "Comments",
+        "add": "Add a comment"
     }
 }

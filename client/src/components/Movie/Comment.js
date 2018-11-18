@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Cmt from './Cmt';
 import { withCredentials } from '../../utils/headers';
+import { translate } from 'react-i18next';
 
 class Comment extends Component {
 
@@ -44,9 +45,12 @@ class Comment extends Component {
     }
 
     render () {
+
+        const { t, i18n } = this.props;
+
         return (
             <div className="comment-box">
-                <h3 className="comment-header"> Comments: </h3>
+                <h3 className="comment-header"> { t('Movie.comment', { framework: "react-i18next" }) }: </h3>
                 {
                     this.state.comments.map(c => {
                         return (
@@ -59,7 +63,7 @@ class Comment extends Component {
                         <textarea className="comment-area" name="comment" onChange={this.handleChange} rows="4" cols="50" value={this.state.comment}> </textarea>
                     </div>
                     <div>
-                        <button type="submit" className="add-comment"> Add a comment </button>
+                        <button type="submit" className="add-comment"> { t('Movie.add', { framework: "react-i18next" }) } </button>
                     </div>                
                 </form>
             </div>
@@ -67,4 +71,4 @@ class Comment extends Component {
     }
 }
 
-export default Comment;
+export default translate('common') (Comment);
