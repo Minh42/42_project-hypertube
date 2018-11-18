@@ -74,5 +74,8 @@
     "Documentary": "Documentaire",
     "Music": "Musique",
     "Musical": "Comedie musicale",
-    "Sport": "Sport"
+    "Sport": "Sport",
+    "User": {
+        "profil": "Profile utilisateur"
+    }
 }
