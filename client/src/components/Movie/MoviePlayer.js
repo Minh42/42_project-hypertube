@@ -26,15 +26,27 @@ class MoviePlayer extends Component {
         document.addEventListener("keydown", (e) => {
             this.handleKeyPress(e)       
         })
+        this.signal = axios.CancelToken.source();
     }
 
     handleDownload = async (url, quality) => {
+        if (this.state.started) {
+            await this.signal.cancel('Api is being canceled');
+            this.refs.video.src = '';
+            await this.setState({en: "", fr: "", watching: false, playing: false})
+            if (hls) {
+                await hls.destroy()
+                hls = null;
+            } 
+        }
         const response = await axios.post("http://localhost:8080/api/download/torrent", {
             title: this.props.movie._source.title,
             imdbid: this.props.movie._source.imdb_id,
             link: url,
             quality: quality
-        }, withCredentials())
+        }, {withCredentials: true, cancelToken: this.signal.token});
+
+
         if (response && response.status === 200) {
             this.setState({watching: true})
             const stream_link = response.data.stream_link;
@@ -61,7 +73,7 @@ class MoviePlayer extends Component {
             } 
             this.refs.video.currentTime = 1;
             this.refs.video.play();
-            const added = await axios.post('http://localhost:8080/api/movie/add', {imdbid: this.props.movie._source.imdb_id}, withCredentials());
+            await axios.post('http://localhost:8080/api/movie/add', {imdbid: this.props.movie._source.imdb_id}, {withCredentials: true, cancelToken: this.signal.token});
         }
     }
 
@@ -134,7 +146,7 @@ class MoviePlayer extends Component {
                         {
                         this.props.movie._source.torrents.map(m => {
                                 return (
-                                    <li className='li-video' key={m.url} onClick={() => this.handleClick(m.url, m.quality)}> {m.quality} {this.state.quality === m.quality && !this.state.watching && <Loader />} </li>
+                                    <li className={this.state.quality === m.quality ? 'li-video-selected' : 'li-video'} key={m.url} onClick={this.state.quality === m.quality ? () => {} : () => this.handleClick(m.url, m.quality)}> {m.quality} {this.state.quality === m.quality && !this.state.watching && <Loader />} </li>
                                 )
                             })
                         }

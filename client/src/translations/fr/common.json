@@ -81,6 +81,12 @@
     "Movie" : {
         "quality": "Selectionner la qualite",
         "comment": "Commentaires",
-        "add": "Ajouter un commentaire"
+        "add": "Ajouter un commentaire",
+        "unknown": "Inconnu",
+        "director": "Directeur",
+        "writer": "Scenariste",
+        "actor" : "Acteurs",
+        "nodesc": "Aucune description",
+        "untitled": "Sans titre"
     }
 }
