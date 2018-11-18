@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { searchAction } from '../../reducers/reducer_search';
 import { initMoviesAction } from '../../reducers/reducer_search';
+import { selectMovie } from '../../reducers/reducer_movies';
 import { ReactComponent as Glass} from '../../assets/img/svg/magnifying-glass.svg';
 import { withNamespaces } from 'react-i18next';
 import PreviewResult from './PreviewResult';
@@ -13,6 +14,7 @@ class SearchBar extends Component {
         super(props);
         this.state = {
             input: '',
+            hasFocus:false
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,9 +36,18 @@ class SearchBar extends Component {
         }
     }
 
+    handleFocus = () => {
+        this.setState({hasFocus:true})
+    }
+
+    handleClickPreview = (movie) => {
+        console.log('hidsio ', movie);
+        this.props.selectMovie(movie, this.props.history);
+        this.setState({hasFocus:false})
+    }
+
     render() {
         const { t } = this.props;
-        console.log('loc' , this.props.history.location )
         return (
             <form action="#" className="search" onSubmit={this.handleSubmit}>
                 <input 
@@ -44,12 +55,13 @@ class SearchBar extends Component {
                     className="search__input" 
                     placeholder={ t('Header.searchBar', { framework: "react-i18next" }) }
                     onChange={this.handleChange}
+                    onFocus={this.handleFocus}
                     value={this.state.input}
                 />
                 <button className="search__button" onClick={this.handleSubmit}>
                     <Glass fill='rgba(216, 3, 81, 0.733)'/>
                 </button>
-        {this.props.history.location.pathname !== '/homepage' && <PreviewResult preview={this.props.preview} history={this.props.history}></PreviewResult> }
+        {this.props.history.location.pathname !== '/homepage' && this.state.hasFocus && <PreviewResult preview={this.props.preview} clickPreview={this.handleClickPreview}></PreviewResult> }
             </form>
         );
     }
@@ -58,7 +70,8 @@ class SearchBar extends Component {
 function mapDispatchToProps(dispatch) { 
     return bindActionCreators({ 
         searchAction : searchAction,
-        initMoviesAction : initMoviesAction
+        initMoviesAction : initMoviesAction,
+        selectMovie : selectMovie
     }, dispatch);
 } 
 

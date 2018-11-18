@@ -4,15 +4,15 @@ import { selectMovie } from '../../reducers/reducer_movies';
   
 class PreviewResult extends Component { 
 
-    state = {
-        display:true
+    handleClick = async (itm) => {
+        this.props.clickPreview(itm);
+        //this.props.onSelectMovie(itm, this.props.history);
     }
 
     displayPreview = (result) => {
-        console.log(this.props.history);
         const list = result.slice(0, 5).map((itm, index) => {
             return (
-                <li onClick={() => this.props.onSelectMovie(itm, this.props.history)} key={index} className='preview-itm'>
+                <li onClick={() => this.handleClick(itm)} key={index} className='preview-itm'>
                     {itm._source.title}
                 </li>
             )
@@ -22,9 +22,7 @@ class PreviewResult extends Component {
 
     render () {
 
-        let view = this.state.display 
-                                ? <ul className='preview'>{this.state.display && this.displayPreview(this.props.preview)}</ul> 
-                                : null;
+        let view = <ul className='preview'>{this.displayPreview(this.props.preview)}</ul>
         if (this.props.preview.length === 0)
             view = null;      
 
