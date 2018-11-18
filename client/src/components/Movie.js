@@ -6,7 +6,6 @@ import LeftPanel from './Movie/LeftPanel';
 import RightPanel from './Movie/RightPanel';
 import * as reducerDownload from '../reducers/reducer_download';
 import slug from 'slug';
-import { signOutAction } from '../reducers/reducer_auth';
 
 class Curtain extends Component {    
     state = {
@@ -19,14 +18,14 @@ class Curtain extends Component {
         if (!this.props.selectedMovie || this.props.selectedMovie === undefined)
             this.props.history.push("/")
         if (this.props.movies) {
+            // check if slug title exists
             let titles = [];
             for (var i = 0; i < this.props.movies.length; i++) {
                 titles.push(slug(this.props.movies[i]._source.title));
             }
-            
-            /*if (!titles.includes(this.props.match.params.id)) {    //  ???
-               // this.props.signOutAction(this.props.history);
-            } */
+            if (!titles.includes(this.props.match.params.id)) {
+               this.props.signOutAction(this.props.history);
+            } 
         }
     }
     
@@ -34,20 +33,21 @@ class Curtain extends Component {
         this.setState({open: true})
     }
 
-    handleChange = () => {
-        console.log("Chaneg")
+    handleChange() {
+        console.log('change');
     }
 
     render() {
         return (
-            <div className="curtain">    
-                <input ref="openCurtain" type="checkbox" onChange={this.handleChange} checked={this.state.open} id="toggle-2"/>
-                <button disabled={this.state.open} onClick={() => this.handleDownload()} className="btn btn-secondary btn-secondary--red">
+            <div className="curtain" onClick={() => this.handleDownload()}>  
+                <input type="checkbox" checked={this.state.open} onChange={this.handleChange} id="toggle-2"/>  
+                {/* <input ref="openCurtain" type="checkbox" onChange={this.handleChange} checked={this.state.open} id="toggle-2"/> */}
+                {/* <button disabled={this.state.open} onClick={() => this.handleDownload()} className="btn btn-secondary btn-secondary--red">
                             <span className="btn btn-secondary__icon">
                                 
                             </span>
                                 Play
-                        </button>
+                        </button> */}
                 <LeftPanel />
                 <RightPanel />
                 <div className="prize">
@@ -67,7 +67,6 @@ class Curtain extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        signOutAction: (history) => dispatch(signOutAction(history)),
         onStartStreaming: ({stream_link}, history) => dispatch(reducerDownload.startStreaming({stream_link}, history))
     }
 }

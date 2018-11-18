@@ -10,7 +10,6 @@ import { withNamespaces } from 'react-i18next';
 let hls = null;
 
 class MoviePlayer extends Component {
-
     state = {
         started: false,
         playing: true,
