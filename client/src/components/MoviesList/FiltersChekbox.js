@@ -88,7 +88,7 @@ class FiltersCheckbox extends Component {
     const genresFilters = genres.map((genre, i) => (
         <Checkbox
           key={i}
-          label={ t(genre, { framework: "react-i18next" }) }
+          label={genre}
           onClick={() => this.handleClick(genre)}
         />
     ))

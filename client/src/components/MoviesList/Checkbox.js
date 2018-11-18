@@ -15,11 +15,11 @@ class Checkbox extends Component {
                                 <input
                                     className="movies-filters__genders--checkbox-input"
                                     type='checkbox'
-                                    value={label}
+                                    value={ label }
                                     onClick={onClick}
                                     defaultChecked
                                 />
-                                <span className="movies-filters__genders--checkbox-span">{label}</span>
+                                <span className="movies-filters__genders--checkbox-span">{t(label, { framework: "react-i18next" })}</span>
                             </label>
                         </div>
                     )
@@ -30,10 +30,10 @@ class Checkbox extends Component {
                                 <input
                                     className="movies-filters__genders--checkbox-input"
                                     type='checkbox'
-                                    value={label}
+                                    value={ label }
                                     onClick={onClick}
                                 />
-                                <span className="movies-filters__genders--checkbox-span">{label}</span>
+                                <span className="movies-filters__genders--checkbox-span">{t(label, { framework: "react-i18next" })}</span>
                             </label>
                         </div>
                     )
@@ -45,10 +45,10 @@ class Checkbox extends Component {
                         <input
                             className="movies-filters__genders--checkbox-input"
                             type='checkbox'
-                            value={label}
+                            value={ label }
                             onClick={onClick}
                         />
-                        <span className="movies-filters__genders--checkbox-span">{label}</span>
+                        <span className="movies-filters__genders--checkbox-span">{t(label, { framework: "react-i18next" })}</span>
                     </label>
                 </div>
             )
