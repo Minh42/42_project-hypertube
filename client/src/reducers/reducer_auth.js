@@ -66,14 +66,14 @@ export function signInActionOauth(xsrfToken, user, history) {
 }
 
 export function signOutAction(history) {
-	return (dispatch) => {
+	return async (dispatch) => {
+        await axios.get('http://localhost:8080/api/auth/logout', withCredentials());
         setAuthorizationToken(false);
         localStorage.clear();
 		dispatch({ 
 			type: UNAUTHENTICATED,
 			payload: null
-		})
-        axios.get('http://localhost:8080/api/auth/logout', withCredentials());
+        })
         history.push('/')
 	}
 }

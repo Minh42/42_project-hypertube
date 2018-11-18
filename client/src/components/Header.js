@@ -5,11 +5,9 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import SearchBar from './Header/SearchBar';
 import logo from '../assets/img/logo-white.png';
-import user from '../assets/img/user.jpg';
-import axios from 'axios';
 import { ReactComponent as Login} from '../assets/img/svg/login.svg';
 import { withCredentials } from '../utils/headers';
-import { translate, Trans } from 'react-i18next';
+import { translate } from 'react-i18next';
 
 class Header extends Component {
     constructor(props) {
@@ -32,7 +30,7 @@ class Header extends Component {
         const { t, i18n } = this.props;
         const isProfileRoute = (window.location.pathname.includes('user'));
 
-        if (this.props.isAuthenticated) {
+        if (this.props.user) {
             if (isProfileRoute) {
                 return (
                     <header className="header">

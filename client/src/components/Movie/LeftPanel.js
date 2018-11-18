@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import NotFoundPoster from '../../assets/img/not-found-poster.jpg';
 import Rating from '../MoviesList/Rating';
 import { convertMinsToHrsMins } from '../../utils/tools';
+import { translate } from 'react-i18next';
 
 class LeftPanel extends Component {
 
@@ -29,15 +30,15 @@ class LeftPanel extends Component {
                 )
             } else if (movie._source.title === "N/A" && movie._source.year !== 'N/A') {
                 return (
-                    <div className="left-panel__movie-title">Untitled ({year})</div>
+                    <div className="left-panel__movie-title">{ this.props.t('Movie.untitled', { framework: "react-i18next" }) } ({year})</div>
                 )
             } else if (movie._source.title !== 'N/A' && movie._source.year === 'N/A') {
                 return (
-                    <div className="left-panel__movie-title">{movie._source.title} (Unknown)</div>
+                    <div className="left-panel__movie-title">{movie._source.title} ({ this.props.t('Movie.unknown', { framework: "react-i18next" }) })</div>
                 )
             } else {
                 return (
-                    <div className="left-panel__movie-title">Untitled (Unknown)</div>
+                    <div className="left-panel__movie-title">{ this.props.t('Movie.untitled', { framework: "react-i18next" }) } ({ this.props.t('Movie.unknown', { framework: "react-i18next" }) })</div>
                 )
             }
         }
@@ -81,7 +82,7 @@ class LeftPanel extends Component {
         } else {
             return (
                 <div className="left-panel__movie-genres">
-                    Unknown
+                    { this.props.t('Movie.unknown', { framework: "react-i18next" }) }
                 </div> 
             )
         }
@@ -91,13 +92,13 @@ class LeftPanel extends Component {
         if (movie._source.director !== 'N/A') {
             return (
                 <div className="left-panel__movie-director">
-                    Director: {movie._source.director}
+                    { this.props.t('Movie.director', { framework: "react-i18next" }) }: {movie._source.director}
                 </div>
             ) 
         } else {
             return (
                 <div className="left-panel__movie-director">
-                    Director: Unknown
+                    { this.props.t('Movie.director', { framework: "react-i18next" }) }: { this.props.t('Movie.unknown', { framework: "react-i18next" }) }
                 </div> 
             )
         }
@@ -108,13 +109,13 @@ class LeftPanel extends Component {
         if (movie._source.writer !== 'N/A') {
             return (
                 <div className="left-panel__movie-director">
-                    Writer:  {movie._source.writer}
+                    { this.props.t('Movie.writer', { framework: "react-i18next" }) }:  {movie._source.writer}
                 </div>
             ) 
         } else {
             return (
                 <div className="left-panel__movie-director">
-                    Writer:  Unknown
+                    { this.props.t('Movie.writer', { framework: "react-i18next" }) }:  { this.props.t('Movie.unknown', { framework: "react-i18next" }) }
                 </div> 
             )
         }
@@ -124,13 +125,13 @@ class LeftPanel extends Component {
         if (movie._source.actor !== 'N/A') {
             return (
                 <div className="left-panel__movie-director">
-                    Actor:  {movie._source.actors}
+                    { this.props.t('Movie.actor', { framework: "react-i18next" }) }:  {movie._source.actors}
                 </div>
             )
         } else {
             return (
                 <div className="left-panel__movie-director">
-                    Actor:  Unknown
+                    { this.props.t('Movie.actor', { framework: "react-i18next" }) }:  { this.props.t('Movie.unknown', { framework: "react-i18next" }) }
                 </div>
             )
         }
@@ -146,7 +147,7 @@ class LeftPanel extends Component {
         } else {
             return (
                 <div className="left-panel__movie-description">
-                    No description
+                    { this.props.t('Movie.nodesc', { framework: "react-i18next" }) }
                 </div>
             )
         }
@@ -189,7 +190,7 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, null)(LeftPanel);
+export default translate('common') (connect(mapStateToProps, null)(LeftPanel));
 
 
 

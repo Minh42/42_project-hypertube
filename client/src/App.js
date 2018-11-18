@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import requireAuth from './utils/HOC/requireAuth';
 
@@ -12,7 +12,6 @@ import EditProfile from './components/EditProfile';
 import Movie from './components/Movie';
 import NotFound from './layouts/NotFound';
 import UserProfile from './components/UserProfile';
-import { connect } from 'react-redux'
 
 class App extends Component { 
     render() {

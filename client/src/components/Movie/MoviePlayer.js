@@ -6,6 +6,7 @@ import Loader from '../Loader/Loader';
 import axios from 'axios';
 import Comment from './Comment';
 import { withCredentials } from '../../utils/headers';
+import { translate } from 'react-i18next';
 
 let hls = null;
 
@@ -24,15 +25,27 @@ class MoviePlayer extends Component {
         document.addEventListener("keydown", (e) => {
             this.handleKeyPress(e)       
         })
+        this.signal = axios.CancelToken.source();
     }
 
     handleDownload = async (url, quality) => {
+        if (this.state.started) {
+            await this.signal.cancel('Api is being canceled');
+            this.refs.video.src = '';
+            await this.setState({en: "", fr: "", watching: false, playing: false})
+            if (hls) {
+                await hls.destroy()
+                hls = null;
+            } 
+        }
         const response = await axios.post("http://localhost:8080/api/download/torrent", {
             title: this.props.movie._source.title,
             imdbid: this.props.movie._source.imdb_id,
             link: url,
             quality: quality
-        }, withCredentials())
+        }, {withCredentials: true, cancelToken: this.signal.token});
+
+
         if (response && response.status === 200) {
             this.setState({watching: true})
             const stream_link = response.data.stream_link;
@@ -59,7 +72,7 @@ class MoviePlayer extends Component {
             } 
             this.refs.video.currentTime = 1;
             this.refs.video.play();
-            const added = await axios.post('http://localhost:8080/api/movie/add', {imdbid: this.props.movie._source.imdb_id}, withCredentials());
+            await axios.post('http://localhost:8080/api/movie/add', {imdbid: this.props.movie._source.imdb_id}, {withCredentials: true, cancelToken: this.signal.token});
         }
     }
 
@@ -109,11 +122,14 @@ class MoviePlayer extends Component {
     }
 
      render () {
+
+        const { t, i18n } = this.props;
+
          return (
-            <div className="movie-player">
-                <h1 className="movie-player__title"> {`${this.props.movie._source.title} ${this.state.quality}`} </h1>
-                <div className="movie-player__video">
-                    <video ref="video" crossOrigin="anomymous" controls>
+            <div>
+                <h1 className="movie-title"> {`${this.props.movie._source.title} ${this.state.quality}`} </h1>
+                <div>
+                    <video className={this.state.watching ? "video-play" : "video-playp" } ref="video" crossOrigin="anomymous" poster={this.props.poster} controls>
                         {this.state.en !== "" && <track ref="track1" label="English" kind="subtitles" src={this.state.en} default />} 
                         {this.state.fr !== "" && <track ref="track2" label="French" kind="subtitles" src={this.state.fr} />}
                     </video>
@@ -123,13 +139,13 @@ class MoviePlayer extends Component {
                     <div className="btn btn-secondary btn-secondary--darkerred">
                         <span className="btn btn-secondary__icon">
                         </span>
-                            Choose your quality
+                        { t('Movie.quality', { framework: "react-i18next" }) }
                     </div>
                     <ul className='ul-video'>
                         {
                         this.props.movie._source.torrents.map(m => {
                                 return (
-                                    <li className='li-video' key={m.url} onClick={() => this.handleClick(m.url, m.quality)}> {m.quality} {this.state.quality === m.quality && !this.state.watching && <Loader />} </li>
+                                    <li className={this.state.quality === m.quality ? 'li-video-selected' : 'li-video'} key={m.url} onClick={this.state.quality === m.quality ? () => {} : () => this.handleClick(m.url, m.quality)}> {m.quality} {this.state.quality === m.quality && !this.state.watching && <Loader />} </li>
                                 )
                             })
                         }
@@ -154,4 +170,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MoviePlayer);
+export default translate('common') (connect(mapStateToProps, mapDispatchToProps)(MoviePlayer));

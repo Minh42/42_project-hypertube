@@ -16,16 +16,23 @@ import { withCredentials } from '../../utils/headers';
 class ChangeUserInfo extends Component {
     constructor(props) {
         super(props);
-        const initData = {
-            "firstname": this.props.user.firstname,
-            "lastname": this.props.user.lastname,
-            "username": this.props.user.username,
-            "email": this.props.user.email
-        };
         this.state = {
             files: null 
         }
-        this.props.initialize(initData);
+    }
+
+    componentDidMount() {
+        if (this.props.user) {
+            const initData = {
+                "firstname": this.props.user.firstname,
+                "lastname": this.props.user.lastname,
+                "username": this.props.user.username,
+                "email": this.props.user.email
+            };
+            this.props.initialize(initData);
+        } else {
+            console.log('been here dude')
+        }
     }
 
     onDrop(files) {
@@ -111,18 +118,22 @@ class ChangeUserInfo extends Component {
         const { t, i18n } = this.props;
         let path;
 
-        if (this.state.files !== null) 
-            path = this.state.files;
-        else 
-            path = this.props.user.profile_picture;
-       
+        if (this.props.user) {
+            if (this.props.user.profile_picture) {
+                if (this.state.files !== null) 
+                    path = this.state.files;
+                else 
+                    path = this.props.user.profile_picture;
+            }
+        }   
+  
         const dropzoneStyle = {
             width: 110,
             height: 100,
             borderRadius: 20,
             border: "none",
             position: "relative"
-          };
+        };
 
         return (
             <div className="form">

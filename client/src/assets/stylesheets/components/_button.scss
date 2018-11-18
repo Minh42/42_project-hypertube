@@ -72,11 +72,21 @@
     margin-bottom:10px;
     background-color:$color-grey-dark-2;
     width:10%;
+    cursor: pointer;
 }
 
-.ul-video li:hover {
-    background-color:$color-primary-light-2;
-    cursor: pointer;
+.li-video:hover {
+    background-color:$color-primary-light-2;    
+}
+
+.li-video-selected {
+    margin:auto;
+    cursor: default;
+    list-style-type: none;
+    margin-top:10px;
+    margin-bottom:10px;
+    background-color:$color-green;
+    width:10%;
 }
 
 .add-comment {

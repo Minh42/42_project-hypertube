@@ -74,5 +74,19 @@
     "Documentary": "Documentary",
     "Music": "Music",
     "Musical": "Musical",
-    "Sport": "Sport"
+    "Sport": "Sport",
+    "User": {
+        "profil": "User profil"
+    },
+    "Movie" : {
+        "quality": "Choose your quality",
+        "comment": "Comments",
+        "add": "Add a comment",
+        "unknown": "Unknown",
+        "director": "Director",
+        "writer": "Writer",
+        "actor" : "Actors",
+        "nodesc": "No description",
+        "untitled": "Untitled"
+    }
 }

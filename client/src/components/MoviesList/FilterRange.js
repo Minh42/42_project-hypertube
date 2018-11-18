@@ -24,19 +24,6 @@ class FilterRange extends Component {
 		this.handleRating = this.handleRating.bind(this);
 		this.handleYears = this.handleYears.bind(this);
     }
-    
-    componentDidMount() {
-        this.setState ({
-            valueRating: {
-            min: (this.props.ratingRange === undefined) ? 0 : this.props.ratingRange.min,
-            max: (this.props.ratingRange === undefined) ? 10 : this.props.ratingRange.max,
-            },
-            valueYears: {
-            min: (this.props.yearsRange === undefined) ? 1900 : this.props.yearsRange.min,
-            max: (this.props.yearsRange === undefined) ? 2018 : this.props.yearsRange.max,
-            }
-        })
-    }
 
     handleRating(values) {
         this.props.FilterRatingAction(values, this.props.history);
@@ -46,39 +33,38 @@ class FilterRange extends Component {
           this.props.FilterYearsAction(values, this.props.history);
     }
 
+    handleChangeRating = (value) => {
+        if (value.min >= 0 && value.max <= 10)
+            this.setState({ valueRating: value });
+    }
+
+    handleChangeYear = (value) => {
+        if (value.min >= 1900 && value.max <= 2018)
+            this.setState({ valueYears: value });
+    }
+
     render() {
         const { t } = this.props;
-        if (this.state.valueRating.min < 0){
-            this.setState({ valueRating: { min: 0 } })           
-		}
-		if (this.state.valueRating.max > 100){
-            this.setState({ valueRating: { max: 100 } })   
-		}
-		if (this.state.valueYears.min < 1900){
-            this.setState({ valueYears: { min: 1900 } })   
-		}
-		if (this.state.valueYears.max > 2018){
-            this.setState({ valueYears: { max: 2018 } })  
-		}
+
         return (
             <div className="movies-filters__range">
                 <div>{ t('Range.rating', { framework: "react-i18next" }) }</div>
                 <div >
                     <InputRange
-                    maxValue={10}
-                    minValue={0}
-                    value={this.state.valueRating}
-                    onChange={value => this.setState({ valueRating: value })}
-                    onChangeComplete={value => this.handleRating(value)} />
+                        maxValue={10}
+                        minValue={0}
+                        value={this.state.valueRating}
+                        onChange={this.handleChangeRating}
+                        onChangeComplete={value => this.handleRating(value)} />
                 </div>
                 <label>{ t('Range.years', { framework: "react-i18next" }) }</label>
                 <div >
                     <InputRange
-                    maxValue={2018}
-                    minValue={1900}
-                    value={this.state.valueYears}
-                    onChange={value => this.setState({ valueYears: value })}
-                    onChangeComplete={value => this.handleYears(value)} />
+                        maxValue={2018}
+                        minValue={1900}
+                        value={this.state.valueYears}
+                        onChange={this.handleChangeYear}
+                        onChangeComplete={value => this.handleYears(value)} />
                 </div>
             </div>
             );

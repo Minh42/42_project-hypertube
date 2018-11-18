@@ -50,7 +50,7 @@ class Curtain extends Component {
                 <LeftPanel />
                 <RightPanel />
                 <div className="prize">
-                    {this.state.open && <MoviePlayer history={this.props.history} stream_link={this.state.stream_link} movie={this.props.selectedMovie} quality={this.state.quality} handleDownload={this.handleDownload} />}
+                    {this.state.open && <MoviePlayer poster={this.props.selectedMovie._source.image} history={this.props.history} stream_link={this.state.stream_link} movie={this.props.selectedMovie} quality={this.state.quality} handleDownload={this.handleDownload} />}
                 </div>
              </div>
         );     

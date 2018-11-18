@@ -12,6 +12,12 @@ import { translate } from 'react-i18next';
 class SignUp extends Component {   
     constructor(props) {
         super(props);
+        this.state = {
+            files: null 
+        }
+    }
+
+    componentDidMount() {
         const initData = {
             "firstname": null,
             "lastname": null,
@@ -19,12 +25,9 @@ class SignUp extends Component {
             "email": null,
             "password": null
         };
-        this.state = {
-            files: null 
-        }
         this.props.initialize(initData);
     }
-
+ 
     onDrop(files) {
         let message;
         const data = new FormData();

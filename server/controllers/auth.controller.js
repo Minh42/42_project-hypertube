@@ -114,4 +114,5 @@ exports.fortytwo = (req, res) => {
 exports.logout = (req, res) => {
     req.logout();
     res.clearCookie('accessToken').sendStatus(200);
+   // res.redirect('/');
 }
