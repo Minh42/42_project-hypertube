@@ -120,6 +120,7 @@ export function searchAction(input) {
             })
             .then(res => {
                 if(res) {
+                    console.log('res search ', res);
                     dispatch({ 
                         type: SEARCH_SUCCESS,
                         payload: res.data.movies

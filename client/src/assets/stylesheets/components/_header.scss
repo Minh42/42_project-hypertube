@@ -24,11 +24,29 @@
     }
 }
 
+.preview {
+    background-color: #000000d6;
+    z-index: 1000;
+    position: absolute;
+    top: 50px;
+    list-style: none;
+    padding: 2rem;
+    text-transform: uppercase;
+    border-bottom: 4px $color-primary-dark solid;
+    width: 90%;
+}
+
+.preview-itm {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
 .search {
     flex: 0 0 40%;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 
     @include respond(phone) {
         order: 1;

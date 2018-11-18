@@ -53,7 +53,7 @@ class Header extends Component {
                 <header className="header">
                     <a href="/homepage"><img src={logo} alt="Logo" className="logo"></img></a>
 
-                    <SearchBar />
+                    <SearchBar history={this.props.history} />
                   
                     <nav className="user-nav">
                         <div className="user-nav__langage">
