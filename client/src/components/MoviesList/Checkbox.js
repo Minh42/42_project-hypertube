@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
 class Checkbox extends Component {
     render(){
@@ -41,9 +41,9 @@ class Checkbox extends Component {
     } else {
             return (
                 <div className="movies-filters__genders--checkbox">
-                    <label className="movies-filters__genders--checkbox-label">
+                    <label className="movies-filters__genders--checkbox-label pointer">
                         <input
-                            className="movies-filters__genders--checkbox-input"
+                            className="movies-filters__genders--checkbox-input pointer"
                             type='checkbox'
                             value={ label }
                             onClick={onClick}
@@ -62,5 +62,5 @@ function mapStateToProps(state) {
     }
   }
 
-export default translate('common')(connect(mapStateToProps, null)(Checkbox));
+export default withNamespaces('common')(connect(mapStateToProps, null)(Checkbox));
 

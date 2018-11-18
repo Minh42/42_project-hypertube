@@ -13,7 +13,7 @@ import RenderField from './Form/RenderField';
 import FormHeader from './Form/FormHeader';
 import { ReactComponent as Chevron} from '../assets/img/svg/chevron-thin-down.svg';
 
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
 class SignIn extends Component {   
     constructor(props) {
@@ -63,11 +63,11 @@ class SignIn extends Component {
                             placeholder=""
                             component={RenderField}
                         />
-                        <button className="btn btn-primary btn-primary--pink" type="submit">{ t('SignIn.button', { framework: "react-i18next" }) }</button>
+                        <button className="btn btn-primary btn-primary--pink pointer" type="submit">{ t('SignIn.button', { framework: "react-i18next" }) }</button>
                     </form>
                 </div>
                 <div className="card__forgot">
-                    <a className="card__forgot--link" onClick={this.showPageReset}>{ t('SignIn.forgotPassword', { framework: "react-i18next" }) }</a>
+                    <p className="card__forgot--link pointer" onClick={this.showPageReset}>{ t('SignIn.forgotPassword', { framework: "react-i18next" }) }</p>
                 </div>
                 <Oauth />
                 <div className="card__newClient">
@@ -105,4 +105,4 @@ const reduxFormSignIn = reduxForm({
     form: 'signin'
 })(SignIn);
 
-export default translate('common')(withRouter(connect(null, mapDispatchToProps)(reduxFormSignIn)));
+export default withNamespaces('common')(withRouter(connect(null, mapDispatchToProps)(reduxFormSignIn)));

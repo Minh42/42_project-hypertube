@@ -60,12 +60,12 @@ class Oauth extends Component {
     render() {
         return (
             <div className="card__OAuth">
-                <Facebook className="card__OAuth--icon" fill='#777' onClick={() => this.onSubmit('facebook')}/>
-                <Twitter className="card__OAuth--icon" fill='#777' onClick={() => this.onSubmit('twitter')}/>
-                <Google className="card__OAuth--icon" fill='#777' onClick={() => this.onSubmit('google')}/>
-                <LinkedIn className="card__OAuth--icon" fill='#777' onClick={() => this.onSubmit('linkedin')}/>
-                <Github className="card__OAuth--icon" fill='#777' onClick={() => this.onSubmit('github')}/>
-                <FortyTwo className="card__OAuth--icon42" fill='#777' onClick={() => this.onSubmit('fortytwo')}/>
+                <Facebook className="card__OAuth--icon pointer" fill='#777' onClick={() => this.onSubmit('facebook')}/>
+                <Twitter className="card__OAuth--icon pointer" fill='#777' onClick={() => this.onSubmit('twitter')}/>
+                <Google className="card__OAuth--icon pointer" fill='#777' onClick={() => this.onSubmit('google')}/>
+                <LinkedIn className="card__OAuth--icon pointer" fill='#777' onClick={() => this.onSubmit('linkedin')}/>
+                <Github className="card__OAuth--icon pointer" fill='#777' onClick={() => this.onSubmit('github')}/>
+                <FortyTwo className="card__OAuth--icon42 pointer" fill='#777' onClick={() => this.onSubmit('fortytwo')}/>
             </div>
         );
     }

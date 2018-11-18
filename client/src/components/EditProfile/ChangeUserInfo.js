@@ -10,7 +10,7 @@ import axios from 'axios';
 import izitoast from 'izitoast';
 import validator from 'validator';
 import Dropzone from 'react-dropzone'
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { withCredentials } from '../../utils/headers';
 
 class ChangeUserInfo extends Component {
@@ -114,7 +114,7 @@ class ChangeUserInfo extends Component {
     render() {
         const { handleSubmit } = this.props;
         const { files } = this.state;
-        const { t, i18n } = this.props;
+        const { t } = this.props;
         var path;
        
         const dropzoneStyle = {
@@ -235,4 +235,4 @@ const reduxFormChangeUserInfo = reduxForm({
     form: 'editProfile'
 })(ChangeUserInfo);
 
-export default translate('common')(withRouter(connect(mapStateToProps, mapDispatchToProps)(reduxFormChangeUserInfo)));
+export default withNamespaces('common')(withRouter(connect(mapStateToProps, mapDispatchToProps)(reduxFormChangeUserInfo)));

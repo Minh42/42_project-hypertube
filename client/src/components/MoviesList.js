@@ -9,7 +9,7 @@ import { getFilterMovies } from '../selectors/index';
 import { initMoviesAction } from '../reducers/reducer_search';
 import { selectMovie } from '../reducers/reducer_movies';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
   
 class MoviesList extends Component {
     constructor(props) {
@@ -128,4 +128,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default translate('common')(withRouter(connect(mapStateToProps, mapDispatchToProps)(MoviesList)));
+export default withNamespaces('common')(withRouter(connect(mapStateToProps, mapDispatchToProps)(MoviesList)));

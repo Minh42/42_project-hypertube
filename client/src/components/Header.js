@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import SearchBar from './Header/SearchBar';
 import logo from '../assets/img/logo-white.png';
 import { ReactComponent as Login} from '../assets/img/svg/login.svg';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
 class Header extends Component {
     constructor(props) {
@@ -57,16 +57,16 @@ class Header extends Component {
                   
                     <nav className="user-nav">
                         <div className="user-nav__langage">
-                            <span className="user-nav__langage-en" onClick={() => i18n.changeLanguage('en')}>EN</span> 
+                            <span className="user-nav__langage-en pointer" onClick={() => i18n.changeLanguage('en')}>EN</span> 
                                 | 
-                            <span className="user-nav__langage-fr" onClick={() => i18n.changeLanguage('fr')}>FR</span>
+                            <span className="user-nav__langage-fr pointer" onClick={() => i18n.changeLanguage('fr')}>FR</span>
                         </div>
-                        <div className="user-nav__user" onClick={this.editProfile}>
+                        <div className="user-nav__user pointer" onClick={this.editProfile}>
                             <img src={path} alt="user" className="user-nav__user-photo"/>
                             <span className="user-nav__user-name">{this.props.user.username}</span>
                         </div>
                         <div className="user-nav__signout">
-                            <button className="btn btn-secondary" onClick={this.onSubmit}>
+                            <button className="btn btn-secondary pointer" onClick={this.onSubmit}>
                                 <span className="btn btn-secondary__icon">
                                     <Login fill='rgba(216, 3, 81, 0.733)'/>
                                 </span>
@@ -93,4 +93,4 @@ function mapDispatchToProps(dispatch) {
 	return bindActionCreators({ signOutAction : signOutAction}, dispatch);
 } 
 
-export default translate('common')(withRouter(connect(mapStateToProps, mapDispatchToProps)(Header)));
+export default withNamespaces('common')(withRouter(connect(mapStateToProps, mapDispatchToProps)(Header)));

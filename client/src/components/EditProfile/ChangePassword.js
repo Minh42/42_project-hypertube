@@ -6,7 +6,7 @@ import FormHeader from '../Form/FormHeader';
 import axios from 'axios';
 import izitoast from 'izitoast';
 import tools from '../../utils/tools.js';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { withCredentials } from '../../utils/headers';
 
 class ChangePassword extends Component {   
@@ -119,4 +119,4 @@ const reduxFormChangePassword = reduxForm({
     form: 'changePassword'
 })(ChangePassword);
 
-export default translate('common')(withRouter(reduxFormChangePassword));
+export default withNamespaces('common')(withRouter(reduxFormChangePassword));

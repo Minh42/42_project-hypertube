@@ -7,7 +7,7 @@ import axios from 'axios';
 import validator from 'validator';
 import izitoast from 'izitoast';
 import tools from '../utils/tools.js';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
 class SignUp extends Component {   
     constructor(props) {
@@ -124,7 +124,7 @@ class SignUp extends Component {
                     heading2 = { t('SignUp.subtitle', { framework: "react-i18next" }) }
                 />
                 <div className="card__form">
-                <div className="card__form--picture">
+                <div className="card__form--picture pointer">
                     <div className="card__form--picture-block">
                         <img className="card__form--picture-block-img" src={path} alt="img"/>
                         <Dropzone multiple={false} 
@@ -172,7 +172,7 @@ class SignUp extends Component {
                             placeholder=""
                             component={RenderField}
                         />
-                        <button type="submit" className="btn btn-primary btn-primary--pink">{ t('SignUp.button', { framework: "react-i18next" }) }</button>
+                        <button type="submit" className="btn btn-primary btn-primary--pink pointer">{ t('SignUp.button', { framework: "react-i18next" }) }</button>
                     </form>
                 </div>
             </div>
@@ -226,4 +226,4 @@ const reduxFormSignUp = reduxForm({
     form: 'signup'
 })(SignUp);
 
-export default translate('common')(reduxFormSignUp);
+export default withNamespaces('common')(reduxFormSignUp);

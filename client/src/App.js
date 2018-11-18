@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import requireAuth from './utils/HOC/requireAuth';
 
 import Header from './components/Header';
@@ -10,7 +10,6 @@ import HomePage from './layouts/HomePage';
 import LandingPage from './layouts/LandingPage';
 import EditProfile from './components/EditProfile';
 import Movie from './components/Movie';
-import NotFound from './layouts/NotFound';
 import User from './components/User/User';
 import { connect } from 'react-redux'
 
@@ -43,7 +42,6 @@ class App extends Component {
               <div>
                     <Header/>
                     {routes}
-                    {/* <Route component={NotFound} /> */}
               </div>
           </Router>
       )
@@ -56,4 +54,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, null) (translate('common')(App));
+export default connect(mapStateToProps, null) (withNamespaces('common')(App));

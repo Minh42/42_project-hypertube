@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { SortByAction } from '../../reducers/reducer_filters';
 import { bindActionCreators } from 'redux';
 
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
   
 class SortBy extends Component { 
 
@@ -42,7 +42,7 @@ class SortBy extends Component {
         const { t } = this.props;
         return (
             <div className="movies-filters__sort">
-                <select className="movies-filters__sort--select" id="select" name="sortby" onChange={this.handleSort} value={this.state.sortby}>
+                <select className="movies-filters__sort--select pointer" id="select" name="sortby" onChange={this.handleSort} value={this.state.sortby}>
 					<option value="relevance">{ t('SortBy.relevance', { framework: "react-i18next" }) }</option>
 					<option value="latest">{ t('SortBy.latest', { framework: "react-i18next" }) }</option>
 					<option value="earliest">{ t('SortBy.earliest', { framework: "react-i18next" }) }</option>
@@ -64,4 +64,4 @@ class SortBy extends Component {
         }, dispatch);
     }
     
-export default translate('common')(connect(mapStateToProps, mapDispatchToProps)(SortBy));
+export default withNamespaces('common')(connect(mapStateToProps, mapDispatchToProps)(SortBy));

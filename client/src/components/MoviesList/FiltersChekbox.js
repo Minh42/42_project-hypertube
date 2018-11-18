@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { gendersAction } from '../../reducers/reducer_filters';
 import Checkbox from './Checkbox';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
 const genres = ['Drama', 
               'Comedy', 
@@ -84,7 +84,6 @@ class FiltersCheckbox extends Component {
   }
 
   mapGenders() {
-    const { t } = this.props;
     const genresFilters = genres.map((genre, i) => (
         <Checkbox
           key={i}
@@ -100,7 +99,7 @@ class FiltersCheckbox extends Component {
   }
 
     render(){
-      const { t, i18n } = this.props;
+      const { t } = this.props;
       return (
         <div className="movies-filters__genders">
             <label className="movies-filters__genders--title">{ t('titleGenres', { framework: "react-i18next" }) }</label><br></br>
@@ -120,4 +119,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ gendersAction : gendersAction }, dispatch);
 } 
 
-export default translate('common')(connect(mapStateToProps, mapDispatchToProps)(FiltersCheckbox));
+export default withNamespaces('common')(connect(mapStateToProps, mapDispatchToProps)(FiltersCheckbox));
