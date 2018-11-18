@@ -23,9 +23,10 @@ class Curtain extends Component {
             for (var i = 0; i < this.props.movies.length; i++) {
                 titles.push(slug(this.props.movies[i]._source.title));
             }
-            if (!titles.includes(this.props.match.params.id)) {
-                this.props.signOutAction(this.props.history);
-            } 
+            
+            /*if (!titles.includes(this.props.match.params.id)) {    //  ???
+               // this.props.signOutAction(this.props.history);
+            } */
         }
     }
     
