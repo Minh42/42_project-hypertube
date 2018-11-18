@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { withCredentials } from '../../utils/headers';
-import Dropzone from 'react-dropzone'
-import { Field, reduxForm } from 'redux-form';
-import RenderField from '../Form/RenderField';
 import FormHeader from '../Form/FormHeader';
 import { translate } from 'react-i18next';
 
@@ -18,21 +15,13 @@ class User extends Component {
 
     async componentDidMount() {
         const result = await axios.get(`http://localhost:8080/api/users/${this.props.match.params.id}/${localStorage.getItem('xsrf')}`, withCredentials());
-        console.log("RES", result)
         const src = await axios.post(`http://localhost:8080/api/picture/`, {id: this.props.match.params.id} , withCredentials());
         this.setState({username: result.data.user.currentUser.username, firstname: result.data.user.currentUser.firstname, lastname: result.data.user.currentUser.lastname, src: src.data.path})
     }
 
     render () {
-        const { t, i18n } = this.props;
 
-        const dropzoneStyle = {
-            width: 110,
-            height: 100,
-            borderRadius: 20,
-            border: "none",
-            position: "relative"
-          };
+        const { t, i18n } = this.props;
 
         return (
             <div className="form">
@@ -47,10 +36,19 @@ class User extends Component {
                                 <img className="user-picture" src={this.state.src} alt="img"/>
                             </div>
                         </div>
-                            <div>
-                                <h4 className="user-label">{ t('EditInfo.username', { framework: "react-i18next" }) } : </h4> <p className="user-info">{this.state.username}</p>
-                                <h4 className="user-label">{ t('EditInfo.lastname', { framework: "react-i18next" }) } : </h4> <p className="user-info">{this.state.firstname}</p>
-                                <h4 className="user-label">{ t('EditInfo.firstname', { framework: "react-i18next" }) } : </h4> <p className="user-info">{this.state.lastname}</p>
+                            <div className="card__form--input">
+                                <div className="card__form--field">
+                                    <label className="card__form--input-label">{ t('EditInfo.username', { framework: "react-i18next" }) } :</label>
+                                    <input className="card__form--input-input" type="text" readOnly value={this.state.username}/>
+                                </div>
+                                <div className="card__form--field">
+                                    <label className="card__form--input-label">{ t('EditInfo.firstname', { framework: "react-i18next" }) } : </label>
+                                    <input className="card__form--input-input" type="text" readOnly value={this.state.firstname}/>
+                                </div>
+                                <div className="card__form--field">
+                                    <label className="card__form--input-label">{ t('EditInfo.lastname', { framework: "react-i18next" }) } : </label>
+                                    <input className="card__form--input-input" type="text" readOnly value={this.state.lastname}/>
+                                </div>
                             </div>
                         </div>
                     </div>
