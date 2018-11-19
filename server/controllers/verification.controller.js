@@ -24,30 +24,25 @@ exports.verifyToken = (req, res) => {
 
     Token.findOne({ "userID": userID }, (err, existingToken) => {
         if (!existingToken) {
-            console.log('la')
             res.sendStatus(403);
         } else {
             if (activationToken) {
                 if (activationToken === existingToken.activationToken) {
                     Users.findOneAndUpdate({"_id": userID} , {$set: {"status": true}})
                         .then(user => {
-                            console.log('updated', user, userID)
                             res.redirect('http://localhost:3000/');
                         })
                         .catch(err => {
-                            console.log('err', err)
                             res.sendStatus(403);
                         });
                 }
                 else {
-                    console.log('lll')
                     res.sendStatus(403); 
                 }
             } else if (resetToken) {
                 if (resetToken === existingToken.resetToken)
                     res.redirect('http://localhost:3000/changePassword/' + userID);
                 else {
-                    console.log('lol')
                     res.sendStatus(403); }
             }
         }
@@ -121,6 +116,7 @@ exports.changePassword = (req, res) => {
 
 exports.verifyUpload = async (req, res) => {
     if (!req.file) {
+        console.log('i came hee')
         res.sendStatus(500);
     }
     await sharp(fs.readFileSync(req.file.path))
@@ -145,6 +141,7 @@ exports.verifyUpload = async (req, res) => {
                     res.status(200).json(ret.secure_url);
                 }
             } catch (error) {
+                console.log('i came hee')
                 res.sendStatus(500);
             }
         }
@@ -153,6 +150,6 @@ exports.verifyUpload = async (req, res) => {
         const basename = path.basename(req.file.path, ext);
         UploadCloudinaryPhoto(src, basename)
     } else {
-        res.sendStatus(422);   
+        res.sendStatus(404);   
     }
 }

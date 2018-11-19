@@ -83,4 +83,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default withNamespaces('common')(connect(mapStateToProps, mapDispatchToProps)(SearchBar));
+export default withNamespaces('common')(withRouter(connect(mapStateToProps, mapDispatchToProps)(SearchBar)));

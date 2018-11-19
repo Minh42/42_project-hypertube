@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Hls from 'hls.js';
 import { connect } from 'react-redux';
 import * as reducerDownload from '../../reducers/reducer_download';
-import Loader from '../Loader/Loader';
 import axios from 'axios';
 import Comment from './Comment';
 import { withNamespaces } from 'react-i18next';
@@ -136,7 +135,6 @@ class MoviePlayer extends Component {
 
     renderTorrents() {
         if (this.props.movie) {
-            console.log(this.props.movie)
             return this.props.movie._source.torrents.map((torrent, i) => {
                 d.push(false);
                 return (
@@ -161,14 +159,12 @@ class MoviePlayer extends Component {
     componentWillUnmount() {
         localStorage.setItem("pos", this.refs.video.currentTime)
         if (hls) {
-            console.log("UNMOUNT VIDEO")
             hls.stopLoad();
             hls = null;
         }
     }
 
     render () {
-        const { t } = this.props;
         return (
             <div className="movie-container">
                 <div className="movie-player">

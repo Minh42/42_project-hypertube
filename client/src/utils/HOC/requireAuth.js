@@ -8,7 +8,7 @@ import { withNamespaces } from 'react-i18next';
 export default function(ComposedComponent) {
 	class Authenticate extends Component {
 		componentDidMount() {
-			const { t, i18n } = this.props; 
+			const { t } = this.props; 
 			if(!this.props.isAuthenticated) {
 				izitoast.error({
 					message: t('Izitoast.access', { framework: "react-i18next" }),
