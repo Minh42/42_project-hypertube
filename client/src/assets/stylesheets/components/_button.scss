@@ -106,6 +106,10 @@
 }
 
 .pointer {
+    cursor: pointer;
+}
+
+.pointerBis {
     flex: 0 1 25%;
     position: relative;
     cursor: pointer;
