@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Hls from 'hls.js';
 import { connect } from 'react-redux';
 import * as reducerDownload from '../../reducers/reducer_download';
-import Loader from '../Loader/Loader';
 import axios from 'axios';
 import Comment from './Comment';
 import { withNamespaces } from 'react-i18next';
@@ -19,7 +18,8 @@ class MoviePlayer extends Component {
         en: "",
         fr: "",
         watching: false,
-        isTyping: false
+        isTyping: false,
+        i: -1
     }
 
     componentDidMount() {
@@ -45,7 +45,8 @@ class MoviePlayer extends Component {
             link: url,
             quality: quality
         }, {withCredentials: true, cancelToken: this.signal.token});
-
+        if (this.refs.video === undefined || this.refs.video === null)
+        return ;
 
         if (response && response.status === 200) {
             this.setState({watching: true})
@@ -74,9 +75,14 @@ class MoviePlayer extends Component {
             } else if (this.refs.video.canPlayType('application/vnd.apple.mpegurl')) {
                 this.refs.video.src = stream_link;
                 this.refs.video.addEventListener('loadedmetadata',function() {});
-            } 
+            }
+            
             this.refs.video.currentTime = 1;
-            this.refs.video.play();
+            const isPlaying = this.refs.video.currentTime > 0 && !this.refs.video.paused && !this.refs.video.ended && this.refs.video.readyState > 2;
+
+                if (!isPlaying) {
+                    this.refs.video.play();
+                }
             await axios.post('http://localhost:8080/api/movie/add', {imdbid: this.props.movie._source.imdb_id}, {withCredentials: true, cancelToken: this.signal.token});
         }
     }
@@ -116,17 +122,9 @@ class MoviePlayer extends Component {
     }
   
     handleClick = async (url, quality, i) => {
-        console.log(document.getElementsByClassName("movie-player__torrents-info" + i));
-        url = url !== undefined ? url : "";
-        document.getElementById("movie-player__torrents-info" + i).style.backgroundColor = "green";
-
-        if (document.getElementById("movie-player__torrents-button" + i)) {
-			d[i] = false;
-		} else {
-            d[i] = true;
-        }
         await this.setState({started: false, watching: false, quality: quality});
         this.handleDownload(url, quality);
+        this.setState({i: i})
     }
 
     handleTyping = (isTyping) => {
@@ -136,18 +134,16 @@ class MoviePlayer extends Component {
 
     renderTorrents() {
         if (this.props.movie) {
-            console.log(this.props.movie)
             return this.props.movie._source.torrents.map((torrent, i) => {
-                d.push(false);
                 return (
-                    <tbody key={i} id={"movie-player__torrents-info" + i} className="movie-player__torrents-info">
+                    <tbody key={i} className={this.state.i === i ? "movie-player__selected" : "movie-player__torrents-info"}>
                         <tr>
                             <td>{this.props.movie._source.title} - {torrent.quality}</td>
                             <td>{torrent.seed}</td>
                             <td>{torrent.peer}</td>
                             <td>{torrent.filesize}</td>
                             <td>
-                                <button disabled={d[i]} id="disabled" className="movie-player__torrents-button" onClick={() => this.handleClick(torrent.url, torrent.quality, i)}>
+                                <button disabled={this.state.i === i} className="movie-player__torrents-button pointer" onClick={() => this.handleClick(torrent.url, torrent.quality, i)}>
                                     <Play fill='red' />
                                 </button>
                             </td>
@@ -158,10 +154,9 @@ class MoviePlayer extends Component {
         }
     }
 
-    componentWillUnmount() {
+    async componentWillUnmount() {
         localStorage.setItem("pos", this.refs.video.currentTime)
         if (hls) {
-            console.log("UNMOUNT VIDEO")
             hls.stopLoad();
             hls = null;
         }
