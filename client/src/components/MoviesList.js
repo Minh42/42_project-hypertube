@@ -25,13 +25,16 @@ class MoviesList extends Component {
     };
 
     async componentDidMount() {
+        this.signal = await axios.CancelToken.source();
+        console.log("SIGNAL", this.signal)
         await this.props.onMovieAction(this.props.history);
-        const res = await axios.get('http://localhost:8080/api/movie/all');
+        const res = await axios.get('http://localhost:8080/api/movie/all', {withCredentials: true, cancelToken: this.signal.token});
 
         let seenMoviesIDs = [];
         for (var k = 0; k < res.data.length; k++) {
             seenMoviesIDs.push(res.data[k].imdbid);
         }
+        
         this.setState({ seenMovies: seenMoviesIDs });
     }
 
@@ -117,6 +120,10 @@ class MoviesList extends Component {
                 return null;
             }
         }
+    }
+
+    componentWillUnmount() {
+        this.signal.cancel('Api is being canceled');
     }
 
     render() {

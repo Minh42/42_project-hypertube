@@ -121,6 +121,7 @@ exports.changePassword = (req, res) => {
 
 exports.verifyUpload = async (req, res) => {
     if (!req.file) {
+        console.log("errrrr", req)
         res.sendStatus(500);
     }
     await sharp(fs.readFileSync(req.file.path))
@@ -145,6 +146,7 @@ exports.verifyUpload = async (req, res) => {
                     res.status(200).json(ret.secure_url);
                 }
             } catch (error) {
+                console.log("oooo", errror)
                 res.sendStatus(500);
             }
         }
