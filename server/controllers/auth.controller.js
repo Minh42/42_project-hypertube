@@ -5,17 +5,27 @@ const Users = require('../models/users.model');
 
 exports.local = (req, res) => {
     passport.authenticate('local', (err, user, info) => {
+        console.log(err)
+        console.log('user', user)
+        console.log('info', info)
         if (err || !user) {
             return res.status(401).json({
                 message: info.message
             });
         } else {
-            const token = user.createJwtToken(user);
-            res.cookie('accessToken', token['jwtToken'], { httpOnly: true })
-                .status(200).send({ 
-                    xsrfToken : token['xsrfToken'],
-                    user: user
-                });
+            if (user.status) {
+                const token = user.createJwtToken(user);
+                res.cookie('accessToken', token['jwtToken'], { httpOnly: true })
+                    .status(200).send({ 
+                        xsrfToken : token['xsrfToken'],
+                        user: user
+                    });
+            } else {
+                console.log('im here')
+                res.status(403).json({
+                    message : 'Please check your inbox and validate your email'
+                })
+            }
         }
     })(req, res);
 }

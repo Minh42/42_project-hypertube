@@ -24,18 +24,31 @@ exports.verifyToken = (req, res) => {
 
     Token.findOne({ "userID": userID }, (err, existingToken) => {
         if (!existingToken) {
-            res.sendStatus(500);
+            console.log('la')
+            res.sendStatus(403);
         } else {
             if (activationToken) {
-                if (activationToken === existingToken.activationToken)
-                    res.redirect('http://localhost:3000/');
-                else 
-                    res.sendStatus(500); 
+                if (activationToken === existingToken.activationToken) {
+                    Users.findOneAndUpdate({"_id": userID} , {$set: {"status": true}})
+                        .then(user => {
+                            console.log('updated', user, userID)
+                            res.redirect('http://localhost:3000/');
+                        })
+                        .catch(err => {
+                            console.log('err', err)
+                            res.sendStatus(403);
+                        });
+                }
+                else {
+                    console.log('lll')
+                    res.sendStatus(403); 
+                }
             } else if (resetToken) {
                 if (resetToken === existingToken.resetToken)
                     res.redirect('http://localhost:3000/changePassword/' + userID);
-                else 
-                    res.sendStatus(500); 
+                else {
+                    console.log('lol')
+                    res.sendStatus(403); }
             }
         }
     })

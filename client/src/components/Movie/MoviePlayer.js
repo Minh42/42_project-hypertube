@@ -9,6 +9,7 @@ import { withNamespaces } from 'react-i18next';
 import { ReactComponent as Play} from '../../assets/img/svg/youtube.svg';
 
 let hls = null;
+let d = [];
 
 class MoviePlayer extends Component {
     state = {
@@ -120,9 +121,9 @@ class MoviePlayer extends Component {
         document.getElementById("movie-player__torrents-info" + i).style.backgroundColor = "green";
 
         if (document.getElementById("movie-player__torrents-button" + i)) {
-			document.getElementById("movie-player__torrents-button" + i).disabled = false;
+			d[i] = false;
 		} else {
-            document.getElementById("movie-player__torrents-button" + i).disabled = true;
+            d[i] = true;
         }
         await this.setState({started: false, watching: false, quality: quality});
         this.handleDownload(url, quality);
@@ -137,6 +138,7 @@ class MoviePlayer extends Component {
         if (this.props.movie) {
             console.log(this.props.movie)
             return this.props.movie._source.torrents.map((torrent, i) => {
+                d.push(false);
                 return (
                     <tbody key={i} id={"movie-player__torrents-info" + i} className="movie-player__torrents-info">
                         <tr>
@@ -145,7 +147,7 @@ class MoviePlayer extends Component {
                             <td>{torrent.peer}</td>
                             <td>{torrent.filesize}</td>
                             <td>
-                                <button disabled={false} id="disabled" className="movie-player__torrents-button" onClick={() => this.handleClick(torrent.url, torrent.quality, i)}>
+                                <button disabled={d[i]} id="disabled" className="movie-player__torrents-button" onClick={() => this.handleClick(torrent.url, torrent.quality, i)}>
                                     <Play fill='red' />
                                 </button>
                             </td>
