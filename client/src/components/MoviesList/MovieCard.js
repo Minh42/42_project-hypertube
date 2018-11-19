@@ -56,8 +56,8 @@ class MovieCard extends Component {
     render() {
         const { movie, showMovieDetails } = this.props;
         return (
-            <div className="pointer">
-                {this.renderImage(movie, showMovieDetails)}
+            <div className="pointerBis">
+                    {this.renderImage(movie, showMovieDetails)}
                 <div className="movies-list-container__info">
                     {this.renderBasicInfo(movie)}
                     {this.renderRating(movie)}

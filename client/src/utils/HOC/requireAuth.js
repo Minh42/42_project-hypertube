@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import izitoast from 'izitoast';
+import { withNamespaces } from 'react-i18next';
 
 export default function(ComposedComponent) {
 	class Authenticate extends Component {
 		componentDidMount() {
+			const { t, i18n } = this.props; 
 			if(!this.props.isAuthenticated) {
 				izitoast.error({
-					message: 'You need to login to access this page',
+					message: t('Izitoast.access', { framework: "react-i18next" }),
 					position: 'topRight'
 				});
 				this.props.history.push('/');
@@ -39,5 +41,6 @@ export default function(ComposedComponent) {
 		};
 	}
 
-	return withRouter(connect(mapStateToProps, null)(Authenticate));
+	return withNamespaces('common')(withRouter(connect(mapStateToProps, null)(Authenticate)))
+	;
 }

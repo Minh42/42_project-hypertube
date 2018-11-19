@@ -88,5 +88,38 @@
         "actor" : "Acteurs",
         "nodesc": "Aucune description",
         "untitled": "Sans titre"
+    },
+    "Validate" : {
+        "firstname" : "Entrer votre prénom",
+        "lastname" : "Entrer votre nom",
+        "username" : "Entrer votre login",
+        "email" : "Entrer votre email",
+        "password" : "Entrer votre mot de passe",
+        "length" : {
+            "firstname" : "Votre prénom est trop long",
+            "lastname" : "Votre nom est trop long",
+            "username" : "Votre login est trop long"
+        },
+        "other" : {
+            "firstname" : "Votre prénom doit seulement contenir des caractères alphabétiques",
+            "lastname" : "Votre nom doit seulement contenir des caractères alphabétiques",
+            "username" : "Votre prénom doit seulement contenir des caractères alphabétiques et numériques",
+            "email" : "Entrer une adresse valide",
+            "password" : "Votre mot de passe doit contenir au moins 6 caractères, une majuscule et un nombre"
+        }
+    },
+    "Izitoast" : {
+        "match": "les mots de passe sont invalides",
+        "error500": "Oops, erreur!",
+        "picture": "Ajouter une photo de profil",
+        "pictureInvalid": "Votre photo est invalide",
+        "pictureValid": "Votre photo est valide",
+        "errorLogin": "Connectez-vous à nouveau",
+        "updateSuccess": "Vos informations ont été enregistré avec succès",
+        "errorOauth": "Tentez de vous connecter à nouveau",
+        "reset": "Consulter votre adresse email pour changer votre mot de passe",
+        "errorInfo": "Vos informations sont invalides",
+        "errorEmail": "Email ou mot de passe invalide",
+        "access": "Connectez-vous pour accéder à cette page"
     }
 }

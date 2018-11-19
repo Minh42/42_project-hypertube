@@ -88,5 +88,38 @@
         "actor" : "Actors",
         "nodesc": "No description",
         "untitled": "Untitled"
+    },
+    "Validate" : {
+        "firstname" : "Please enter your firstname",
+        "lastname" : "Please enter your lastname",
+        "username" : "Please enter your username",
+        "email" : "Please enter your email",
+        "password" : "Please enter your password",
+        "length" : {
+            "firstname" : "Your firstname is too short or too long",
+            "lastname" : "Your lastname is too short or too long",
+            "username" : "Your username is too short or too long"
+        },
+        "other" : {
+            "firstname" : "Your firstname must contain only alphabetic characters",
+            "lastname" : "Your lastname must contain only alphabetic characters",
+            "username" : "Your username must contain only alphanumeric characters",
+            "email" : "Please enter a valid email address",
+            "password" : "Your password must contain at least 6 character, a capital letter and a number"
+        }
+    },
+    "Izitoast" : {
+        "match": "Passwords do not match",
+        "error500": "Oops, something went wrong!",
+        "picture": "Please upload a profile picture",
+        "pictureInvalid": "Upload file is invalid",
+        "pictureValid": "Your picture is valid",
+        "errorLogin": "Please retry to login",
+        "updateSuccess": "Your information was updated successfully",
+        "errorOauth": "Please retry to login with your social account",
+        "reset": "Please check your mailbox",
+        "errorInfo": "Your information is invalid",
+        "errorEmail": "Invalid username or email",
+        "access": "You need to login to access this page"
     }
 }
