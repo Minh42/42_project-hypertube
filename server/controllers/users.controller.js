@@ -135,12 +135,21 @@ exports.getUser = (req, res) => {
 }
 
 exports.updateUser = (req, res) => {
-    var update = {
-        firstname: req.body.values.firstname,
-        lastname: req.body.values.lastname,
-        username: req.body.values.username,
-        email: req.body.values.email,
-        profile_picture: req.body.path
+    if (req.body.path) {
+        var update = {
+            firstname: req.body.values.firstname,
+            lastname: req.body.values.lastname,
+            username: req.body.values.username,
+            email: req.body.values.email,
+            profile_picture: req.body.path
+        }
+    } else {
+        var update = {
+            firstname: req.body.values.firstname,
+            lastname: req.body.values.lastname,
+            username: req.body.values.username,
+            email: req.body.values.email
+        }
     }
     Users.findOneAndUpdate({_id :req.params.id}, update, {new: true}, (err, user) => {
         if (err)

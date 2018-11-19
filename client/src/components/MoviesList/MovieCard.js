@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Rating from './Rating';
 import NotFoundPoster from '../../assets/img/not-found-poster.jpg';
+import { ReactComponent as Eye} from '../../assets/img/svg/youtube.svg';
 
 class MovieCard extends Component {
 
@@ -54,16 +55,31 @@ class MovieCard extends Component {
     }
 
     render() {
-        const { movie, showMovieDetails } = this.props;
-        return (
-            <div className="pointerBis">
+        const { movie, showMovieDetails, seen } = this.props;
+        if (seen) {
+            return (
+                <div className="pointerBis">
+                    <Eye className="movies-list-container__icon" fill='red'/>
                     {this.renderImage(movie, showMovieDetails)}
-                <div className="movies-list-container__info">
-                    {this.renderBasicInfo(movie)}
-                    {this.renderRating(movie)}
+                    <div className="movies-list-container__info">
+                        {this.renderBasicInfo(movie)}
+                        {this.renderRating(movie)}
+    
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        } else {
+            return (
+                <div className="pointerBis">
+                    {this.renderImage(movie, showMovieDetails)}
+                    <div className="movies-list-container__info">
+                        {this.renderBasicInfo(movie)}
+                        {this.renderRating(movie)}
+    
+                    </div>
+                </div>
+            );
+        }
     }
 }
 
