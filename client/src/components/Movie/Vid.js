@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
 import Hls from 'hls.js';
-import { connect } from 'react-redux';
-import * as reducerDownload from '../../reducers/reducer_download';
-import Loader from '../Loader/Loader';
-import axios from 'axios';
-import Comment from './Comment';
 import { withNamespaces } from 'react-i18next';
 
 let hls = null;
@@ -12,7 +7,7 @@ let hls = null;
 class MoviePlayer extends Component {
     state = {
         started: false,
-        playing: true,
+        //playing: true,
         quality: "",
         en: "",
         fr: "",
@@ -27,12 +22,10 @@ class MoviePlayer extends Component {
         if (!window.location.pathname.includes("/movie/")  && localStorage.getItem("started") === "started" && !this.state.started) {
             await this.setState({started: true})
             localStorage.setItem("started", "not")
-            console.log("IN DID MOUNT VID")
             const stream_link = localStorage.getItem("stream_link");
             const en = localStorage.getItem("en");
             const fr = localStorage.getItem("fr");
             const pos = localStorage.getItem("pos");
-            console.log("STREA", stream_link)
             if (stream_link) {
                 if (Hls.isSupported()) {
                     var config = { 
@@ -58,7 +51,6 @@ class MoviePlayer extends Component {
                 if (!isPlaying) {
                     this.refs.video.play();
                 }
-                //this.refs.video.play();
             }
             this.setState({stream_link: stream_link, en: en,
             fr: fr, pos: pos, playing: true});
@@ -132,7 +124,6 @@ class MoviePlayer extends Component {
     }
 
     componentWillUnmount() {
-     //   localStorage.setItem("pos", this.refs.video.currentTime)
         if (hls) {
             console.log("UNMOUNT VIDEO")
             hls.stopLoad();
@@ -141,10 +132,7 @@ class MoviePlayer extends Component {
     }
 
      render () {
-        console.log(window.location.pathname.includes("/movie/"))
-        const { t } = this.props;
-
-         return (
+        return (
             <div>
                 {
                     !window.location.pathname.includes("/movie/") && this.state.started

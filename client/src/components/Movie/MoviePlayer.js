@@ -8,7 +8,6 @@ import { withNamespaces } from 'react-i18next';
 import { ReactComponent as Play} from '../../assets/img/svg/youtube.svg';
 
 let hls = null;
-let d = [];
 
 class MoviePlayer extends Component {
     state = {

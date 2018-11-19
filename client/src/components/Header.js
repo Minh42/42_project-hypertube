@@ -38,7 +38,7 @@ class Header extends Component {
             if (isProfileRoute) {
                 return (
                     <header className="header">
-                        <a onClick={this.goToHomepage}><img src={logo} alt="Logo" className="logo"></img></a>                    
+                        <span onClick={this.goToHomepage} href='/'><img src={logo} alt="Logo" className="logo"></img></span>                    
                         <nav className="user-nav">
                             <div className="user-nav__langage">
                                 <span className="user-nav__langage-en" onClick={() => i18n.changeLanguage('en')}>EN</span> 
@@ -63,7 +63,7 @@ class Header extends Component {
             } else {
                 return (
                     <header className="header">
-                        <a onClick={this.goToHomepage}><img src={logo} alt="Logo" className="logo"></img></a>
+                        <span onClick={this.goToHomepage} ><img src={logo} alt="Logo" className="logo"></img></span>
                         <SearchBar history={this.props.history}/>
                         <nav className="user-nav">
                             <div className="user-nav__langage">

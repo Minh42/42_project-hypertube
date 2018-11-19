@@ -18,6 +18,7 @@
 .logo {
     height: 3.25rem;
     margin-left: 3rem;
+    cursor: pointer;
 
     @include respond(phone) {
         height: 2.5rem;

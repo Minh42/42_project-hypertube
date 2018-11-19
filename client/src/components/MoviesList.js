@@ -26,7 +26,6 @@ class MoviesList extends Component {
 
     async componentDidMount() {
         this.signal = await axios.CancelToken.source();
-        console.log("SIGNAL", this.signal)
         await this.props.onMovieAction(this.props.history);
         const res = await axios.get('http://localhost:8080/api/movie/all', {withCredentials: true, cancelToken: this.signal.token});
 
