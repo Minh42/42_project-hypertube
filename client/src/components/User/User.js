@@ -15,12 +15,11 @@ class User extends Component {
 
     async componentDidMount() {
         const result = await axios.get(`http://localhost:8080/api/users/${this.props.match.params.id}/${localStorage.getItem('xsrf')}`, withCredentials());
-        const src = await axios.post(`http://localhost:8080/api/picture/`, {id: this.props.match.params.id} , withCredentials());
-        this.setState({username: result.data.user.currentUser.username, firstname: result.data.user.currentUser.firstname, lastname: result.data.user.currentUser.lastname, src: src.data.path})
+        console.log("RES", result)
+        this.setState({username: result.data.user.username, firstname: result.data.user.firstname, lastname: result.data.user.lastname, src: result.data.user.profile_picture})
     }
 
     render () {
-
         const { t, } = this.props;
 
         return (

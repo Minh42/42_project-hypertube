@@ -70,4 +70,46 @@
         width: 60%;
         padding: 5px;
     }
+
+    &--small-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 100%;
+            cursor: pointer;
+        }
+
+    &--container-user {
+        display: flex;
+        flex-direction: row;
+        margin-left: 10px;
+    }
+
+    &--comment-date {
+        font-size: 10px;
+        margin: auto;
+        margin-left: 5px;
+    }
+
+    &--comment-username {
+        color: $color-grey-light-4;
+        cursor: pointer;
+    }
+}
+
+.vid-bottom {
+    position: fixed;
+    bottom: 0;
+  //  left: 1000px;
+    right: 0;
+    //right: 5%;
+    z-index: 80000;
+}
+
+.video-small {
+    width: 30%;
+}
+
+.small-x {
+    position: absolute;
+    right: 0;
 }
