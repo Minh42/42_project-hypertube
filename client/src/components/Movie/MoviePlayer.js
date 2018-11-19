@@ -6,6 +6,7 @@ import Loader from '../Loader/Loader';
 import axios from 'axios';
 import Comment from './Comment';
 import { withNamespaces } from 'react-i18next';
+import { ReactComponent as Play} from '../../assets/img/svg/youtube.svg';
 
 let hls = null;
 
@@ -109,8 +110,16 @@ class MoviePlayer extends Component {
         }
     }
   
-    handleClick = async (url, quality) => {
+    handleClick = async (url, quality, i) => {
+        console.log(document.getElementsByClassName("movie-player__torrents-info" + i));
         url = url !== undefined ? url : "";
+        document.getElementById("movie-player__torrents-info" + i).style.backgroundColor = "green";
+
+        if (document.getElementById("movie-player__torrents-button" + i)) {
+			document.getElementById("movie-player__torrents-button" + i).disabled = false;
+		} else {
+            document.getElementById("movie-player__torrents-button" + i).disabled = true;
+        }
         await this.setState({started: false, watching: false, quality: quality});
         this.handleDownload(url, quality);
     }
@@ -125,21 +134,22 @@ class MoviePlayer extends Component {
             console.log(this.props.movie)
             return this.props.movie._source.torrents.map((torrent, i) => {
                 return (
-                    <tbody key={i} className="movie-player__torrents-info">
+                    <tbody key={i} id={"movie-player__torrents-info" + i} className="movie-player__torrents-info">
                         <tr>
                             <td>{this.props.movie._source.title} - {torrent.quality}</td>
                             <td>{torrent.seed}</td>
                             <td>{torrent.peer}</td>
                             <td>{torrent.filesize}</td>
-                            <td onClick={() => this.handleClick(torrent.url, torrent.quality)}>Play</td>
+                            <td>
+                                <button disabled={false} id="disabled" className="movie-player__torrents-button" onClick={() => this.handleClick(torrent.url, torrent.quality, i)}>
+                                    <Play fill='red' />
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 )
             })
         }
-
-
- 
     }
 
     render () {

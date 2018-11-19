@@ -30,8 +30,6 @@ class ChangeUserInfo extends Component {
                 "email": this.props.user.email
             };
             this.props.initialize(initData);
-        } else {
-            console.log('been here dude')
         }
     }
 
@@ -122,13 +120,14 @@ class ChangeUserInfo extends Component {
         let path;
 
         if (this.props.user) {
-            console.log(this.props.user.profile_picture)
             if (this.props.user.profile_picture) {
-                if (this.state.files !== null) 
+                if (this.state.files !== null) {
                     path = this.state.files;
-                else 
+                }
+                else {
                     path = this.props.user.profile_picture;
-            }
+                }
+            } 
         }   
   
         const dropzoneStyle = {

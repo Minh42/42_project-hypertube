@@ -60,7 +60,7 @@ class Comment extends Component {
                 }
                 <form onSubmit={this.handleSubmit}>
                     <div>
-                        <textarea className="movie-comments-area" name="comment" onChange={this.handleChange} rows="4" cols="50" value={this.state.comment}> </textarea>
+                        <textarea className="movie-comments__area" name="comment" onChange={this.handleChange} rows="4" cols="50" value={this.state.comment}> </textarea>
                     </div>
                     <div>
                         <button type="submit" className="add-comment"> { t('Movie.add', { framework: "react-i18next" }) } </button>

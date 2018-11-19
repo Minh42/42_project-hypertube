@@ -19,14 +19,20 @@ class MoviesList extends Component {
             loading: false,
             hasMore: true,
             offset: 20,
-            items: []
+            items: [],
+            seenMovies: []
         }
     };
 
     async componentDidMount() {
         await this.props.onMovieAction(this.props.history);
         const res = await axios.get('http://localhost:8080/api/movie/all');
-        console.log(res)
+
+        let seenMoviesIDs = [];
+        for (var k = 0; k < res.data.length; k++) {
+            seenMoviesIDs.push(res.data[k].imdbid);
+        }
+        this.setState({ seenMovies: seenMoviesIDs });
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -35,6 +41,10 @@ class MoviesList extends Component {
             const test = copy.slice(0, state.offset);
             return {
                 items: test
+            }
+        } else {
+            return {
+                items: null
             }
         }
     }
@@ -63,10 +73,14 @@ class MoviesList extends Component {
     }
 
     renderMovies = () => {
-        console.log('yyyyy');
         if (this.state.items) {
-            console.log(this.state.items)
             return this.state.items.map((movie, i) => {
+                var seen;
+                if (this.state.seenMovies.includes(movie._source.imdb_id)) {
+                    seen = true;
+                } else {
+                    seen = false;
+                }
                 return (
                     <div key={i} className="movies-list-container">
                         <InfiniteScroll
@@ -78,6 +92,7 @@ class MoviesList extends Component {
                             key={i}
                             movie={movie}
                             showMovieDetails={this.showMovieDetails.bind(this)}
+                            seen={seen}
                         />
                         </InfiniteScroll>
                     </div>

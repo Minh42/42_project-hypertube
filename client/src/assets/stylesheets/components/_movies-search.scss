@@ -146,6 +146,12 @@
             }
         }
 
+        &__icon {
+            position: absolute;
+            right: 1rem;
+            top: 0.5rem;
+        }
+
         &__info {
             position: absolute;
             top: 50%;
