@@ -94,7 +94,7 @@ class ChangePassword extends Component {
 }
 
 function validate(values, props) {
-    const { t, i18n } = this.props; 
+    const { t } = props; 
     const errors = {};
     if (!values.password) {
         errors.password = t('Validate.password', { framework: "react-i18next" })
