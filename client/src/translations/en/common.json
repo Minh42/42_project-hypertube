@@ -119,6 +119,7 @@
         "errorOauth": "Please retry to login with your social account",
         "reset": "Please check your mailbox",
         "errorInfo": "Your information is invalid",
-        "errorEmail": "Invalid username or email"
+        "errorEmail": "Invalid username or email",
+        "access": "You need to login to access this page"
     }
 }

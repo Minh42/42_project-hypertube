@@ -25,7 +25,7 @@ export default function(state = INITIAL_STATE, action) {
     }
 }
 
-export function signInAction({username, password}, history) {
+export function signInAction({username, password}, t, history) {
 	return (dispatch) => {
         axios.post('http://localhost:8080/api/auth/signin', {username, password}, withCredentials()
     )
@@ -35,7 +35,7 @@ export function signInAction({username, password}, history) {
                         type: AUTHENTICATION_ERROR
                     });
                     izitoast.error({
-                        message: 'Invalid email or password',
+                        message: t('Izitoast.errorEmail', { framework: "react-i18next" }),
                         position: 'topRight'
                     });
                 }

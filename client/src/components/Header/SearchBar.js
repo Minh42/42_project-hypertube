@@ -21,18 +21,20 @@ class SearchBar extends Component {
     }
 
 	async handleChange(e) {
+        const { t } = this.props;
 		await this.setState({
 		    input: e.target.value
         });
-        await this.props.searchAction(this.state.input, this.props.history);
+        await this.props.searchAction(this.state.input, this.props.history, t);
     }
     
     handleSubmit(e) {
+        const { t } = this.props;
         e.preventDefault();
         if (this.state.input) {
-            this.props.searchAction(this.state.input, this.props.history);
+            this.props.searchAction(this.state.input, this.props.history, t);
         } else {
-            this.props.initMoviesAction(this.props.history);
+            this.props.initMoviesAction(this.props.history, t);
         }
     }
 

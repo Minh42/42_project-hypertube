@@ -80,7 +80,6 @@ class ChangeUserInfo extends Component {
         let message;
         try {
             const res = await axios.put('http://localhost:8080/api/users/' + userID, data, withCredentials());
-            console.log(res.data)
             if (res.data.message === "Your information was updated successfully")
                 message = t('Izitoast.updateSuccess', { framework: "react-i18next" });
             this.props.dispatch({

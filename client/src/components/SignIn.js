@@ -31,7 +31,8 @@ class SignIn extends Component {
     }
 
     onSubmit(values) {
-        this.props.signInAction(values, this.props.history);
+        const { t } = this.props;
+        this.props.signInAction(values, t, this.props.history);
     }
 
     render() {

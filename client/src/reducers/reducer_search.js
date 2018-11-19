@@ -25,7 +25,7 @@ export default function(state = INITIAL_STATE, action) {
     }
 }
 
-export function initMoviesAction(history) {
+export function initMoviesAction(history, t) {
 	return async (dispatch) => {
         dispatch({
             type: SEARCH_REQUEST
@@ -43,7 +43,7 @@ export function initMoviesAction(history) {
                 switch (err.response.status) {
                     case 401:
                         izitoast.error({
-                            message: 'Please retry to login',
+                            message: t('Izitoast.errorLogin', { framework: "react-i18next" }),
                             position: 'topRight'
                         });
                         dispatch({ 
@@ -54,7 +54,7 @@ export function initMoviesAction(history) {
                         break;
                     case 403 :
                         izitoast.error({
-                            message: 'Please retry to login',
+                            message: t('Izitoast.errorLogin', { framework: "react-i18next" }),
                             position: 'topRight'
                         });
                         dispatch({ 
@@ -68,7 +68,7 @@ export function initMoviesAction(history) {
                             type: SEARCH_ERROR
                         });
                         izitoast.error({
-                            message: 'Oops, something went wrong!',
+                            message: t('Izitoast.error500', { framework: "react-i18next" }),
                             position: 'topRight'
                         });
                         break;
@@ -78,7 +78,7 @@ export function initMoviesAction(history) {
 	};
 }
 
-export function searchAction(input, history) {
+export function searchAction(input, history, t) {
 	return (dispatch) => {
         dispatch({
             type: SEARCH_REQUEST
@@ -89,7 +89,7 @@ export function searchAction(input, history) {
                     switch (err.response.status) {
                         case 401 :
                             izitoast.error({
-                                message: 'Please retry to login',
+                                message: t('Izitoast.errorLogin', { framework: "react-i18next" }),
                                 position: 'topRight'
                             });
                             dispatch({ 
@@ -100,7 +100,7 @@ export function searchAction(input, history) {
                             break;
                         case 403 :
                             izitoast.error({
-                                message: 'Please retry to login',
+                                message: t('Izitoast.errorLogin', { framework: "react-i18next" }),
                                 position: 'topRight'
                             });
                             dispatch({ 
@@ -114,7 +114,7 @@ export function searchAction(input, history) {
                                 type: SEARCH_ERROR
                             });
                             izitoast.error({
-                                message: 'Oops, something went wrong!',
+                                message: t('Izitoast.error500', { framework: "react-i18next" }),
                                 position: 'topRight'
                             });
                             break;

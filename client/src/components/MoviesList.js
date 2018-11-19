@@ -121,9 +121,10 @@ function mapStateToProps(state) {
     };
 }
 
-function mapDispatchToProps(dispatch) { 
+function mapDispatchToProps(dispatch, props) { 
+    const { t } = props;
     return {
-        onMovieAction: (history) => dispatch(initMoviesAction(history)),
+        onMovieAction: (history) => dispatch(initMoviesAction(history, t)),
         onSelectMovie: (movie, history) => dispatch(selectMovie(movie, history))
     }
 }

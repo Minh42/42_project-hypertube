@@ -119,6 +119,7 @@
         "errorOauth": "Tentez de vous connecter à nouveau",
         "reset": "Consulter votre adresse email pour changer votre mot de passe",
         "errorInfo": "Vos informations sont invalides",
-        "errorEmail": "Email ou mot de passe invalide"
+        "errorEmail": "Email ou mot de passe invalide",
+        "access": "Connectez-vous pour accéder à cette page"
     }
 }
