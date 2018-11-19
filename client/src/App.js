@@ -11,6 +11,7 @@ import EditProfile from './components/EditProfile';
 import Movie from './components/Movie';
 import NotFound from './layouts/NotFound';
 import UserProfile from './components/UserProfile';
+import User from './components/User/User';
 
 class App extends Component { 
     render() {
@@ -21,7 +22,7 @@ class App extends Component {
                     <Switch>
                         <Route exact path="/" component={LandingPage} />
                         <Route exact path="/homepage" component={requireAuth(HomePage)} />
-                        <Route path="/profile/:id" component={requireAuth(UserProfile)} />
+                        <Route path="/profile/:id" component={requireAuth(User)} />
                         <Route path="/movie/:id" component={requireAuth(Movie)} />
                         <Route path="/user/:id" component={requireAuth(EditProfile)} />
                         <Route exact path="/reset" component={Reset} />

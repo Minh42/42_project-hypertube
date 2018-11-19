@@ -48,4 +48,28 @@
     &--box {
         
     }
+
+    &--small-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 100%;
+            cursor: pointer;
+        }
+
+    &--container-user {
+        display: flex;
+        flex-direction: row;
+        margin-left: 10px;
+    }
+
+    &--comment-date {
+        font-size: 10px;
+        margin: auto;
+        margin-left: 5px;
+    }
+
+    &--comment-username {
+        color: $color-grey-light-4;
+        cursor: pointer;
+    }
 }

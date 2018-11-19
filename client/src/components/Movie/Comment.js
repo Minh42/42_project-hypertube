@@ -41,7 +41,7 @@ class Comment extends Component {
     }
 
     goToProfile = (userid) => {
-        this.props.history.push(`/user/${userid}`)
+        this.props.history.push(`/profile/${userid}`)
     }
 
     render () {
