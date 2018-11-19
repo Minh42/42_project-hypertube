@@ -20,7 +20,6 @@ class User extends Component {
     }
 
     render () {
-
         const { t, } = this.props;
 
         return (

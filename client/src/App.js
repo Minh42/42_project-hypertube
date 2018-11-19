@@ -12,6 +12,7 @@ import Movie from './components/Movie';
 import NotFound from './layouts/NotFound';
 import UserProfile from './components/UserProfile';
 import User from './components/User/User';
+import Vid from './components/Movie/Vid';
 
 class App extends Component { 
     render() {
@@ -29,6 +30,7 @@ class App extends Component {
                         <Route path="/changePassword/:id" component={ChangePassword} />
                         <Route component={NotFound} />
                     </Switch>
+                    <Vid />
                 </div>
             </Router>
         )

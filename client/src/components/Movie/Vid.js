@@ -23,92 +23,98 @@ class MoviePlayer extends Component {
 
 
     componentDidMount() {
-        console.log("IN DID MOUNT", this.props.stream_link)
-        if (this.props.stream_link !== "" && this.props.inMovie === false) {
-            if (Hls.isSupported()) {
-                var config = { 
-                    xhrSetup: function (xhr,url) { 
+        if (!window.location.pathname.includes("/movie/")  && localStorage.getItem("started") === "started") {
+            localStorage.setItem("started", "not")
+            console.log("IN DID MOUNT VID")
+            const stream_link = localStorage.getItem("stream_link");
+            const en = localStorage.getItem("en");
+            const fr = localStorage.getItem("fr");
+            const pos = localStorage.getItem("pos");
+            
+            if (stream_link) {
+                if (Hls.isSupported()) {
+                    var config = { 
+                        xhrSetup: function (xhr,url) { 
+                        } 
+                    };
+                    if (hls) {
+                        hls.stopLoad()
+                        hls = null;
                     } 
-                };
-                if (hls) {
-                    hls.stopLoad()
-                    hls = null;
-                } 
-                hls = new Hls(config);
-                hls.loadSource(this.props.stream_link);
-                hls.attachMedia(this.refs.video);
-                hls.on(Hls.Events.MANIFEST_PARSED,function() {});
+                    hls = new Hls(config);
+                    hls.loadSource(stream_link);
+                    hls.attachMedia(this.refs.video);
+                    hls.on(Hls.Events.MANIFEST_PARSED,function() {});
 
-            } else if (this.refs.video.canPlayType('application/vnd.apple.mpegurl')) {
-                this.refs.video.src = this.props.stream_link;
-                this.refs.video.addEventListener('loadedmetadata',function() {});
-            } 
-            this.refs.video.currentTime = 1;
-            this.refs.video.play();
+                } else if (this.refs.video.canPlayType('application/vnd.apple.mpegurl')) {
+                    this.refs.video.src = stream_link;
+                    this.refs.video.addEventListener('loadedmetadata',function() {});
+                } 
+                this.refs.video.currentTime = parseInt(pos, 10);
+                this.refs.video.play();
+            }
+            this.setState({stream_link: stream_link, en: en,
+            fr: fr, pos: pos});
         }
     }
 
-    componentDidUpdate() {
-        console.log("IN DID UPDATE", this.props.stream_link, this.state.stream_link)
-        if (this.props.stream_link !== this.state.stream_link) {
-            if (Hls.isSupported()) {
-                var config = { 
-                    xhrSetup: function (xhr,url) { 
+    async componentDidUpdate() {
+        if (!window.location.pathname.includes("/movie/") && localStorage.getItem("started") === "started") {
+            console.log("IN DID MOUNT VID")
+            await localStorage.setItem("started", "not")
+            const stream_link = localStorage.getItem("stream_link");
+            const en = localStorage.getItem("en");
+            const fr = localStorage.getItem("fr");
+            const pos = localStorage.getItem("pos");
+            
+            if (stream_link) {
+                if (Hls.isSupported()) {
+                    var config = { 
+                        xhrSetup: function (xhr,url) { 
+                        } 
+                    };
+                    if (hls) {
+                        hls.stopLoad()
+                        hls = null;
                     } 
-                };
-                if (hls) {
-                    hls.stopLoad()
-                    hls = null;
-                } 
-                hls = new Hls(config);
-                hls.loadSource(this.props.stream_link);
-                hls.attachMedia(this.refs.video);
-                hls.on(Hls.Events.MANIFEST_PARSED,function() {});
+                    hls = new Hls(config);
+                    hls.loadSource(stream_link);
+                    hls.attachMedia(this.refs.video);
+                    hls.on(Hls.Events.MANIFEST_PARSED,function() {});
 
-            } else if (this.refs.video.canPlayType('application/vnd.apple.mpegurl')) {
-                this.refs.video.src = this.props.stream_link;
-                this.refs.video.addEventListener('loadedmetadata',function() {});
-            } 
-            this.refs.video.currentTime = this.props.pos;
-            this.refs.video.play();
+                } else if (this.refs.video.canPlayType('application/vnd.apple.mpegurl')) {
+                    this.refs.video.src = stream_link;
+                    this.refs.video.addEventListener('loadedmetadata',function() {});
+                } 
+                this.refs.video.currentTime = parseInt(pos, 10);
+                this.refs.video.play();
+            }
+            this.setState({stream_link: stream_link, en: en,
+            fr: fr, pos: pos});
         }
     }
 
      render () {
-
+        console.log(window.location.pathname.includes("/movie/"))
         const { t } = this.props;
 
          return (
             <div className="vid-bottom">
-                
-                <div>
-                    <video className="video-small" ref="video" crossOrigin="anomymous"  controls>
-                        {this.props.en !== "" && <track ref="track1" label="English" kind="subtitles" src={this.props.en} default />} 
-                        {this.props.fr !== "" && <track ref="track2" label="French" kind="subtitles" src={this.props.fr} />}
-                    </video>
-                        
-                </div>
+                {
+                    !window.location.pathname.includes("/movie/")
+                &&
+                    <div>
+                        <p className="small-x">X</p>
+                        <video className="video-small" ref="video" crossOrigin="anomymous"  controls>
+                            {this.state.en && this.state.en !== "" && <track ref="track1" label="English" kind="subtitles" src={this.props.en} default />} 
+                            {this.state.fr && this.state.fr!== "" && <track ref="track2" label="French" kind="subtitles" src={this.props.fr} />}
+                        </video>
+                            
+                    </div>
+                }
             </div>      
          )
      }
  }
 
- function mapStateToProps(state) {
-     console.log("STATE", state)
-    return {
-        stream_link: state.download.stream_link,
-        en: state.download.en,
-        fr: state.download.fr,
-        started: state.download.started,
-        pos: state.download.pos,
-        inMovie: state.download.inMovie
-    };
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        onStartStreaming: ({stream_link, en, fr, started, pos}) => dispatch(reducerDownload.startStreaming({stream_link, en, fr, started, pos}))
-    }
-}
-
-export default withNamespaces('common') (connect(mapStateToProps, null)(MoviePlayer));
+export default withNamespaces('common') (MoviePlayer);

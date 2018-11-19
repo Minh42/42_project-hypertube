@@ -50,6 +50,10 @@ class MoviePlayer extends Component {
             const stream_link = response.data.stream_link;
             const en = response.data.en;
             const fr = response.data.fr;
+            localStorage.setItem("stream_link", stream_link);
+            localStorage.setItem("en", en);
+            localStorage.setItem("fr", fr);
+            localStorage.setItem("started", "started");
             await this.setState({started: true, en: en, fr: fr});
             if(Hls.isSupported()) {
                 var config = { 
@@ -140,6 +144,10 @@ class MoviePlayer extends Component {
 
 
  
+    }
+
+    componentWillUnmount() {
+        localStorage.setItem("pos", this.refs.video.currentTime)
     }
 
     render () {

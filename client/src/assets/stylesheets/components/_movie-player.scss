@@ -73,3 +73,21 @@
         cursor: pointer;
     }
 }
+
+.vid-bottom {
+    position: fixed;
+    bottom: 0;
+    //left: 200px;
+    right: 5px;
+    //right: 5%;
+    z-index: 80000;
+}
+
+.video-small {
+    width: 30%;
+}
+
+.small-x {
+    position: absolute;
+    right: 0;
+}
