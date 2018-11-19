@@ -56,6 +56,7 @@ export function signInAction({username, password}, history) {
 
 export function signInActionOauth(xsrfToken, user, history) {
 	return (dispatch) => {
+        localStorage.setItem('xsrf', xsrfToken)
 		setAuthorizationToken(xsrfToken);
         dispatch({ 
             type: AUTHENTICATED,
@@ -69,8 +70,10 @@ export function signOutAction(history) {
 	return async (dispatch) => {
         await axios.get('http://localhost:8080/api/auth/logout', withCredentials());
         setAuthorizationToken(false);
+    
         localStorage.clear();
-		dispatch({ 
+        
+        dispatch({ 
 			type: UNAUTHENTICATED,
 			payload: null
         })

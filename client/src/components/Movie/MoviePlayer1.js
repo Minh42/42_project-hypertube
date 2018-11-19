@@ -120,58 +120,39 @@ class MoviePlayer extends Component {
             this.setState({isTyping: isTyping})
     }
 
-    renderTorrents() {
-        if (this.props.movie) {
-            console.log(this.props.movie)
-            return this.props.movie._source.torrents.map((torrent, i) => {
-                return (
-                    <tbody key={i} className="movie-player__torrents-info">
-                        <tr>
-                            <td>{this.props.movie._source.title} - {torrent.quality}</td>
-                            <td>{torrent.seed}</td>
-                            <td>{torrent.peer}</td>
-                            <td>{torrent.filesize}</td>
-                            <td onClick={() => this.handleClick(torrent.url, torrent.quality)}>Play</td>
-                        </tr>
-                    </tbody>
-                )
-            })
-        }
+     render () {
 
-
- 
-    }
-
-    render () {
         const { t } = this.props;
-        return (
-            <div className="movie-container">
-                <div className="movie-player">
-                    <h1 className="movie-player__title"> {`${this.props.movie._source.title} ${this.state.quality}`} </h1>
-                    <div className="movie-player__movie">
-                        <video className={this.state.watching ? "movie-player__movie--watching" : "movie-player__movie--not-watching" } ref="video" crossOrigin="anomymous" controls>
-                            {this.state.en !== "" && <track ref="track1" label="English" kind="subtitles" src={this.state.en} default />} 
-                            {this.state.fr !== "" && <track ref="track2" label="French" kind="subtitles" src={this.state.fr} />}
-                        </video>
-                            
+
+         return (
+            <div>
+                <h1 className="movie-title"> {`${this.props.movie._source.title} ${this.state.quality}`} </h1>
+                <div>
+                    <video className={this.state.watching ? "video-play" : "video-playp" } ref="video" crossOrigin="anomymous" poster={this.props.poster} controls>
+                        {this.state.en !== "" && <track ref="track1" label="English" kind="subtitles" src={this.state.en} default />} 
+                        {this.state.fr !== "" && <track ref="track2" label="French" kind="subtitles" src={this.state.fr} />}
+                    </video>
+                        
+                </div>
+                <div>
+                    <div className="btn btn-secondary btn-secondary--darkerred">
+                        <span className="btn btn-secondary__icon">
+                        </span>
+                        { t('Movie.quality', { framework: "react-i18next" }) }
                     </div>
-                    <table className="movie-player__torrents">
-                        <thead className="movie-player-torrents-header">
-                            <tr>
-                                <th>Torrents</th>
-                                <th>Seeds</th>
-                                <th>Peers</th>
-                                <th>Filesize</th>
-                            </tr>
-                        </thead>
-                        {this.renderTorrents()}
-                    </table>
+                    <ul className='ul-video'>
+                        {
+                        this.props.movie._source.torrents.map(m => {
+                                return (
+                                    <li className={this.state.quality === m.quality ? 'li-video-selected' : 'li-video'} key={m.url} onClick={this.state.quality === m.quality ? () => {} : () => this.handleClick(m.url, m.quality)}> {m.quality} {this.state.quality === m.quality && !this.state.watching && <Loader />} </li>
+                                )
+                            })
+                        }
+                    </ul>
                 </div>
-                <div className="movie-comments">
-                    <Comment history={this.props.history} userid={this.props.user} imdbid={this.props.movie._source.imdb_id} isTyping={this.handleTyping}/>  
-                </div>
-            </div>
-        )
+                <Comment history={this.props.history} userid={this.props.user} imdbid={this.props.movie._source.imdb_id} isTyping={this.handleTyping}/>
+            </div>      
+         )
      }
  }
 

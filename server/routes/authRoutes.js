@@ -16,6 +16,6 @@ auth.get('/github', passport.authenticate('github', { session: false }, { scope:
 auth.get('/github/callback', authController.github);
 auth.get('/fortytwo', passport.authenticate('42', { session: false }));
 auth.get('/fortytwo/callback', authController.fortytwo);
-auth.get('/logout', authenticate, authController.logout);
+auth.get('/logout', authController.logout);
 
 module.exports = auth;
