@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Field, reduxForm, resetSection } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import RenderField from '../Form/RenderField';
@@ -43,7 +43,7 @@ class ChangeUserInfo extends Component {
             .catch((err) => {
                 if (err) {
                     switch (err.response.status) {
-                        case 422 :
+                        case 404 :
                             message = t('Izitoast.pictureInvalid', { framework: "react-i18next" })
                             break;
                         case 500:

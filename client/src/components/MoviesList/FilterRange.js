@@ -39,6 +39,7 @@ class FilterRange extends Component {
     }
 
     handleRating(values) {
+
         this.props.FilterRatingAction(values, this.props.history);
     }
 

@@ -163,7 +163,6 @@ class MoviePlayer extends Component {
     }
 
     render () {
-        const { t } = this.props;
         return (
             <div className="movie-container">
                 <div className="movie-player">

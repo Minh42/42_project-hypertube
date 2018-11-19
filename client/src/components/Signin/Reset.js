@@ -34,10 +34,9 @@ class ForgotPassword extends Component {
     }
 
     async submitMessageReset(email) {
-        const { t, i18n } = this.props;
+        const { t } = this.props;
         var message;
         const res = await axios.post('http://localhost:8080/api/verification/sendMessage', email)
-        console.log(res.data.message)
         if (res.data.message === "Please check your mailbox")
             message = t('Izitoast.reset', { framework: "react-i18next" });
         if (res) {

@@ -16,7 +16,7 @@ class ChangePassword extends Component {
     }
 
     submitNewPassword(values) {
-        const { t, i18n } = this.props; 
+        const { t } = this.props; 
         let message;
         const dataReset = { 
             password : values.password,
@@ -56,7 +56,7 @@ class ChangePassword extends Component {
 
     render() {
         const { handleSubmit } = this.props;
-        const { t, i18n } = this.props; 
+        const { t } = this.props; 
         return (
             <div className="forgot-password">
                 <div className="form">

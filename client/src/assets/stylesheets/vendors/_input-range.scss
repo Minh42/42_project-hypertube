@@ -12,6 +12,7 @@
 }
 
 .input-range__slider {
+    touch-action: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;

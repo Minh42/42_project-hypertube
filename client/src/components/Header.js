@@ -7,7 +7,6 @@ import SearchBar from './Header/SearchBar';
 import logo from '../assets/img/logo-white.png';
 import { ReactComponent as Login} from '../assets/img/svg/login.svg';
 import { withNamespaces } from 'react-i18next';
-import { withCredentials } from '../utils/headers';
 
 class Header extends Component {
     constructor(props) {
@@ -27,7 +26,6 @@ class Header extends Component {
     }
     
     goToHomepage = () => {
-        console.log("test")
         this.props.history.push("/homepage")
     }
 
