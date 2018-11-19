@@ -19,7 +19,7 @@ axios.defaults.withCredentials = true;
 
 i18next.init({
     interpolation: { escapeValue: false },  // React already does escaping
-    lng: 'fr',                              // language to use
+    lng: 'en',                              // language to use
     resources: {
         en: {
             common: common_en               // 'common' is our custom namespace

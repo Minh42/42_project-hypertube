@@ -64,17 +64,17 @@ class MoviesList extends Component {
             return this.state.items.map((movie, i) => {
                 return (
                     <div key={i} className="movies-list-container">
-                    <InfiniteScroll
-                        dataLength={this.state.items.length}
-                        next={this.fetchMoreData}
-                        hasMore={this.state.hasMore}
-                    >
-                    <MovieCard
-                        key={i}
-                        movie={movie}
-                        showMovieDetails={this.showMovieDetails.bind(this)}
-                    />
-                    </InfiniteScroll>
+                        <InfiniteScroll
+                            dataLength={this.state.items.length}
+                            next={this.fetchMoreData}
+                            hasMore={this.state.hasMore}
+                        >
+                        <MovieCard
+                            key={i}
+                            movie={movie}
+                            showMovieDetails={this.showMovieDetails.bind(this)}
+                        />
+                        </InfiniteScroll>
                     </div>
                 )
             });

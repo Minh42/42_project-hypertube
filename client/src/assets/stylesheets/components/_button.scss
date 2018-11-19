@@ -106,5 +106,7 @@
 }
 
 .pointer {
+    flex: 0 1 25%;
+    position: relative;
     cursor: pointer;
 }
