@@ -11,7 +11,7 @@ class Rating extends Component {
               starRatedColor="gold"
               numberOfStars={5}
               name='rating'
-              starDimension="1.5rem"
+              starDimension="1rem"
               starSpacing="0.1rem"
             />
         );

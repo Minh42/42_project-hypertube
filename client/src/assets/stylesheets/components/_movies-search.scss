@@ -67,7 +67,7 @@
             margin: 0;
             display: block;
             width: 100%;
-            padding: .6rem 3rem 0.8rem 0.8rem;
+            padding: .6rem 1rem 0.8rem 0.8rem;
             font-size: 1.3rem;
             font-weight: 600;
             color: white;
@@ -138,11 +138,15 @@
 
             &:hover + .movies-list-container__info {
                 z-index: 1;
+                font-size: 1rem;
+                padding: 1rem;
+                font-size: 1.3rem;
             }
 
             &:not(:hover) + .movies-list-container__info {
                 opacity: .4;
                 z-index: -1;
+                padding: 0rem;
             }
         }
 
@@ -151,16 +155,18 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 1.5rem;
             background-color: black;
             opacity: 0.8;
-            padding: 2rem;
             pointer-events: none;
 
             &-icon {
                 width: 1.5rem;
             }
         }
+    }
+
+    .star-ratings {
+        font-size: 1rem;
     }
 
 
