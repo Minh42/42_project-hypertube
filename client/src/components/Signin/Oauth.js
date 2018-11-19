@@ -13,6 +13,7 @@ import { ReactComponent as LinkedIn} from '../../assets/img/svg/linkedin.svg';
 import { ReactComponent as Google} from '../../assets/img/svg/google.svg';
 import { ReactComponent as Github} from '../../assets/img/svg/github.svg';
 import { ReactComponent as FortyTwo} from '../../assets/img/svg/42_logo.svg';
+import { withNamespaces } from 'react-i18next';
 
 class Oauth extends Component {  
     constructor(props) {
@@ -21,6 +22,7 @@ class Oauth extends Component {
     }
 
     componentDidMount() {
+        const { t } = this.props;
         if (this.props.location.search) {
             let message;
             let xsrfToken = queryString.parse(this.props.location.search).xsrfToken;
@@ -30,10 +32,10 @@ class Oauth extends Component {
                     .catch((err) => {
                         switch (err.response.status) {
                             case 404 :
-                                message = 'Please retry to login with your social account';
+                                message = t('Izitoast.errorOauth', { framework: "react-i18next" })
                                 break;
                             case 500:
-                                message = 'Oops, something went wrong!';
+                                message = t('Izitoast.error500', { framework: "react-i18next" })
                                 break;
                             default: 
                                 break;
@@ -75,4 +77,4 @@ function mapDispatchToProps(dispatch) {
 	return bindActionCreators({ signInActionOauth : signInActionOauth}, dispatch);
 } 
 
-export default withRouter(connect(null, mapDispatchToProps)(Oauth));
+export default withNamespaces('common')(withRouter(connect(null, mapDispatchToProps)(Oauth)));

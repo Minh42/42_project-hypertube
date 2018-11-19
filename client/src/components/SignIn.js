@@ -79,19 +79,21 @@ class SignIn extends Component {
     }
 }
 
-function validate(values) {
+function validate(values, props) {
+    const { t } = props;
     const errors = {};
+
     if (!values.username) {
-        errors.username = "Please enter your username"
+        errors.username = t('Validate.username', { framework: "react-i18next" })
     } else if (!validator.isByteLength(values.username, { min : 1, max : 15 })) {
-        errors.username = "Your username is too short or too long"
+        errors.username = t('Validate.lenght.username', { framework: "react-i18next" })
     } else if (!validator.isAlphanumeric(values.username)) {
-        errors.username = "Your username must contain only alphanumeric characters"
+        errors.username = t('Validate.other.username', { framework: "react-i18next" })
     }
     if (!values.password) {
-        errors.password = "Please enter your password"
+        errors.password = t('Validate.password', { framework: "react-i18next" })
     } else if (!tools.isPassword(values.password)) {
-        errors.password = "Your password must contain at least 6 character, a capital letterand a number"
+        errors.password = t('Validate.other.password', { framework: "react-i18next" })
     }
     return errors;
 }

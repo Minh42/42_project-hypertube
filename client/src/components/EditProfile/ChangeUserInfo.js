@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, resetSection } from 'redux-form';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import RenderField from '../Form/RenderField';
@@ -36,6 +36,7 @@ class ChangeUserInfo extends Component {
     }
 
     onDrop(files) {
+        const { t } = this.props;
         let message;
         const data = new FormData();
         data.append('file', files[0]);
@@ -45,10 +46,10 @@ class ChangeUserInfo extends Component {
                 if (err) {
                     switch (err.response.status) {
                         case 422 :
-                            message = 'Upload file is invalid';
+                            message = t('Izitoast.pictureInvalid', { framework: "react-i18next" })
                             break;
                         case 500:
-                            message = 'Oops, something went wrong!';
+                            message = t('Izitoast.error500', { framework: "react-i18next" })
                             break;
                         default: 
                             break;
@@ -65,7 +66,7 @@ class ChangeUserInfo extends Component {
                         files: res.data
                     });
                     izitoast.success({
-                        message: 'Your picture is valid',
+                        message: t('Izitoast.pictureValid', { framework: "react-i18next" }),
                         position: 'topRight'
                     });
                 }
@@ -73,39 +74,42 @@ class ChangeUserInfo extends Component {
     }
     
     async changeUserInformation(values) {
+        const { t } = this.props;
         var data = { values: values, path: this.state.files}
         let userID = this.props.user._id;
         let message;
         try {
             const res = await axios.put('http://localhost:8080/api/users/' + userID, data, withCredentials());
             console.log(res.data)
+            if (res.data.message === "Your information was updated successfully")
+                message = t('Izitoast.updateSuccess', { framework: "react-i18next" });
             this.props.dispatch({
                 type: AUTHENTICATED,
                 payload: res.data.user
             })
             izitoast.success({
-                message: res.data.message,
+                message: message,
                 position: 'topRight'
             });
         } catch (err) {
             switch (err.response.status) {
                 case 401 :
                     izitoast.error({
-                        message: 'Please retry to login',
+                        message: t('Izitoast.errorLogin', { framework: "react-i18next" }),
                         position: 'topRight'
                     });
                     this.props.signOutAction(this.props.history);
                     break;
                 case 403 :
                     izitoast.error({
-                        message: 'Please retry to login',
+                        message: t('Izitoast.erroLogin', { framework: "react-i18next" }),
                         position: 'topRight'
                     });
                     this.props.signOutAction(this.props.history);
                     break;
                 default: 
                     izitoast.error({
-                        message: 'Oops, something went wrong!',
+                        message: t('Izitoast.error500', { framework: "react-i18next" }),
                         position: 'topRight'
                     });
                     break;
@@ -119,6 +123,7 @@ class ChangeUserInfo extends Component {
         let path;
 
         if (this.props.user) {
+            console.log(this.props.user.profile_picture)
             if (this.props.user.profile_picture) {
                 if (this.state.files !== null) 
                     path = this.state.files;
@@ -191,36 +196,37 @@ class ChangeUserInfo extends Component {
     }
 }
 
-function validate(values) {
+function validate(values, props) {
+    const { t } = props;
     const errors = {};
     if (!values.firstname) {
-        errors.firstname = "Please enter your firstname"
+        errors.firstname = t('Validate.firstname', { framework: "react-i18next" })
     } else if (!validator.isByteLength(values.firstname, { min : 1, max : 15 })) {
-        errors.firstname = "Your firstname is too short or too long"
+        errors.firstname = t('Validate.length.firstname', { framework: "react-i18next" })
     } else if (!validator.isAlpha(values.firstname)) {
         errors.firstname = "Your firstname must contain only alphabetic characters"
     }
 
     if (!values.lastname) {
-        errors.lastname = "Please enter your lastname"
+        errors.lastname = t('Validate.lastname', { framework: "react-i18next" })
     } else if (!validator.isByteLength(values.lastname, { min : 1, max : 15 })) {
-        errors.lastname = "Your lastname is too short or too long"
+        errors.lastname = t('Validate.length.lastname', { framework: "react-i18next" })
     } else if (!validator.isAlpha(values.lastname)) {
         errors.lastname = "Your lastname must contain only alphabetic characters"
     }
 
     if (!values.username) {
-        errors.username = "Please enter your username"
+        errors.username = t('Validate.username', { framework: "react-i18next" })
     } else if (!validator.isByteLength(values.username, { min : 1, max : 15 })) {
-        errors.username = "Your username is too short or too long"
+        errors.username = t('Validate.length.username', { framework: "react-i18next" })
     } else if (!validator.isAlphanumeric(values.username)) {
-        errors.username = "Your username must contain only alphanumeric characters"
+        errors.username = t('Validate.other.username', { framework: "react-i18next" })
     }
 
     if (!values.email) {
-        errors.email = "Please enter your email"
+        errors.email = t('Validate.email', { framework: "react-i18next" })
     } else if (!validator.isEmail(values.email, { allow_display_name: false, require_display_name: false, allow_utf8_local_part: true, require_tld: true, allow_ip_domain: false, domain_specific_validation: false })) {
-        errors.email = "Please enter a valid email address"
+        errors.email = t('Validate.other.email', { framework: "react-i18next" })
     }
     return errors;
 }

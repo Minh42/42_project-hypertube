@@ -16,6 +16,7 @@ class ChangePassword extends Component {
     }
 
     submitNewPassword(values) {
+        const { t, i18n } = this.props; 
         let message;
         const dataReset = { 
             password : values.password,
@@ -27,14 +28,15 @@ class ChangePassword extends Component {
             if (err) {
                 switch (err.response.status) {
                     case 403 :
-                        message = 'Passwords do not match';
+                        message = t('Izitoast.match', { framework: "react-i18next" })
                         break;
                     case 500:
-                        message = 'Oops, something went wrong!';
+                        message = t('Izitoast.error500', { framework: "react-i18next" })
                         break;
                     default: 
                         break;
                 }
+                console.log(message)
                 izitoast.error({
                     message: message,
                     position: 'topRight'
@@ -91,18 +93,19 @@ class ChangePassword extends Component {
     }
 }
 
-function validate(values) {
+function validate(values, props) {
+    const { t, i18n } = this.props; 
     const errors = {};
     if (!values.password) {
-        errors.password = "Please enter your password"
+        errors.password = t('Validate.password', { framework: "react-i18next" })
     } else if (!tools.isPassword(values.password)) {
-        errors.password = "Your password must contain at least 6 character, a capital letterand a number"
+        errors.password =  t('Validate.other.password', { framework: "react-i18next" })
     }
 
     if (!values.confirmPassword) {
-        errors.confirmPassword = "Please enter your confirmation password"
+        errors.confirmPassword = t('Validate.password', { framework: "react-i18next" })
     } else if (!tools.isPassword(values.confirmPassword)) {
-        errors.confirmPassword = "Your confirmation password must contain at least 6 character, a capital letterand a number"
+        errors.confirmPassword =  t('Validate.other.password', { framework: "react-i18next" })
     }
     return errors;
 }

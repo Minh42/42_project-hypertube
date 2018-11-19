@@ -29,6 +29,7 @@ class SignUp extends Component {
     }
  
     onDrop(files) {
+        const { t } = this.props;
         let message;
         const data = new FormData();
         data.append('file', files[0]);
@@ -38,10 +39,10 @@ class SignUp extends Component {
                 if (err) {
                     switch (err.response.status) {
                         case 404 :
-                            message = 'Upload file is invalid';
+                            message = t('Izitoast.pictureInvalid', { framework: "react-i18next" })
                             break;
                         case 500:
-                            message = 'Oops, something went wrong!';
+                            message = t('Izitoast.error500', { framework: "react-i18next" });
                             break;
                         default: 
                             break;
@@ -58,7 +59,7 @@ class SignUp extends Component {
                         files: res.data
                     });
                     izitoast.success({
-                        message: 'Your picture is valid',
+                        message: t('Izitoast.pictureValid', { framework: "react-i18next" }),
                         position: 'topRight'
                     });
                 }
@@ -66,19 +67,20 @@ class SignUp extends Component {
     }
 
     onSubmit(values) {
+        const { t } = this.props;
         var data = { values: values, path: this.state.files }
         let message;
         axios.post('http://localhost:8080/api/users', data)
         .catch((err) => {
             switch (err.response.status) {
                 case 400 :
-                    message = 'Please upload a profile picture';
+                    message = t('Izitoast.picture', { framework: "react-i18next" });
                     break;
                 case 409 :
-                    message = 'Invalid username or email';
+                    message = t('Izitoast.errorEmail', { framework: "react-i18next" });
                     break;
                 case 500:
-                    message = 'Your information is invalid';
+                    message = t('Izitoast.errorInfo', { framework: "react-i18next" });
                     break;
                 default: 
                     break;
@@ -179,43 +181,44 @@ class SignUp extends Component {
     }
 }
 
-function validate(values) {
+function validate(values, props) {
+    const { t } = props;
     const errors = {};
 
     if (!values.firstname) {
-        errors.firstname = "Please enter your firstname"
+        errors.firstname = t('Validate.firstname', { framework: "react-i18next" })
     } else if (!validator.isByteLength(values.firstname, { min : 1, max : 30 })) {
-        errors.firstname = "Your firstname is too short or too long"
+        errors.firstname = t('Validate.length.firstname', { framework: "react-i18next" })
     } else if (!validator.isAlpha(values.firstname)) {
-        errors.firstname = "Your firstname must contain only alphabetic characters"
+        errors.firstname = t('Validate.other.firstname', { framework: "react-i18next" })
     }
 
     if (!values.lastname) {
-        errors.lastname = "Please enter your lastname"
+        errors.lastname = t('Validate.lastname', { framework: "react-i18next" })
     } else if (!validator.isByteLength(values.lastname, { min : 1, max : 30 })) {
-        errors.lastname = "Your lastname is too short or too long"
+        errors.lastname = t('Validate.length.lastname', { framework: "react-i18next" })
     } else if (!validator.isAlpha(values.lastname)) {
-        errors.lastname = "Your lastname must contain only alphabetic characters"
+        errors.lastname = t('Validate.other.lastname', { framework: "react-i18next" })
     }
 
     if (!values.username) {
-        errors.username = "Please enter your username"
+        errors.username = t('Validate.username', { framework: "react-i18next" })
     } else if (!validator.isByteLength(values.username, { min : 1, max : 30 })) {
-        errors.username = "Your username is too short or too long"
+        errors.username = t('Validate.lenght.username', { framework: "react-i18next" })
     } else if (!validator.isAlphanumeric(values.username)) {
-        errors.username = "Your username must contain only alphanumeric characters"
+        errors.username = t('Validate.other.username', { framework: "react-i18next" })
     }
 
     if (!values.email) {
-        errors.email = "Please enter your email"
+        errors.email = t('Validate.email', { framework: "react-i18next" })
     } else if (!validator.isEmail(values.email, { allow_display_name: false, require_display_name: false, allow_utf8_local_part: true, require_tld: true, allow_ip_domain: false, domain_specific_validation: false })) {
-        errors.email = "Please enter a valid email address"
+        errors.email = t('Validate.other.email', { framework: "react-i18next" })
     }
 
     if (!values.password) {
-        errors.password = "Please enter your password"
+        errors.password = t('Validate.password', { framework: "react-i18next" })
     } else if (!tools.isPassword(values.password)) {
-        errors.password = "Your password must contain at least 6 character, a capital letter and a number"
+        errors.password = t('Validate.other.password', { framework: "react-i18next" })
     }
     return errors;
 }
