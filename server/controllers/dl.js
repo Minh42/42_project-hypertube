@@ -25,7 +25,7 @@ process.on('message', async (message) => {
 });
 
 const options = {
-	connections: 100,     // Max amount of peers to be connected to.
+	connections: 20,     // Max amount of peers to be connected to.
 	uploads: 10,          // Number of upload slots.
 	tmp: './my-files/',          // Root folder for the files storage.
 	                      // Defaults to '/tmp' or temp folder specific to your OS.
@@ -68,9 +68,12 @@ const slicing = (path, to, res, folder_path, movieFile) => {
 
     ffmpeg(path, { timeout: 432000 }).addOptions([
        //   '-s 640x360',          // 640px width, 360px height output video dimensions
-          '-start_number 0',     // start the first .ts segment at index 0
-          '-hls_time 2',        // 10 second segment duration
-          '-hls_list_size 0',    // Maxmimum number of playlist entries (0 means all entries/infinite)
+        '-f hls', 
+        '-deadline realtime', 
+        '-preset ultrafast', 
+        '-start_number 0',     // start the first .ts segment at index 0
+        '-hls_time 2',        // 10 second segment duration
+        '-hls_list_size 0',    // Maxmimum number of playlist entries (0 means all entries/infinite)
         ]).output(to).on('end', () => {
             console.log("slicing completed")
             process.send({msg:'COMPLETED'});
