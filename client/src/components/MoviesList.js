@@ -10,6 +10,7 @@ import { initMoviesAction } from '../reducers/reducer_search';
 import { selectMovie } from '../reducers/reducer_movies';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { withNamespaces } from 'react-i18next';
+import axios from 'axios';
   
 class MoviesList extends Component {
     constructor(props) {
@@ -17,22 +18,24 @@ class MoviesList extends Component {
         this.state = {
             loading: false,
             hasMore: true,
-            offset: 40,
+            offset: 20,
             items: []
         }
     };
 
     async componentDidMount() {
         await this.props.onMovieAction(this.props.history);
-        if (this.props.movies) (
-            this.setState({items: this.props.movies.slice(0, this.state.offset )})
-        )
+        const res = await axios.get('http://localhost:8080/api/movie/all');
+        console.log(res)
     }
 
     static getDerivedStateFromProps(props, state) {
         const copy = JSON.parse(JSON.stringify(props.movies));
-        return {
-            items: copy
+        if (copy) {
+            const test = copy.slice(0, state.offset);
+            return {
+                items: test
+            }
         }
     }
 
@@ -60,7 +63,9 @@ class MoviesList extends Component {
     }
 
     renderMovies = () => {
+        console.log('yyyyy');
         if (this.state.items) {
+            console.log(this.state.items)
             return this.state.items.map((movie, i) => {
                 return (
                     <div key={i} className="movies-list-container">

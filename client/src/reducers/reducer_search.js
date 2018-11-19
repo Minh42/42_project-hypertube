@@ -33,6 +33,7 @@ export function initMoviesAction(history, t) {
         try {
             const res = await axios.post('http://localhost:8080/api/search/movies', {}, withCredentials());
             if (res) {
+                console.log(res.data.movies)
                 dispatch({ 
                     type: SEARCH_SUCCESS,
                     payload: res.data.movies

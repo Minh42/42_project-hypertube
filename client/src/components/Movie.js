@@ -38,23 +38,30 @@ class Curtain extends Component {
     }
 
     render() {
-        return (
-            <div className="curtain" onClick={() => this.handleDownload()}>  
-                <input type="checkbox" checked={this.state.open} onChange={this.handleChange} id="toggle-2"/>  
-                {/* <input ref="openCurtain" type="checkbox" onChange={this.handleChange} checked={this.state.open} id="toggle-2"/> */}
-                {/* <button disabled={this.state.open} onClick={() => this.handleDownload()} className="btn btn-secondary btn-secondary--red">
-                            <span className="btn btn-secondary__icon">
-                                
-                            </span>
-                                Play
-                        </button> */}
-                <LeftPanel />
-                <RightPanel />
-                <div className="prize">
-                    {this.state.open && <MoviePlayer poster={this.props.selectedMovie._source.image} history={this.props.history} stream_link={this.state.stream_link} movie={this.props.selectedMovie} quality={this.state.quality} handleDownload={this.handleDownload} />}
-                </div>
-             </div>
-        );     
+        if (this.props.selectedMovie) {
+            return (
+ 
+                <div className="curtain" onClick={() => this.handleDownload()}>  
+                    <input type="checkbox" checked={this.state.open} onChange={this.handleChange} id={this.state.open ? "toggle-2b" : "toggle-2"}/>  
+                    {/* <input ref="openCurtain" type="checkbox" onChange={this.handleChange} checked={this.state.open} id="toggle-2"/> */}
+                    {/* <button disabled={this.state.open} onClick={() => this.handleDownload()} className="btn btn-secondary btn-secondary--red">
+                                <span className="btn btn-secondary__icon">
+                                    
+                                </span>
+                                    Play
+                            </button> */}
+                    <LeftPanel />
+                    <RightPanel />
+                    <div className="prize">
+                        {this.state.open && <MoviePlayer poster={this.props.selectedMovie._source.image} history={this.props.history} stream_link={this.state.stream_link} movie={this.props.selectedMovie} quality={this.state.quality} handleDownload={this.handleDownload} />}
+                    </div>
+                 </div>
+                 
+            ); 
+        } else {
+            return <div>    </div>
+        }
+       
     }
  }
 

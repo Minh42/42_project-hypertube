@@ -49,8 +49,8 @@ class Comment extends Component {
         const { t } = this.props;
 
         return (
-            <div className="comment-box">
-                <h3 className="comment-header"> { t('Movie.comment', { framework: "react-i18next" }) }: </h3>
+            <div className="movie-comments__box">
+                <h3 className="movie-comments__header"> { t('Movie.comment', { framework: "react-i18next" }) }: </h3>
                 {
                     this.state.comments.map(c => {
                         return (
@@ -60,7 +60,7 @@ class Comment extends Component {
                 }
                 <form onSubmit={this.handleSubmit}>
                     <div>
-                        <textarea className="comment-area" name="comment" onChange={this.handleChange} rows="4" cols="50" value={this.state.comment}> </textarea>
+                        <textarea className="movie-comments-area" name="comment" onChange={this.handleChange} rows="4" cols="50" value={this.state.comment}> </textarea>
                     </div>
                     <div>
                         <button type="submit" className="add-comment"> { t('Movie.add', { framework: "react-i18next" }) } </button>

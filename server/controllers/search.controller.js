@@ -6,7 +6,7 @@ exports.getAllMovies = (req, res) => {
         type: 'movies',
         body: {
             from : 0, 
-            size : 100,
+            size : 500,
             query: {
                 match_all: {}
             }
@@ -15,6 +15,7 @@ exports.getAllMovies = (req, res) => {
         if (error) {
             res.sendStatus(500);
         } else {
+            console.log(response.hits)
             res.json({movies: response.hits.hits})
         }
     })
