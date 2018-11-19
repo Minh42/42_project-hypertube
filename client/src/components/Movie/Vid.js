@@ -22,15 +22,16 @@ class MoviePlayer extends Component {
     }
 
 
-    componentDidMount() {
-        if (!window.location.pathname.includes("/movie/")  && localStorage.getItem("started") === "started") {
+    async componentDidMount() {
+        if (!window.location.pathname.includes("/movie/")  && localStorage.getItem("started") === "started" && !this.state.started) {
+            await this.setState({started: true})
             localStorage.setItem("started", "not")
             console.log("IN DID MOUNT VID")
             const stream_link = localStorage.getItem("stream_link");
             const en = localStorage.getItem("en");
             const fr = localStorage.getItem("fr");
             const pos = localStorage.getItem("pos");
-            
+            console.log("STREA", stream_link)
             if (stream_link) {
                 if (Hls.isSupported()) {
                     var config = { 
@@ -59,7 +60,21 @@ class MoviePlayer extends Component {
     }
 
     async componentDidUpdate() {
-        if (!window.location.pathname.includes("/movie/") && localStorage.getItem("started") === "started") {
+        console.log("STARTED", this.state.started, localStorage.getItem("stream_link"))
+        if (!localStorage.getItem("stream_link")){
+            console.log("STOP LOAD1")
+            if (this.state.started === true) {
+                console.log("STOP LOAD2")
+                await this.setState({started: false})
+                if (hls) {
+                    console.log("STOP LOAD")
+                    hls.stopLoad();
+                    hls = null;
+                }
+            }
+        } else if (!window.location.pathname.includes("/movie/") && localStorage.getItem("started") === "started"  && !this.state.started) {
+            if (this.state.started === false)
+                await this.setState({started: true})
             console.log("IN DID MOUNT VID")
             await localStorage.setItem("started", "not")
             const stream_link = localStorage.getItem("stream_link");
@@ -91,6 +106,18 @@ class MoviePlayer extends Component {
             }
             this.setState({stream_link: stream_link, en: en,
             fr: fr, pos: pos});
+        } else if (window.location.pathname.includes("/movie/")) {
+            if (this.state.started)
+                this.setState({started: false})
+            }
+    }
+
+    componentWillUnmount() {
+     //   localStorage.setItem("pos", this.refs.video.currentTime)
+        if (hls) {
+            console.log("UNMOUNT VIDEO")
+            hls.stopLoad();
+            hls = null;
         }
     }
 
@@ -99,13 +126,13 @@ class MoviePlayer extends Component {
         const { t } = this.props;
 
          return (
-            <div className="vid-bottom">
+            <div>
                 {
-                    !window.location.pathname.includes("/movie/")
+                    !window.location.pathname.includes("/movie/") && this.state.started
                 &&
                     <div>
                         <p className="small-x">X</p>
-                        <video className="video-small" ref="video" crossOrigin="anomymous"  controls>
+                        <video className="vid-bottom video-small" ref="video" crossOrigin="anomymous"  controls>
                             {this.state.en && this.state.en !== "" && <track ref="track1" label="English" kind="subtitles" src={this.props.en} default />} 
                             {this.state.fr && this.state.fr!== "" && <track ref="track2" label="French" kind="subtitles" src={this.props.fr} />}
                         </video>

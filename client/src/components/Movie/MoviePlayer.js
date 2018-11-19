@@ -148,6 +148,11 @@ class MoviePlayer extends Component {
 
     componentWillUnmount() {
         localStorage.setItem("pos", this.refs.video.currentTime)
+        if (hls) {
+            console.log("UNMOUNT VIDEO")
+            hls.stopLoad();
+            hls = null;
+        }
     }
 
     render () {
