@@ -135,17 +135,13 @@ exports.verifyUpload = async (req, res) => {
                 api_key: keys.CLOUDINARY_API_KEY,
                 api_secret: keys.CLOUDINARY_API_SECRET
             });
-            try {
+            try { 
                 const ret = await cloudinary.v2.uploader.upload(src,  {public_id: "hypertube/" + basename});
                 if (ret) {
                     res.status(200).json(ret.secure_url);
                 }
             } catch (error) {
-<<<<<<< HEAD
                 console.log("oooo", errror)
-=======
-                console.log('i came hee')
->>>>>>> a810db6ece19985dad4c945c2460a3052d1864fa
                 res.sendStatus(500);
             }
         }
