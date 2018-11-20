@@ -5,9 +5,6 @@ const Users = require('../models/users.model');
 
 exports.local = (req, res) => {
     passport.authenticate('local', (err, user, info) => {
-        console.log(err)
-        console.log('user', user)
-        console.log('info', info)
         if (err || !user) {
             return res.status(401).json({
                 message: info.message
@@ -21,7 +18,6 @@ exports.local = (req, res) => {
                         user: user
                     });
             } else {
-                console.log('im here')
                 res.status(403).json({
                     message : 'Please check your inbox and validate your email'
                 })

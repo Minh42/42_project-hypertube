@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import izitoast from 'izitoast';
 import { withNamespaces } from 'react-i18next';
+import Aux from './Aux';
 
 export default function(ComposedComponent) {
 	class Authenticate extends Component {
 		componentDidMount() {
 			const { t } = this.props; 
-			if(!this.props.isAuthenticated) {
+			if (!this.props.isAuthenticated) {
 				izitoast.error({
 					message: t('Izitoast.access', { framework: "react-i18next" }),
 					position: 'topRight'
@@ -26,7 +27,9 @@ export default function(ComposedComponent) {
 
 		render () {
 			return (
-				<ComposedComponent {...this.props} />
+				<Aux>
+					{this.props.isAuthenticated && <ComposedComponent { ...this.props } />}
+				</Aux>
 			);
 		}
 	}
@@ -41,6 +44,5 @@ export default function(ComposedComponent) {
 		};
 	}
 
-	return withNamespaces('common')(withRouter(connect(mapStateToProps, null)(Authenticate)))
-	;
+	return withNamespaces('common')(withRouter(connect(mapStateToProps, null)(Authenticate)));
 }
