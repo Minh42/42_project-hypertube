@@ -151,8 +151,6 @@ const dl = (magnet, res) => {
                         console.log('*************************************************************************************************** SLICING', d);
                         slicing(`${folder_path}/${movieFile.path}`, `${folder_path}/out.m3u8`, res, folder_path, movieFile);
                         
-                    } else {
-                        console.log('Some other error: ', err.code);
                     }
                 });
             }

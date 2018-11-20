@@ -1,7 +1,4 @@
 const passport = require('passport');
-const Cookies = require('cookies');
-const passportConfig = require('../services/passport');
-const Users = require('../models/users.model');
 
 exports.local = (req, res) => {
     passport.authenticate('local', (err, user, info) => {

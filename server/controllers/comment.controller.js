@@ -1,9 +1,6 @@
 const Comment = require('../models/comment.model');
 
 exports.comment = async (req, res) => {
-    console.log("REQ", req.body)
-    console.log("USER", req.user)
-    //console.log(req.id, req.username)
     const toAddInDb = new Comment({imdbid: req.body.imdbid, id: req.user._id, username: req.user.username, message: req.body.message, date: Date.now()});
         toAddInDb.save(err => {
             if (err) {
@@ -17,7 +14,6 @@ exports.comment = async (req, res) => {
 }
 
 exports.allComment = async (req, res) => {
-    console.log("IMI", req.body.imdbid)
     Comment.find({imdbid: req.body.imdbid}, function(err, comments) {
         if (!err){ 
             console.log(comments);
@@ -26,6 +22,4 @@ exports.allComment = async (req, res) => {
             res.status(400).json("ERROR ")
         }
     });
-    
-    
 }
