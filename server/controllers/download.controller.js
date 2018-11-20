@@ -145,7 +145,6 @@ exports.torrent = async (req, res) => {
                 case "COMPLETED":
                     console.log("COMPLETED", message);
                     updateDb(req.body.imdbid, req.body.quality, {$set:{status: 'sliced'}});
-                    process.kill(process.pid);
                 break ;
                 default: break ;
             }

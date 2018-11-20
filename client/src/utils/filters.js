@@ -4,7 +4,7 @@ function filterByProperty(array, prop, min, max) {
         var obj = array[i];
         for (var key in obj) {
             var item = obj._source[prop];
-            if (item <= max && item >= min) {
+            if (item <= max && item >= min && key) {
                 filtered.push(obj);
                 break;
             }
@@ -19,13 +19,13 @@ function sortByProperty(array, prop, option) {
         if (option) {
             if (option === "latest") {
                 return obj2._source[prop] - obj1._source[prop]
-            } else if (option === "earliest") {
+            } else {
                 return obj1._source[prop] - obj2._source[prop]
             }
         } else {
             return obj2._source[prop] - obj1._source[prop]
         }
-    })
+    });
     return filtered;
 }
 

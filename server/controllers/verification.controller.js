@@ -116,7 +116,7 @@ exports.changePassword = (req, res) => {
 
 exports.verifyUpload = async (req, res) => {
     if (!req.file) {
-        console.log('i came hee')
+        console.log("errrrr", req)
         res.sendStatus(500);
     }
     await sharp(fs.readFileSync(req.file.path))
@@ -135,13 +135,13 @@ exports.verifyUpload = async (req, res) => {
                 api_key: keys.CLOUDINARY_API_KEY,
                 api_secret: keys.CLOUDINARY_API_SECRET
             });
-            try {
+            try { 
                 const ret = await cloudinary.v2.uploader.upload(src,  {public_id: "hypertube/" + basename});
                 if (ret) {
                     res.status(200).json(ret.secure_url);
                 }
             } catch (error) {
-                console.log('i came hee')
+                console.log("oooo", errror)
                 res.sendStatus(500);
             }
         }

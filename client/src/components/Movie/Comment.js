@@ -24,10 +24,10 @@ class Comment extends Component {
             this.props.isTyping(false);
             return ;
         }
-        this.setState({comments: [...this.state.comments, {id: this.props.userid, imdbid: this.props.imdbid, username: "Just added by me", message: this.state.comment, date: Date.now()}]})
+        this.setState({comments: [...this.state.comments, {id: this.props.userid._id, imdbid: this.props.imdbid, username: "Just added by me", message: this.state.comment, date: Date.now()}]})
         await axios.post("http://localhost:8080/api/comment/add", {
             imdbid: this.props.imdbid,
-            username: "test",
+            username: "",
             message: this.state.comment
         },withCredentials())
 
