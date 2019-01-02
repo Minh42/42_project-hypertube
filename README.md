@@ -2,7 +2,7 @@
 ![Screenshot landing](https://i.imgur.com/jRy9d4W.png)
 
 ## Overview
-💥 Torrent / Streaming web application using React, Redux, NodeJS, ElasticSearch and MongoDB. 
+💥 Torrent / Streaming web application using React, Redux, NodeJS, ElasticSearch and MongoDB. This is the third and last project of 42 school's web branch.
 
 ## Demo
 Here is a working live demo : 
