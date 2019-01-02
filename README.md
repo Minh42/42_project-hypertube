@@ -1,4 +1,4 @@
-# 42_project-matcha
+# 42_project-hypertube
 ![Screenshot landing](https://i.imgur.com/jRy9d4W.png)
 
 ## Overview
